@@ -1,20 +1,71 @@
 @import "tailwindcss";
 
-summary::-webkit-details-marker {
-  display: none
+@theme {
+  /* --- NEUTRAL SCALE (Pure Structural Grayscale) --- */
+  --color-neutral-50: oklch(98.5% 0 0);
+  --color-neutral-100: oklch(96.0% 0 0);
+  --color-neutral-200: oklch(90.0% 0 0);
+  --color-neutral-300: oklch(80.0% 0 0);
+  --color-neutral-400: oklch(65.0% 0 0);
+  --color-neutral-500: oklch(50.0% 0 0);
+  --color-neutral-600: oklch(38.0% 0 0);
+  --color-neutral-700: oklch(30.0% 0 0);
+  --color-neutral-800: oklch(24.0% 0 0);
+  --color-neutral-900: oklch(20.5% 0 0);
+  --color-neutral-950: oklch(15.0% 0 0);
+
+  /* --- MAUVE SCALE (Brand Accent & Sophisticated Surfaces) --- */
+  --color-mauve-50: oklch(98.5% 0.005 322.12);
+  --color-mauve-100: oklch(95.0% 0.010 322.12);
+  --color-mauve-200: oklch(90.0% 0.015 322.12);
+  --color-mauve-300: oklch(82.0% 0.020 322.12);
+  --color-mauve-400: oklch(70.0% 0.025 322.12);
+  --color-mauve-500: oklch(55.0% 0.035 322.12);
+  --color-mauve-600: oklch(45.0% 0.030 322.12);
+  --color-mauve-700: oklch(35.0% 0.025 322.12);
+  --color-mauve-800: oklch(27.0% 0.022 322.12);
+  --color-mauve-900: oklch(21.2% 0.019 322.12);
+  --color-mauve-950: oklch(16.0% 0.015 322.12);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
-.checker-background::before {
+/* Semantic tokens (DESIGN.md 2.2) — dark is the default theme */
+:root {
+  --bg-canvas: var(--color-neutral-900);
+  --bg-surface: var(--color-mauve-900);
+  --bg-surface-hover: var(--color-mauve-800);
+  --border-subtle: var(--color-mauve-800);
+  --border-focus: var(--color-mauve-400);
+  --text-primary: var(--color-mauve-50);
+  --text-muted: var(--color-neutral-400);
+  --bg-brand-cta: var(--color-mauve-50);
+  --text-brand-cta: var(--color-neutral-900);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-canvas: var(--color-neutral-50);
+    --bg-surface: var(--color-neutral-100);
+    --bg-surface-hover: var(--color-mauve-200);
+    --border-subtle: var(--color-neutral-300);
+    --border-focus: var(--color-mauve-600);
+    --text-primary: var(--color-neutral-900);
+    --text-muted: var(--color-neutral-600);
+    --bg-brand-cta: var(--color-mauve-900);
+    --text-brand-cta: var(--color-mauve-50);
+  }
+}
+
+/* Dot Grid workspace background (DESIGN.md 4.1) */
+.dot-grid::before {
   content: "";
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-image: linear-gradient(#e6e6e690 1px, transparent 1px),
-    linear-gradient(90deg, #e6e6e690 1px, transparent 1px);
-  background-size: 3.7em 3.7em;
-  mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 55%);
+  inset: 0;
+  background-image: radial-gradient(var(--text-muted) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem;
+  opacity: 0.15;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 70%);
   z-index: -1;
-  background-position-x: center;
 }
