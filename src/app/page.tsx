@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { DotGrid } from "@/components/atoms/DotGrid";
 import logo from "../../public/logo_foliox.png";
 
 const pillars = [
@@ -18,7 +19,8 @@ const pillars = [
 
 export default function Home() {
   return (
-    <main className="dot-grid relative flex min-h-screen flex-col items-center justify-center gap-16 px-6 py-24">
+    <main className="relative flex min-h-screen flex-col items-center justify-center gap-16 px-6 py-24">
+      <DotGrid />
       <div className="flex flex-col items-center gap-6 text-center">
         <Image
           src={logo}

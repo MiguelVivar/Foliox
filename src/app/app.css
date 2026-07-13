@@ -58,14 +58,10 @@
   }
 }
 
-/* Dot Grid workspace background (DESIGN.md 4.1) */
-.dot-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+/* Dot Grid workspace background (DESIGN.md 4.1) — aplicado directo por el componente DotGrid */
+.dot-grid {
   background-image: radial-gradient(var(--text-muted) 1px, transparent 1px);
   background-size: 1.5rem 1.5rem;
   opacity: 0.15;
   mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 70%);
-  z-index: -1;
 }
