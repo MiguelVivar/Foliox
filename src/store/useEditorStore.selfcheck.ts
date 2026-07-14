@@ -58,7 +58,9 @@ useEditorStore.getState().updateBlock("b", (block) => {
   if (block.kind !== "markdown-custom") return block;
   return { ...block, content: { ...block.content, markdown: "updated" } };
 });
-const updated = useEditorStore.getState().blocks.find((block) => block.id === "b");
+const updated = useEditorStore
+  .getState()
+  .blocks.find((block) => block.id === "b");
 assert.equal(
   (updated as import("../types/ast.ts").MarkdownCustomBlock).content.markdown,
   "updated",
@@ -74,7 +76,9 @@ assert.deepEqual(
 );
 
 // reorderBlocks with out-of-range index is a no-op
-const beforeInvalidReorder = useEditorStore.getState().blocks.map((block) => block.id);
+const beforeInvalidReorder = useEditorStore
+  .getState()
+  .blocks.map((block) => block.id);
 useEditorStore.getState().reorderBlocks(0, 99);
 assert.deepEqual(
   useEditorStore.getState().blocks.map((block) => block.id),
