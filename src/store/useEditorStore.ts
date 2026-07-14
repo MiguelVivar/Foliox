@@ -7,6 +7,7 @@ import type { Block } from "@/types/ast";
 type EditorState = {
   blocks: Block[];
   selectedBlockId: string | null;
+  splitView: boolean;
 };
 
 type EditorActions = {
@@ -15,6 +16,7 @@ type EditorActions = {
   updateBlock: (id: string, updater: (block: Block) => Block) => void;
   reorderBlocks: (fromIndex: number, toIndex: number) => void;
   selectBlock: (id: string | null) => void;
+  toggleSplitView: () => void;
 };
 
 export const useEditorStore = create<EditorState & EditorActions>()(
@@ -22,6 +24,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
     (set) => ({
       blocks: [],
       selectedBlockId: null,
+      splitView: false,
       addBlock: (block) =>
         set((state) => ({ blocks: [...state.blocks, block] })),
       removeBlock: (id) =>
@@ -51,6 +54,8 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           return { blocks: next };
         }),
       selectBlock: (id) => set({ selectedBlockId: id }),
+      toggleSplitView: () =>
+        set((state) => ({ splitView: !state.splitView })),
     }),
     { name: "foliox-editor-draft" },
   ),
