@@ -58,14 +58,36 @@
   }
 }
 
-/* Dot Grid workspace background (DESIGN.md 4.1) */
-.dot-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+/* Dot Grid workspace background (DESIGN.md 4.1) — aplicado directo por el componente DotGrid */
+.dot-grid {
   background-image: radial-gradient(var(--text-muted) 1px, transparent 1px);
   background-size: 1.5rem 1.5rem;
   opacity: 0.15;
   mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 70%);
-  z-index: -1;
+}
+
+/* Manual theme override via ThemeToggle (takes precedence over prefers-color-scheme
+   because attribute selectors have higher specificity than a bare :root). */
+:root[data-theme="dark"] {
+  --bg-canvas: var(--color-neutral-900);
+  --bg-surface: var(--color-mauve-900);
+  --bg-surface-hover: var(--color-mauve-800);
+  --border-subtle: var(--color-mauve-800);
+  --border-focus: var(--color-mauve-400);
+  --text-primary: var(--color-mauve-50);
+  --text-muted: var(--color-neutral-400);
+  --bg-brand-cta: var(--color-mauve-50);
+  --text-brand-cta: var(--color-neutral-900);
+}
+
+:root[data-theme="light"] {
+  --bg-canvas: var(--color-neutral-50);
+  --bg-surface: var(--color-neutral-100);
+  --bg-surface-hover: var(--color-mauve-200);
+  --border-subtle: var(--color-neutral-300);
+  --border-focus: var(--color-mauve-600);
+  --text-primary: var(--color-neutral-900);
+  --text-muted: var(--color-neutral-600);
+  --bg-brand-cta: var(--color-mauve-900);
+  --text-brand-cta: var(--color-mauve-50);
 }
