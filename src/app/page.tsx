@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { DotGrid } from "@/components/atoms/DotGrid";
 import { ThemeToggle } from "@/components/molecules/ThemeToggle";
 import logo from "../../public/logo_foliox.png";
@@ -40,12 +41,20 @@ export default function Home() {
             Notion meets Canva for Developers.
           </p>
         </div>
-        <a
-          href="https://github.com"
-          className="rounded-md bg-[var(--bg-brand-cta)] px-4 py-2 text-sm font-medium text-[var(--text-brand-cta)]"
-        >
-          Deploy to GitHub
-        </a>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/editor"
+            className="rounded-md bg-[var(--bg-brand-cta)] px-4 py-2 text-sm font-medium text-[var(--text-brand-cta)]"
+          >
+            Open Editor →
+          </Link>
+          <a
+            href="https://github.com"
+            className="rounded-md border border-[var(--border-subtle)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]"
+          >
+            Deploy to GitHub
+          </a>
+        </div>
       </div>
 
       <div className="grid w-full max-w-4xl gap-4 sm:grid-cols-3">
