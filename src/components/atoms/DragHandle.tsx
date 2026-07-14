@@ -8,7 +8,7 @@ export function DragHandle({ className, ...rest }: DragHandleProps) {
     <span
       aria-hidden="true"
       className={cn(
-        "cursor-grab select-none font-mono text-sm text-[var(--text-muted)] opacity-0 group-hover:opacity-100",
+        "cursor-grab font-mono text-sm text-[var(--text-muted)] opacity-0 select-none group-hover:opacity-100",
         className,
       )}
       {...rest}

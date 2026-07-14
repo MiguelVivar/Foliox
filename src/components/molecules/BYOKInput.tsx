@@ -11,14 +11,22 @@ export type BYOKInputProps = {
   className?: string;
 };
 
-export function BYOKInput({ value, onChange, label = "API Key", className }: BYOKInputProps) {
+export function BYOKInput({
+  value,
+  onChange,
+  label = "API Key",
+  className,
+}: BYOKInputProps) {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     onChange(event.target.value);
   }
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <label htmlFor="byok-api-key" className="text-sm font-medium text-[var(--text-primary)]">
+      <label
+        htmlFor="byok-api-key"
+        className="text-sm font-medium text-[var(--text-primary)]"
+      >
         {label}
       </label>
       <input

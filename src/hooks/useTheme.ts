@@ -8,7 +8,9 @@ const STORAGE_KEY = "foliox-theme";
 
 function getSystemTheme(): Theme {
   if (typeof window === "undefined") return "dark";
-  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  return window.matchMedia("(prefers-color-scheme: light)").matches
+    ? "light"
+    : "dark";
 }
 
 function readStoredTheme(): Theme | null {
@@ -18,7 +20,9 @@ function readStoredTheme(): Theme | null {
 }
 
 export function useTheme(): { theme: Theme; toggleTheme: () => void } {
-  const [theme, setTheme] = useState<Theme>(() => readStoredTheme() ?? getSystemTheme());
+  const [theme, setTheme] = useState<Theme>(
+    () => readStoredTheme() ?? getSystemTheme(),
+  );
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
