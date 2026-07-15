@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Download } from "lucide-react";
+import { Check, Copy, Download, GitCommitHorizontal } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useGithubCommit } from "@/hooks/useGithubCommit";
 import { serializeBlocks } from "@/lib/markdownSerializer";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
 
@@ -11,6 +13,8 @@ export function MarkdownPreview() {
   const markdown = serializeBlocks(blocks);
 
   const [copied, setCopied] = useState(false);
+  const user = useAuthStore((state) => state.user);
+  const { status, errorMessage, repoUrl, commit } = useGithubCommit();
 
   async function handleCopy() {
     try {
@@ -32,8 +36,25 @@ export function MarkdownPreview() {
     URL.revokeObjectURL(url);
   }
 
+  function handleCommit() {
+    if (!user) {
+      useAuthStore.getState().login();
+      return;
+    }
+    void commit(markdown);
+  }
+
   const iconBtn =
-    "flex items-center gap-1.5 rounded-sm border border-[var(--border-subtle)] px-2.5 py-1.5 font-mono text-[10px] text-[var(--text-muted)] hover:border-[var(--border-focus)] hover:text-[var(--text-primary)] focus-visible:outline-2 focus-visible:outline-[var(--border-focus)]";
+    "flex items-center gap-1.5 rounded-sm border border-[var(--border-subtle)] px-2.5 py-1.5 font-mono text-[10px] text-[var(--text-muted)] hover:border-[var(--border-focus)] hover:text-[var(--text-primary)] focus-visible:outline-2 focus-visible:outline-[var(--border-focus)] disabled:cursor-not-allowed disabled:opacity-50";
+
+  const commitLabel =
+    status === "committing"
+      ? "Committing..."
+      : status === "success"
+        ? "Committed!"
+        : status === "error"
+          ? "Failed"
+          : "Commit to GitHub";
 
   return (
     <div className="flex h-full flex-col border-l border-[var(--border-subtle)] bg-[var(--bg-surface)]">
@@ -53,17 +74,47 @@ export function MarkdownPreview() {
             <Download size={11} />
             Download .md
           </button>
+          <button
+            type="button"
+            onClick={handleCommit}
+            disabled={status === "committing" || blocks.length === 0}
+            title={status === "error" ? (errorMessage ?? undefined) : undefined}
+            className={
+              status === "success"
+                ? `${iconBtn} text-green-400`
+                : status === "error"
+                  ? `${iconBtn} text-red-400`
+                  : iconBtn
+            }
+          >
+            {status === "success" ? (
+              <Check size={11} className="text-green-400" />
+            ) : (
+              <GitCommitHorizontal size={11} />
+            )}
+            {commitLabel}
+          </button>
+          {status === "success" && repoUrl && (
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[10px] text-[var(--text-muted)] underline hover:text-[var(--text-primary)]"
+            >
+              View
+            </a>
+          )}
         </div>
       </div>
 
       {/* Preview body */}
       <div className="flex-1 overflow-y-auto p-4">
         {markdown ? (
-          <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-[var(--text-primary)]">
+          <pre className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]">
             {markdown}
           </pre>
         ) : (
-          <p className="font-mono text-xs italic text-[var(--text-muted)]">
+          <p className="font-mono text-xs text-[var(--text-muted)] italic">
             Add blocks to see your Markdown output here.
           </p>
         )}
