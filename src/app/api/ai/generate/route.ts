@@ -22,7 +22,9 @@ export function resolveModelId(provider: AiProvider): string {
 export function validateGenerateRequest(
   body: unknown,
 ): GenerateRequestBody | { error: string } {
-  const candidate = body as Partial<Record<keyof GenerateRequestBody, unknown>> | null;
+  const candidate = body as Partial<
+    Record<keyof GenerateRequestBody, unknown>
+  > | null;
 
   if (typeof candidate?.apiKey !== "string" || candidate.apiKey.length === 0) {
     return { error: "apiKey is required" };

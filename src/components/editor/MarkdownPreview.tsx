@@ -110,11 +110,11 @@ export function MarkdownPreview() {
       {/* Preview body */}
       <div className="flex-1 overflow-y-auto p-4">
         {markdown ? (
-          <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-[var(--text-primary)]">
+          <pre className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]">
             {markdown}
           </pre>
         ) : (
-          <p className="font-mono text-xs italic text-[var(--text-muted)]">
+          <p className="font-mono text-xs text-[var(--text-muted)] italic">
             Add blocks to see your Markdown output here.
           </p>
         )}

@@ -34,7 +34,11 @@ function notFound(): never {
         },
         createOrUpdateFileContents: async (params) => {
           calls.push("createOrUpdateFileContents");
-          assert.equal(params.sha, "existing-sha", "should reuse the existing sha");
+          assert.equal(
+            params.sha,
+            "existing-sha",
+            "should reuse the existing sha",
+          );
           return {};
         },
       },
@@ -72,7 +76,11 @@ function notFound(): never {
         },
         createOrUpdateFileContents: async (params) => {
           calls.push("createOrUpdateFileContents");
-          assert.equal(params.sha, undefined, "no sha when README did not exist");
+          assert.equal(
+            params.sha,
+            undefined,
+            "no sha when README did not exist",
+          );
           return {};
         },
       },
@@ -81,7 +89,12 @@ function notFound(): never {
   await commitReadmeToProfile(fake, "hello");
   assert.deepEqual(
     calls,
-    ["get", "createForAuthenticatedUser", "getContent", "createOrUpdateFileContents"],
+    [
+      "get",
+      "createForAuthenticatedUser",
+      "getContent",
+      "createOrUpdateFileContents",
+    ],
     "missing repo should be created before checking README",
   );
 }
@@ -100,7 +113,11 @@ function notFound(): never {
         },
         getContent: async () => notFound(),
         createOrUpdateFileContents: async (params) => {
-          assert.equal(params.sha, undefined, "no sha when README did not exist");
+          assert.equal(
+            params.sha,
+            undefined,
+            "no sha when README did not exist",
+          );
           return {};
         },
       },
@@ -116,7 +133,11 @@ function notFound(): never {
   const decoded = new TextDecoder().decode(
     Uint8Array.from(atob(encoded), (char) => char.charCodeAt(0)),
   );
-  assert.equal(decoded, original, "base64 round-trip should preserve non-ASCII text");
+  assert.equal(
+    decoded,
+    original,
+    "base64 round-trip should preserve non-ASCII text",
+  );
 }
 
 console.log("githubCommit.selfcheck: all assertions passed");
