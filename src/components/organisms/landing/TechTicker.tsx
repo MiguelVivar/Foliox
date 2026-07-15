@@ -23,7 +23,7 @@ export function TechTicker() {
         
         {/* Infinite scrolling flat ticker simulation in tailwind or custom CSS */}
         <div className="relative flex w-full overflow-hidden">
-          <div className="flex animate-[scroll_40s_linear_infinite] gap-10 whitespace-nowrap min-w-full">
+          <div className="flex animate-[scroll_40s_linear_infinite] hover:[animation-play-state:paused] gap-10 whitespace-nowrap min-w-full">
             {/* Render twice for seamless loop */}
             {[...partners, ...partners].map((partner, index) => (
               <span

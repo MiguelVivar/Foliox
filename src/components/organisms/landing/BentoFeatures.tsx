@@ -4,8 +4,15 @@ import React, { useState } from "react";
 import { SectionHeader } from "@/components/atoms/SectionHeader";
 import { FlatBentoCard } from "@/components/atoms/FlatBentoCard";
 import { LayoutGrid, Key, Palette, Play, CheckCircle2, RefreshCw } from "lucide-react";
+import { Language, translations } from "@/lib/translations";
 
-export function BentoFeatures() {
+interface BentoFeaturesProps {
+  lang: Language;
+}
+
+export function BentoFeatures({ lang }: BentoFeaturesProps) {
+  const t = translations[lang].features;
+
   // Card 1 AST interactive mock state
   const [astBlocks, setAstBlocks] = useState(["[HeaderBlock]", "[SkillsBlock]", "[StatsBlock]"]);
   const [isCompiling, setIsCompiling] = useState(false);
@@ -47,9 +54,9 @@ export function BentoFeatures() {
     <section id="features" className="mx-auto max-w-7xl px-6 py-24 border-b border-[var(--border-subtle)]">
       {/* Header */}
       <SectionHeader
-        badge="01 // ENGINE ARCHITECTURE"
-        title="Diseñado para la precisión. Construido para desarrolladores."
-        description="Explora los pilares de ingeniería detrás de Foliox. Potencia tu marca técnica sin intermediarios ni bases de datos propietarias."
+        badge={t.sectionBadge}
+        title={t.sectionTitle}
+        description={t.sectionDesc}
         className="mb-16"
       />
 
@@ -60,7 +67,7 @@ export function BentoFeatures() {
         <FlatBentoCard className="md:col-span-2 flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)]">
+              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <LayoutGrid size={16} className="text-[var(--text-primary)]" />
               </span>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
@@ -68,10 +75,10 @@ export function BentoFeatures() {
               </span>
             </div>
             <h3 className="font-sans text-lg font-bold text-[var(--text-primary)] mt-3">
-              Drag & Drop AST Architecture
+              {t.astTitle}
             </h3>
             <p className="font-sans text-sm text-[var(--text-muted)] max-w-lg">
-              Cada componente (Biografía, Stack, Gráficos) se mapea a un Árbol de Sintaxis Abstracta (AST) en TypeScript. Compila Markdown limpio sin romper layouts ni inyectar etiquetas extrañas.
+              {t.astDesc}
             </p>
           </div>
 
@@ -120,7 +127,7 @@ export function BentoFeatures() {
         <FlatBentoCard className="flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)]">
+              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <Key size={16} className="text-[var(--text-primary)]" />
               </span>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
@@ -128,10 +135,10 @@ export function BentoFeatures() {
               </span>
             </div>
             <h3 className="font-sans text-lg font-bold text-[var(--text-primary)] mt-3">
-              AI BYOK (Bring Your Own Key)
+              {t.aiTitle}
             </h3>
             <p className="font-sans text-sm text-[var(--text-muted)]">
-              Conecta tus credenciales locales de OpenAI, DeepSeek, Claude o Gemini. Cero telemetría de tus textos y datos de perfil en servidores propietarios de terceros.
+              {t.aiDesc}
             </p>
           </div>
 
@@ -176,10 +183,10 @@ export function BentoFeatures() {
               </span>
             </div>
             <h3 className="font-sans text-lg font-bold text-[var(--text-primary)] mt-3">
-              One-Click Deploy to GitHub
+              {t.deployTitle}
             </h3>
             <p className="font-sans text-sm text-[var(--text-muted)]">
-              OAuth integrado vía Appwrite Cloud y Octokit. Publica los cambios de forma directa y atómica en el repositorio especial `username/username` con un solo clic.
+              {t.deployDesc}
             </p>
           </div>
 
@@ -189,9 +196,9 @@ export function BentoFeatures() {
               disabled={deployStep !== "idle"}
               className="w-full text-center py-2 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-mono text-xs font-semibold rounded-sm hover:opacity-90 active:scale-95 transition-all"
             >
-              {deployStep === "idle" && "[Deploy Profile README]"}
-              {deployStep === "oauth" && "Connecting Appwrite OAuth..."}
-              {deployStep === "push" && "Pushing to username/username..."}
+              {deployStep === "idle" && (lang === "en" ? "[Deploy Profile README]" : "[Desplegar Perfil README]")}
+              {deployStep === "oauth" && (lang === "en" ? "Connecting Appwrite OAuth..." : "Conectando OAuth de Appwrite...")}
+              {deployStep === "push" && (lang === "en" ? "Pushing to username/username..." : "Haciendo push a username/username...")}
               {deployStep === "done" && "✓ Completed!"}
             </button>
             
@@ -211,7 +218,7 @@ export function BentoFeatures() {
         <FlatBentoCard className="md:col-span-2 flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)]">
+              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <Palette size={16} className="text-[var(--text-primary)]" />
               </span>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
@@ -219,10 +226,10 @@ export function BentoFeatures() {
               </span>
             </div>
             <h3 className="font-sans text-lg font-bold text-[var(--text-primary)] mt-3">
-              ASCII Art Engine & Asset Forge
+              {t.asciiTitle}
             </h3>
             <p className="font-sans text-sm text-[var(--text-muted)] max-w-lg">
-              Sube tus imágenes al Canvas optimizado y conviértelas al instante en retratos ASCII texturizados en tu Markdown. O almacena tus assets de portafolio de forma persistente en Appwrite Storage.
+              {t.asciiDesc}
             </p>
           </div>
 

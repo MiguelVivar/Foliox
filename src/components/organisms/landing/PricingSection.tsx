@@ -1,19 +1,52 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { SectionHeader } from "@/components/atoms/SectionHeader";
 import { Check } from "lucide-react";
 import Link from "next/link";
+import { Language, translations } from "@/lib/translations";
 
-export function PricingSection() {
+interface PricingSectionProps {
+  lang: Language;
+}
+
+export function PricingSection({ lang }: PricingSectionProps) {
+  const t = translations[lang].pricing;
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "lifetime">("lifetime");
+
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-6 py-24 border-b border-[var(--border-subtle)]">
       <SectionHeader
-        badge="03 // LICENSING & DEPLOYMENT"
-        title="Planes claros. Licencia perpetua."
-        description="Elige entre hostearlo localmente de forma gratuita o potenciar tu marca con nuestra nube auto-sincronizada."
-        className="mb-16 text-center md:items-center md:text-center"
+        badge={t.sectionBadge}
+        title={t.sectionTitle}
+        description={t.sectionDesc}
+        className="mb-12 text-center md:items-center md:text-center"
       />
+
+      {/* Billing Switcher Toggle */}
+      <div className="flex justify-center items-center gap-3 mb-12 font-mono text-xs select-none">
+        <button
+          onClick={() => setBillingCycle("monthly")}
+          className={`px-3 py-1.5 border rounded-sm transition-colors ${
+            billingCycle === "monthly"
+              ? "border-[var(--border-focus)] bg-[var(--bg-surface)] text-[var(--text-primary)]"
+              : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+          }`}
+        >
+          {t.billingMonthly}
+        </button>
+        <span className="text-[var(--border-subtle)]">|</span>
+        <button
+          onClick={() => setBillingCycle("lifetime")}
+          className={`px-3 py-1.5 border rounded-sm transition-colors ${
+            billingCycle === "lifetime"
+              ? "border-[var(--border-focus)] bg-[var(--bg-surface)] text-[var(--text-primary)]"
+              : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+          }`}
+        >
+          {t.billingLifetime} (Save 35%)
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
         
@@ -24,37 +57,37 @@ export function PricingSection() {
               [Self-Hosted // Open Source]
             </span>
             <h3 className="font-sans text-2xl font-bold text-[var(--text-primary)] mt-2">
-              Free Forever
+              {t.freeTitle}
             </h3>
             <p className="font-sans text-sm text-[var(--text-muted)] mt-2">
-              Todo el motor de edición ejecutándose de forma aislada en tu navegador.
+              {t.freeDesc}
             </p>
             
             <div className="my-6">
               <span className="font-mono text-4xl font-extrabold text-[var(--text-primary)]">$0</span>
-              <span className="font-mono text-xs text-[var(--text-muted)] ml-2">/ lifetime</span>
+              <span className="font-mono text-xs text-[var(--text-muted)] ml-2">{t.freePeriod}</span>
             </div>
 
             <ul className="space-y-3 font-mono text-xs text-[var(--text-muted)] border-t border-[var(--border-subtle)] pt-6">
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Drag & Drop Visual Editor</span>
+                <span>{t.features.drag}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Local AST Markdown compiler</span>
+                <span>{t.features.ast}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>BYOK Local AI Support</span>
+                <span>{t.features.byok}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Export to .md & JSON Resume</span>
+                <span>{t.features.export}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span>Zero telemetry or tracking</span>
+                <span>{t.features.telemetry}</span>
               </li>
             </ul>
           </div>
@@ -64,7 +97,7 @@ export function PricingSection() {
               href="/editor"
               className="block w-full text-center py-2.5 border border-[var(--border-subtle)] bg-[var(--bg-canvas)] text-[var(--text-primary)] font-mono text-xs font-semibold rounded-sm hover:border-[var(--border-focus)] transition-colors"
             >
-              [Start Free in Browser]
+              {t.freeCta}
             </Link>
           </div>
         </div>
@@ -80,37 +113,41 @@ export function PricingSection() {
               [Foliox Pro Cloud]
             </span>
             <h3 className="font-sans text-2xl font-bold text-[var(--text-primary)] mt-2">
-              Lifetime License
+              {t.proTitle}
             </h3>
             <p className="font-sans text-sm text-[var(--text-muted)] mt-2">
-              Sincronización en la nube nativa y despliegues optimizados en un clic.
+              {t.proDesc}
             </p>
             
             <div className="my-6">
-              <span className="font-mono text-4xl font-extrabold text-[var(--text-primary)]">$69</span>
-              <span className="font-mono text-xs text-[var(--text-muted)] ml-2">/ one-time payment or $9/mo</span>
+              <span className="font-mono text-4xl font-extrabold text-[var(--text-primary)]">
+                {billingCycle === "lifetime" ? "$69" : "$9"}
+              </span>
+              <span className="font-mono text-xs text-[var(--text-muted)] ml-2">
+                {billingCycle === "lifetime" ? t.proPeriod : "/ month"}
+              </span>
             </div>
 
             <ul className="space-y-3 font-mono text-xs text-[var(--text-muted)] border-t border-[var(--border-subtle)] pt-6">
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-[var(--text-primary)]">Appwrite Cloud sync (Unlimited Assets)</span>
+                <span className="text-[var(--text-primary)]">{t.features.sync}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-[var(--text-primary)]">1-Click deploy to GitHub via Octokit</span>
+                <span className="text-[var(--text-primary)]">{t.features.deploy}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-[var(--text-primary)]">ATS-friendly PDF Resume Export (No watermark)</span>
+                <span className="text-[var(--text-primary)]">{t.features.pdf}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-[var(--text-primary)]">Automatic social network profile scrapers</span>
+                <span className="text-[var(--text-primary)]">{t.features.scrapers}</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-[var(--text-primary)]">Developer Profile Visitor Analytics</span>
+                <span className="text-[var(--text-primary)]">{t.features.analytics}</span>
               </li>
             </ul>
           </div>
@@ -120,7 +157,7 @@ export function PricingSection() {
               href="/editor"
               className="block w-full text-center py-2.5 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-mono text-xs font-semibold rounded-sm border border-transparent hover:opacity-90 transition-colors"
             >
-              [Upgrade to Pro Cloud]
+              {t.proCta}
             </Link>
           </div>
         </div>

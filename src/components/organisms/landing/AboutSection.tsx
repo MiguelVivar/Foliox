@@ -1,73 +1,151 @@
-import React from "react";
-import { SectionHeader } from "@/components/atoms/SectionHeader";
-import { Terminal, FileCode, FolderOpen } from "lucide-react";
+"use client";
 
-export function AboutSection() {
+import React, { useState } from "react";
+import { SectionHeader } from "@/components/atoms/SectionHeader";
+import { FolderOpen, FileText } from "lucide-react";
+import { Language, translations } from "@/lib/translations";
+
+interface AboutSectionProps {
+  lang: Language;
+}
+
+type FileKey = "manifesto" | "architecture" | "privacy";
+
+export function AboutSection({ lang }: AboutSectionProps) {
+  const t = translations[lang].about;
+  const [activeFile, setActiveFile] = useState<FileKey>("manifesto");
+
+  const files = {
+    manifesto: {
+      name: "manifesto.md",
+      content: lang === "en" ? `
+# The Foliox Manifesto
+
+## 1. Software is art; portfolio is also.
+Your profile shouldn't be a rigid, locked template. We believe in layout freedom, Bento grids, and absolute design flexibility.
+
+## 2. Deterministic AST compilation.
+We don't generate messy layout code. Every pixel is calculated and compiled directly from a structured TS AST to clean Kramdown Markdown.
+
+## 3. Your data, your keys.
+We advocate for BYOK (Bring Your Own Key) for LLM tools. Zero third-party databases tracking your profile content.
+      ` : `
+# El Manifiesto Foliox
+
+## 1. El software es arte; el portafolio también.
+Tu perfil no debería ser una plantilla rígida. Creemos en la libertad de layouts, Bento grids y adaptabilidad visual directa.
+
+## 2. Compilación determinista sobre HTML.
+No generamos código sucio. Cada pixel es calculado y compilado directamente de un AST estructurado en TS a Markdown limpio estándar.
+
+## 3. Tu información, tus llaves.
+Fomentamos el BYOK (Bring Your Own Key) para la IA. Cero base de datos propietaria registrando tus datos de perfil.
+      `,
+    },
+    architecture: {
+      name: "architecture.json",
+      content: `
+{
+  "compiler": {
+    "version": "1.0.0-beta",
+    "parser": "TS-AST-Parser",
+    "target": "GitHub-Flavored-Markdown",
+    "formatters": ["Prettier", "Swiss-Align"]
+  },
+  "storage": {
+    "provider": "Appwrite",
+    "bucket": "assets-forge",
+    "encryption": "AES-256-Local"
+  }
+}
+      `,
+    },
+    privacy: {
+      name: "security.txt",
+      content: lang === "en" ? `
+[SECURITY PRINCIPLE]
+All API Keys (OpenAI, Gemini, DeepSeek) are stored solely inside your browser's window.localStorage.
+
+No data is sent to Foliox servers.
+Encryption: WebCrypto API (AES-GCM).
+Network: Direct browser-to-LLM REST calls.
+      ` : `
+[PRINCIPIO DE SEGURIDAD]
+Todas las API Keys (OpenAI, Gemini, DeepSeek) se almacenan únicamente dentro del window.localStorage de tu navegador.
+
+Ningún dato es enviado a los servidores de Foliox.
+Cifrado: WebCrypto API (AES-GCM).
+Red: Llamadas REST directas del navegador al LLM.
+      `,
+    },
+  };
+
   return (
     <section id="philosophy" className="mx-auto max-w-7xl px-6 py-24 border-b border-[var(--border-subtle)]">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left Column: Heading Copy */}
         <div className="lg:col-span-5 flex flex-col justify-center">
           <SectionHeader
-            badge="02 // THE MANIFESTO"
-            title="Why we built Foliox"
-            description="La paradoja del desarrollador: construimos sistemas de alta disponibilidad y arquitecturas elegantes, pero presentamos nuestro trabajo en perfiles genéricos o plantillas de MS Word."
+            badge={t.sectionBadge}
+            title={t.sectionTitle}
+            description={t.sectionDesc}
             className="mb-8"
           />
           <div className="font-sans text-sm text-[var(--text-muted)] space-y-4">
-            <p>
-              Foliox nace para cerrar esa brecha. Queríamos la maleabilidad visual de herramientas de diseño modernas como Canva, combinada con la estructura y robustez semántica que los ingenieros valoramos en nuestro código.
-            </p>
-            <p>
-              Queremos que tu perfil técnico se sienta tan pulido como tus repositorios. Y lo logramos permitiéndote diseñar visualmente mientras compilamos directamente a sintaxis compatible con GitHub en tiempo real.
-            </p>
+            <p>{t.p1}</p>
+            <p>{t.p2}</p>
           </div>
         </div>
 
-        {/* Right Column: Code/Manifesto Editor Mockup */}
+        {/* Right Column: Code/Manifesto Editor Mockup with Sidebar Selector */}
         <div className="lg:col-span-7 w-full">
-          <div className="w-full rounded-md border border-[var(--border-subtle)] bg-[var(--bg-canvas)] overflow-hidden shadow-none">
-            {/* IDE Title / Tab Header */}
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2">
-              <div className="flex items-center gap-2">
-                <FolderOpen size={12} className="text-[var(--text-muted)]" />
-                <span className="font-mono text-xs text-[var(--text-muted)]">src/docs/manifesto.md</span>
+          <div className="w-full rounded-md border border-[var(--border-subtle)] bg-[var(--bg-canvas)] overflow-hidden flex flex-col md:flex-row h-[360px]">
+            
+            {/* Sidebar Folder list */}
+            <div className="w-full md:w-44 border-b md:border-b-0 md:border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 flex flex-row md:flex-col gap-2 font-mono text-[10px] overflow-x-auto md:overflow-x-visible shrink-0 select-none">
+              <div className="hidden md:flex items-center gap-1.5 text-[9px] uppercase tracking-wider text-[var(--text-muted)] pb-2 border-b border-[var(--border-subtle)] mb-1">
+                <FolderOpen size={10} />
+                <span>WORKSPACE</span>
               </div>
-              <div className="flex gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
+              
+              {(Object.keys(files) as FileKey[]).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveFile(key)}
+                  className={`flex items-center gap-2 px-2 py-1.5 rounded-sm w-full text-left border ${
+                    activeFile === key
+                      ? "border-[var(--border-focus)] bg-[var(--bg-canvas)] text-[var(--text-primary)]"
+                      : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  <FileText size={10} className="shrink-0" />
+                  <span>{files[key].name}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Main File Contents Editor */}
+            <div className="flex-1 flex flex-col min-w-0">
+              <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 select-none">
+                <span className="font-mono text-xs text-[var(--text-muted)]">{files[activeFile].name}</span>
+                <div className="flex gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
+                </div>
+              </div>
+
+              {/* Text Area contents */}
+              <div className="flex-1 p-5 font-mono text-xs text-[var(--text-primary)] leading-relaxed select-text overflow-y-auto bg-[var(--bg-canvas)] whitespace-pre-wrap">
+                {files[activeFile].content.trim()}
+              </div>
+
+              <div className="border-t border-[var(--border-subtle)] px-4 py-1.5 text-[9px] text-[var(--text-muted)] flex justify-between bg-[var(--bg-surface)] select-none">
+                <span>UTF-8 // Static Workspace</span>
+                <span className="text-emerald-400">[READY]</span>
               </div>
             </div>
 
-            {/* Editor Body */}
-            <div className="p-6 font-mono text-xs text-[var(--text-primary)] leading-relaxed select-text space-y-4 max-h-[400px] overflow-y-auto bg-[var(--bg-canvas)]">
-              <div>
-                <span className="text-purple-400"># El Manifiesto Foliox</span>
-              </div>
-              <div>
-                <span className="text-[var(--text-muted)]">## 1. El software es arte; el portafolio también.</span>
-                <p className="pl-4 mt-1 text-[var(--text-muted)]">
-                  Tu perfil no debería ser un formulario rígido. Creemos en la libertad de layouts, rejillas Bento y adaptabilidad visual directa.
-                </p>
-              </div>
-              <div>
-                <span className="text-[var(--text-muted)]">## 2. Compilación determinista sobre HTML inyectado.</span>
-                <p className="pl-4 mt-1 text-[var(--text-muted)]">
-                  No generamos código sucio. La landing de Foliox compila código nativo AST en TypeScript a Markdown estándar compatible con el motor Kramdown de GitHub.
-                </p>
-              </div>
-              <div>
-                <span className="text-[var(--text-muted)]">## 3. Tu información, tus llaves.</span>
-                <p className="pl-4 mt-1 text-[var(--text-muted)]">
-                  Fomentamos el BYOK (Bring Your Own Key) para la IA. Si quieres generar copywriting para tu currículum, usa tus propios tokens de API. Sin intermediarios que revendan tu telemetría o almacenen tus contraseñas.
-                </p>
-              </div>
-              <div className="border-t border-[var(--border-subtle)] pt-4 text-[10px] text-[var(--text-muted)] flex justify-between">
-                <span>Lines: 42  Words: 284</span>
-                <span className="text-emerald-400">[EOF - SUCCESS]</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
