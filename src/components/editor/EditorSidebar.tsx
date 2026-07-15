@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
+import { AiBYOKPanel } from "./AiBYOKPanel";
 import { cn } from "@/lib/cn";
 import type { Block } from "@/types/ast";
 
@@ -216,16 +217,7 @@ export function EditorSidebar() {
         )}
 
         {/* ── AI tab ── */}
-        {activeTab === "ai" && (
-          <div className="flex flex-col gap-3">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
-              AI / BYOK
-            </p>
-            <p className="font-mono text-xs text-[var(--text-muted)]">
-              AI-powered generation with your own API key — coming in Phase 6.
-            </p>
-          </div>
-        )}
+        {activeTab === "ai" && <AiBYOKPanel />}
       </div>
 
       {/* ── Security badge ── */}
