@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/organisms/landing/HeroSection";
 import { TechTicker } from "@/components/organisms/landing/TechTicker";
 import { BentoFeatures } from "@/components/organisms/landing/BentoFeatures";
 import { AboutSection } from "@/components/organisms/landing/AboutSection";
+import { OpenSourceSection } from "@/components/organisms/landing/OpenSourceSection";
 import { PricingSection } from "@/components/organisms/landing/PricingSection";
 import { Footer } from "@/components/organisms/landing/Footer";
 import { DotGrid } from "@/components/atoms/DotGrid";
@@ -13,7 +14,7 @@ import { Language } from "@/lib/translations";
 import { CommandPalette } from "@/components/molecules/CommandPalette";
 
 export function LandingTemplate() {
-  const [lang, setLang] = useState<Language>("es"); // Default to Spanish as requested by system/prompt preference or es
+  const [lang, setLang] = useState<Language>("es");
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   return (
@@ -36,13 +37,14 @@ export function LandingTemplate() {
           <TechTicker />
           <BentoFeatures lang={lang} />
           <AboutSection lang={lang} />
+          <OpenSourceSection lang={lang} />
           <PricingSection lang={lang} />
         </main>
         
         <Footer lang={lang} />
       </div>
 
-      {/* Raycast style spotlight command menu */}
+      {/* Raycast style command menu */}
       <CommandPalette
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
