@@ -91,3 +91,35 @@
   --bg-brand-cta: var(--color-mauve-900);
   --text-brand-cta: var(--color-mauve-50);
 }
+
+/* ─── Print / PDF Export ─────────────────────────────────────────── */
+@media print {
+  /* Hide everything except the markdown preview panel */
+  body > * { display: none !important; }
+
+  /* Show only the print target */
+  #foliox-print-target,
+  #foliox-print-target * {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  #foliox-print-target {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    background: white !important;
+    color: black !important;
+    font-family: ui-monospace, "Geist Mono", monospace !important;
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+    padding: 2cm !important;
+    white-space: pre-wrap !important;
+    overflow: visible !important;
+  }
+
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+}
