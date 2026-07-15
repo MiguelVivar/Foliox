@@ -22,19 +22,23 @@ export function resolveModelId(provider: AiProvider): string {
 export function validateGenerateRequest(
   body: unknown,
 ): GenerateRequestBody | { error: string } {
-  const candidate = body as Partial<GenerateRequestBody> | null;
+  const candidate = body as Partial<Record<keyof GenerateRequestBody, unknown>> | null;
 
-  if (!candidate?.apiKey) {
+  if (typeof candidate?.apiKey !== "string" || candidate.apiKey.length === 0) {
     return { error: "apiKey is required" };
   }
-  if (!candidate?.bio) {
+  if (typeof candidate?.bio !== "string" || candidate.bio.length === 0) {
     return { error: "bio is required" };
   }
   if (candidate.provider !== "openai" && candidate.provider !== "anthropic") {
     return { error: "invalid provider" };
   }
 
-  return { provider: candidate.provider, apiKey: candidate.apiKey, bio: candidate.bio };
+  return {
+    provider: candidate.provider,
+    apiKey: candidate.apiKey,
+    bio: candidate.bio,
+  };
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -65,6 +69,9 @@ export async function POST(request: Request): Promise<Response> {
       "AI provider request failed",
       error instanceof Error ? error.constructor.name : "unknown error",
     );
-    return Response.json({ error: "AI provider request failed" }, { status: 502 });
+    return Response.json(
+      { error: "AI provider request failed" },
+      { status: 502 },
+    );
   }
 }

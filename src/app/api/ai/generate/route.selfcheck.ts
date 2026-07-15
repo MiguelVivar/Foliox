@@ -29,6 +29,13 @@ assert.deepEqual(
   "empty bio should fail validation",
 );
 
+// non-string apiKey (type confusion should not slip through)
+assert.deepEqual(
+  validateGenerateRequest({ apiKey: 12345, bio: "hi", provider: "openai" }),
+  { error: "apiKey is required" },
+  "a non-string apiKey should fail validation",
+);
+
 // invalid provider
 assert.deepEqual(
   validateGenerateRequest({ apiKey: "sk-test", bio: "hi", provider: "gemini" }),
