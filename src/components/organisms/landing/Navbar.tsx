@@ -4,13 +4,33 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/molecules/ThemeToggle";
-import { Menu, X, Star } from "lucide-react";
+import { Menu, X, Star, Search, Globe } from "lucide-react";
 import logo from "../../../../public/logo_foliox.png";
+import { Language, translations } from "@/lib/translations";
 
-export function Navbar() {
+interface NavbarProps {
+  lang: Language;
+  setLang: (lang: Language) => void;
+  onOpenPalette: () => void;
+}
+
+export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [stars, setStars] = useState(1420);
   const [isStarring, setIsStarring] = useState(false);
+  const t = translations[lang].navbar;
+
+  // Keydown listener for Command Palette shortcut (Ctrl+K or Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        onOpenPalette();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onOpenPalette]);
 
   // Simulate subtle real-time star updates for visual delight
   useEffect(() => {
@@ -47,33 +67,42 @@ export function Navbar() {
             href="#features"
             className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
           >
-            [Features]
+            {t.features}
           </a>
           <span className="text-[var(--border-subtle)]">|</span>
           <a
             href="#philosophy"
             className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
           >
-            [Philosophy]
+            {t.philosophy}
           </a>
           <span className="text-[var(--border-subtle)]">|</span>
           <a
             href="#open-source"
             className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
           >
-            [Open Source]
+            {t.openSource}
           </a>
           <span className="text-[var(--border-subtle)]">|</span>
           <a
             href="#pricing"
             className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
           >
-            [Pricing]
+            {t.pricing}
           </a>
         </nav>
 
         {/* Right: Actions */}
         <div className="hidden md:flex items-center gap-3">
+          {/* Raycast Trigger Search bar mockup */}
+          <button
+            onClick={onOpenPalette}
+            className="flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-1 text-left font-mono text-[10px] text-[var(--text-muted)] hover:border-[var(--border-focus)] hover:text-[var(--text-primary)] transition-all"
+          >
+            <Search size={12} />
+            <span>{t.searchPlaceholder}</span>
+          </button>
+
           {/* GitHub Stars Simulator Badge */}
           <a
             href="https://github.com"
@@ -90,18 +119,34 @@ export function Navbar() {
             <span>{stars.toLocaleString()} Stars</span>
           </a>
 
+          {/* Language Selector */}
+          <button
+            onClick={() => setLang(lang === "en" ? "es" : "en")}
+            className="flex items-center gap-1 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-1 font-mono text-[10px] text-[var(--text-primary)] transition-all hover:border-[var(--border-focus)]"
+            title="Toggle Language / Cambiar Idioma"
+          >
+            <Globe size={12} />
+            <span>{lang.toUpperCase()}</span>
+          </button>
+
           <ThemeToggle />
 
           <Link
             href="/editor"
             className="rounded-sm bg-[var(--bg-brand-cta)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--text-brand-cta)] border border-transparent hover:border-[var(--border-focus)] transition-colors"
           >
-            [Launch Workspace]
+            {t.launchWorkspace}
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-3 md:hidden">
+          <button
+            onClick={() => setLang(lang === "en" ? "es" : "en")}
+            className="rounded-sm border border-[var(--border-subtle)] px-2 py-1 font-mono text-[10px] text-[var(--text-primary)]"
+          >
+            {lang.toUpperCase()}
+          </button>
           <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -122,31 +167,41 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // Features
+              // {t.features}
             </a>
             <a
               href="#philosophy"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // Philosophy
+              // {t.philosophy}
             </a>
             <a
               href="#open-source"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // Open Source
+              // {t.openSource}
             </a>
             <a
               href="#pricing"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // Pricing
+              // {t.pricing}
             </a>
 
             <div className="mt-2 flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-4">
+              <button
+                onClick={() => {
+                  onOpenPalette();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left py-2 hover:text-[var(--text-primary)] flex items-center gap-2"
+              >
+                <Search size={12} />
+                <span>{lang === "en" ? "Search Palette (Ctrl+K)" : "Paleta de comandos (Ctrl+K)"}</span>
+              </button>
               <div className="flex items-center gap-2 text-[10px]">
                 <Star size={12} className="text-yellow-500 fill-yellow-500" />
                 <span>{stars.toLocaleString()} Stars on GitHub</span>
@@ -155,7 +210,7 @@ export function Navbar() {
                 href="/editor"
                 className="w-full text-center rounded-sm bg-[var(--bg-brand-cta)] py-2 text-[var(--text-brand-cta)] font-semibold"
               >
-                [Launch Workspace]
+                {t.launchWorkspace}
               </Link>
             </div>
           </div>

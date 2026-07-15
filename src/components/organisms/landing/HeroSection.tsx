@@ -3,10 +3,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { TerminalCodeBlock } from "@/components/molecules/TerminalCodeBlock";
-import { GitBranch, MoveRight, ArrowRight, Star, Sparkles, LayoutGrid } from "lucide-react";
+import { GitBranch, ArrowRight } from "lucide-react";
+import { Language, translations } from "@/lib/translations";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  lang: Language;
+}
+
+export function HeroSection({ lang }: HeroSectionProps) {
   const [activeLayout, setActiveLayout] = useState<"standard" | "minimal">("standard");
+  const t = translations[lang].hero;
 
   // Simulated code representations for standard and minimal layouts
   const standardAST = `export const profile = {
@@ -51,29 +57,29 @@ $ git log --oneline -n 5
 
   return (
     <section className="relative w-full overflow-hidden border-b border-[var(--border-subtle)] px-6 py-20 md:py-32">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 lg:grid lg:grid-cols-12 lg:gap-8">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 lg:grid lg:grid-cols-12 lg:gap-8 bg-[var(--bg-canvas)]">
         
         {/* Left column: Text copy & CTAs */}
-        <div className="flex flex-col items-start gap-6 text-left lg:col-span-6">
+        <div className="flex flex-col items-start gap-6 text-left lg:col-span-6 relative z-10">
           <div className="inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-1 font-mono text-[10px] text-[var(--text-primary)]">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>v1.0.0-beta RELEASED</span>
+            <span>{t.tag}</span>
           </div>
 
           <h1 className="font-sans text-4xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-5xl md:text-6xl">
-            Notion meets Canva for Developer Branding.
+            {t.title}
           </h1>
 
-          <p className="max-w-xl font-sans text-base text-[var(--text-muted)] leading-relaxed">
-            Olvídate de los generadores de README estáticos y formularios aburridos. Diseña tu perfil de GitHub, currículum técnico y portafolio en un lienzo modular drag-and-drop impulsado por IA local (BYOK).
+          <p className="max-w-xl font-sans text-sm md:text-base text-[var(--text-muted)] leading-relaxed">
+            {t.description}
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/editor"
-              className="inline-flex items-center gap-2 rounded-sm bg-[var(--bg-brand-cta)] px-5 py-2.5 font-mono text-sm font-semibold text-[var(--text-brand-cta)] border border-transparent hover:border-[var(--border-focus)] transition-colors"
+              className="inline-flex items-center gap-2 rounded-sm bg-[var(--bg-brand-cta)] px-5 py-2.5 font-mono text-sm font-semibold text-[var(--text-brand-cta)] border border-transparent hover:border-[var(--border-focus)] transition-colors focus-visible:outline-none focus-visible:border-[var(--border-focus)]"
             >
-              [Open Visual Editor]
+              {t.ctaPrimary}
               <ArrowRight size={14} />
             </Link>
 
@@ -81,21 +87,36 @@ $ git log --oneline -n 5
               href="https://github.com"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-5 py-2.5 font-mono text-sm text-[var(--text-primary)] hover:border-[var(--border-focus)] transition-colors"
+              className="inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-5 py-2.5 font-mono text-sm text-[var(--text-primary)] hover:border-[var(--border-focus)] transition-colors focus-visible:outline-none focus-visible:border-[var(--border-focus)]"
             >
               <GitBranch size={14} className="text-[var(--text-muted)]" />
-              [Explore GitHub Repo]
+              {t.ctaSecondary}
             </a>
           </div>
         </div>
 
         {/* Right column: Split Preview / Mockup Screen */}
-        <div className="w-full lg:col-span-6 flex flex-col gap-4">
+        <div className="w-full lg:col-span-6 flex flex-col gap-4 relative z-10">
           <div className="rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
               <span className="font-mono text-xs text-[var(--text-primary)] flex items-center gap-1.5">
-                <LayoutGrid size={14} className="text-[var(--text-muted)]" />
-                Interactive Visual Compiler
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-[var(--text-muted)]"
+                >
+                  <rect width="18" height="18" x="3" y="3" rx="2" />
+                  <path d="M3 9h18" />
+                  <path d="M9 21V9" />
+                </svg>
+                {t.mockupTitle}
               </span>
               <div className="flex gap-2">
                 <button
@@ -106,7 +127,7 @@ $ git log --oneline -n 5
                       : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                   }`}
                 >
-                  Standard Layout
+                  {t.standardLayout}
                 </button>
                 <button
                   onClick={() => setActiveLayout("minimal")}
@@ -116,7 +137,7 @@ $ git log --oneline -n 5
                       : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                   }`}
                 >
-                  Minimal Mono
+                  {t.minimalMono}
                 </button>
               </div>
             </div>
@@ -125,13 +146,13 @@ $ git log --oneline -n 5
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Left Canvas Preview */}
               <div className="flex flex-col gap-3 p-3 rounded bg-[var(--bg-canvas)] border border-[var(--border-subtle)] min-h-[280px]">
-                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
-                  [Drag-and-Drop Workspace]
+                <span className="font-mono text-[9px] text-[var(--text-muted)] uppercase tracking-wider">
+                  {t.workspaceLabel}
                 </span>
 
                 {activeLayout === "standard" ? (
                   <>
-                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)]">
+                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] hover:border-[var(--border-focus)] transition-colors">
                       <div className="flex items-center justify-between">
                         <span className="font-sans font-bold text-xs text-[var(--text-primary)]">
                           Jane Doe
@@ -145,13 +166,13 @@ $ git log --oneline -n 5
                       </p>
                     </div>
 
-                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)]">
+                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] hover:border-[var(--border-focus)] transition-colors">
                       <div className="flex items-center justify-between">
                         <span className="font-sans font-bold text-xs text-[var(--text-primary)]">
                           Tech Stack
                         </span>
                         <span className="font-mono text-[9px] text-[var(--text-muted)]">
-                          [Skills]
+                          {t.skillsLabel}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1 mt-1.5">
@@ -166,13 +187,13 @@ $ git log --oneline -n 5
                       </div>
                     </div>
 
-                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] flex-1 flex flex-col justify-between">
+                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] hover:border-[var(--border-focus)] transition-colors flex-1 flex flex-col justify-between">
                       <div className="flex items-center justify-between">
                         <span className="font-sans font-bold text-xs text-[var(--text-primary)]">
                           GitHub Metrics
                         </span>
                         <span className="font-mono text-[9px] text-[var(--text-muted)]">
-                          [Stats]
+                          {t.statsLabel}
                         </span>
                       </div>
                       <div className="font-mono text-[10px] text-emerald-400 mt-2">
@@ -182,7 +203,7 @@ $ git log --oneline -n 5
                   </>
                 ) : (
                   <>
-                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)]">
+                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] hover:border-[var(--border-focus)] transition-colors">
                       <div className="flex items-center justify-between">
                         <span className="font-sans font-bold text-xs text-[var(--text-primary)]">
                           Jane Doe
@@ -196,13 +217,13 @@ $ git log --oneline -n 5
                       </p>
                     </div>
 
-                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] flex-1">
+                    <div className="border border-[var(--border-subtle)] rounded p-2.5 bg-[var(--bg-surface)] hover:border-[var(--border-focus)] transition-colors flex-1">
                       <div className="flex items-center justify-between">
                         <span className="font-sans font-bold text-xs text-[var(--text-primary)]">
                           Commit History
                         </span>
                         <span className="font-mono text-[9px] text-[var(--text-muted)]">
-                          [GitLog]
+                          {t.gitLogLabel}
                         </span>
                       </div>
                       <div className="font-mono text-[9px] text-[var(--text-muted)] mt-2 flex flex-col gap-1">
