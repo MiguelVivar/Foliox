@@ -1,23 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Key, Mail, Terminal } from "lucide-react";
+import { ArrowLeft, Mail, Key } from "lucide-react";
 import { DotGrid } from "@/components/atoms/DotGrid";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const { login, user, checkSession, isLoading } = useAuthStore();
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Check if there is an active session
+    checkSession();
+  }, [checkSession]);
+
+  useEffect(() => {
+    // If user is already authenticated, redirect to editor
+    if (user) {
+      router.push("/editor");
+    }
+  }, [user, router]);
+
+  const handleCredentialsSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
-    }, 1000);
+    // Fallback simulated credential flow
+    alert("Standard login is disabled. Please use GitHub authentication.");
   };
 
   return (
@@ -38,33 +47,48 @@ export default function LoginPage() {
           <span className="text-[var(--text-muted)]">foliox-auth-client</span>
         </div>
 
-        {success ? (
-          <div className="text-center py-6 flex flex-col gap-4 items-center">
-            <span className="h-8 w-8 rounded-full border border-emerald-400 flex items-center justify-center text-emerald-400">✓</span>
-            <div className="flex flex-col gap-1">
-              <span className="font-bold text-sm">AUTHENTICATION GRANTED</span>
-              <span className="text-[10px] text-[var(--text-muted)]">Redirecting to visual editor...</span>
-            </div>
-            <Link
-              href="/editor"
-              className="mt-4 px-4 py-2 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-transparent hover:border-[var(--border-focus)] transition-colors"
-            >
-              Continue to Workspace
-            </Link>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="font-sans text-xl font-bold tracking-tight mb-1 text-[var(--text-primary)]">
+              Login
+            </h2>
+            <p className="text-[10px] text-[var(--text-muted)]">
+              Sign in using Appwrite Cloud securely with your GitHub account.
+            </p>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <h2 className="font-sans text-xl font-bold tracking-tight mb-1 text-[var(--text-primary)]">
-                Login
-              </h2>
-              <p className="text-[10px] text-[var(--text-muted)]">
-                Enter your credentials to access the cloud workspace.
-              </p>
-            </div>
 
-            {/* Email field */}
-            <div className="flex flex-col gap-1.5 mt-2">
+          {/* GitHub Login Button */}
+          <button
+            onClick={login}
+            disabled={isLoading}
+            className="w-full text-center py-3 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-transparent hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+            <span>{isLoading ? "LOADING..." : "SIGN IN WITH GITHUB"}</span>
+          </button>
+
+          <div className="flex items-center my-2 text-[var(--text-muted)] font-mono text-[9px] select-none justify-center">
+            <span className="border-t border-[var(--border-subtle)] flex-1" />
+            <span className="px-2">OR FALLBACK</span>
+            <span className="border-t border-[var(--border-subtle)] flex-1" />
+          </div>
+
+          {/* Fallback Credential fields */}
+          <form onSubmit={handleCredentialsSubmit} className="flex flex-col gap-4 opacity-50 pointer-events-none">
+            <div className="flex flex-col gap-1.5">
               <label htmlFor="email" className="text-[var(--text-muted)] flex items-center gap-1.5">
                 <Mail size={12} />
                 <span>// EMAIL:</span>
@@ -72,15 +96,12 @@ export default function LoginPage() {
               <input
                 id="email"
                 type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                disabled
                 placeholder="developer@foliox.dev"
-                className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
+                className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)]"
               />
             </div>
 
-            {/* Password field */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="password" className="text-[var(--text-muted)] flex items-center gap-1.5">
                 <Key size={12} />
@@ -89,30 +110,17 @@ export default function LoginPage() {
               <input
                 id="password"
                 type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                disabled
                 placeholder="••••••••••••"
-                className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
+                className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)]"
               />
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-4 w-full text-center py-2.5 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-transparent hover:opacity-90 active:scale-95 transition-all"
-            >
-              {loading ? "AUTHENTICATING..." : "SUBMIT CREDENTIALS"}
-            </button>
-
-            <div className="mt-4 pt-4 border-t border-[var(--border-subtle)] text-[10px] text-center text-[var(--text-muted)]">
-              <span>Don&apos;t have an account? </span>
-              <Link href="/register" className="text-[var(--text-primary)] underline">
-                Register here
-              </Link>
-            </div>
           </form>
-        )}
+
+          <div className="mt-4 pt-4 border-t border-[var(--border-subtle)] text-[10px] text-center text-[var(--text-muted)]">
+            <span>By signing in you accept the local security terms.</span>
+          </div>
+        </div>
       </div>
     </main>
   );
