@@ -10,8 +10,10 @@ import { cn } from "@/lib/cn";
 import type { AiProvider } from "@/hooks/useApiKey";
 
 const PROVIDERS: { value: AiProvider; label: string; model: string }[] = [
-  { value: "anthropic", label: "Anthropic", model: "claude-sonnet-5" },
+  { value: "anthropic", label: "Anthropic", model: "claude-3-5-sonnet" },
   { value: "openai", label: "OpenAI", model: "gpt-4o-mini" },
+  { value: "deepseek", label: "DeepSeek", model: "deepseek-chat" },
+  { value: "google", label: "Google Gemini", model: "gemini-2.5-flash" },
 ];
 
 const TONES = [
@@ -52,6 +54,19 @@ export function AiBYOKPanel() {
     setTone(v);
   }
 
+  function getPlaceholder() {
+    switch (provider) {
+      case "openai":
+        return "sk-proj-...";
+      case "anthropic":
+        return "sk-ant-...";
+      case "deepseek":
+        return "sk-...";
+      case "google":
+        return "AIzaSy...";
+    }
+  }
+
   return (
     <div className="flex flex-col gap-5">
       {/* Provider selector */}
@@ -84,9 +99,7 @@ export function AiBYOKPanel() {
             type={showKey ? "text" : "password"}
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            placeholder={
-              provider === "openai" ? "sk-proj-..." : "sk-ant-..."
-            }
+            placeholder={getPlaceholder()}
             autoComplete="off"
             spellCheck={false}
             className={cn(inputClass, "pr-9 font-mono text-xs")}

@@ -1,3 +1,4 @@
+import figlet from "figlet";
 import type {
   Block,
   HeroBioBlock,
@@ -6,6 +7,21 @@ import type {
   AsciiBannerBlock,
   MarkdownCustomBlock,
 } from "@/types/ast";
+import type { BadgeStyle } from "@/store/useEditorStore";
+
+// ---------------------------------------------------------------------------
+// Serialization options
+// ---------------------------------------------------------------------------
+
+export type SerializeOptions = {
+  badgeStyle?: BadgeStyle;
+  sectionSeparator?: boolean;
+};
+
+const DEFAULT_OPTIONS: Required<SerializeOptions> = {
+  badgeStyle: "flat-square",
+  sectionSeparator: false,
+};
 
 // ---------------------------------------------------------------------------
 // Per-kind serializers
@@ -30,15 +46,17 @@ function serializeHeroBio(block: HeroBioBlock): string {
   return lines.join("\n").trimEnd();
 }
 
-function serializeTechStack(block: TechStackBlock): string {
+function serializeTechStack(
+  block: TechStackBlock,
+  opts: Required<SerializeOptions>,
+): string {
   const { technologies } = block.content;
   if (technologies.length === 0) return `<!-- tech-stack: empty -->`;
 
-  // Shields.io badge per technology (flat-square style, neutral colors)
   const badges = technologies
     .map((tech) => {
       const encoded = encodeURIComponent(tech);
-      return `![${tech}](https://img.shields.io/badge/${encoded}-555555?style=flat-square)`;
+      return `![${tech}](https://img.shields.io/badge/${encoded}-555555?style=${opts.badgeStyle})`;
     })
     .join(" ");
 
@@ -63,14 +81,23 @@ function serializeGithubStats(block: GithubStatsBlock): string {
 }
 
 function serializeAsciiBanner(block: AsciiBannerBlock): string {
-  const { text } = block.content;
+  const { text, font } = block.content;
   if (!text) return `<!-- ascii-banner: empty -->`;
 
-  // Simple decorative frame — full figlet integration is Phase 6 (Web Worker)
-  const border = `+${"─".repeat(text.length + 4)}+`;
-  const middle = `|  ${text}  |`;
-
-  return "```\n" + `${border}\n${middle}\n${border}` + "\n```";
+  try {
+    // figlet.textSync is synchronous and safe to call in the serializer
+    // (runs only when user clicks Copy/Download, not on every keystroke).
+    const art = figlet.textSync(text, {
+      font: font as figlet.Fonts,
+      horizontalLayout: "default",
+    });
+    return "```\n" + art + "\n```";
+  } catch {
+    // Fallback if font isn't pre-loaded
+    const border = `+${"─".repeat(text.length + 4)}+`;
+    const middle = `|  ${text}  |`;
+    return "```\n" + `${border}\n${middle}\n${border}` + "\n```";
+  }
 }
 
 function serializeMarkdownCustom(block: MarkdownCustomBlock): string {
@@ -83,10 +110,16 @@ function serializeMarkdownCustom(block: MarkdownCustomBlock): string {
 
 /**
  * Converts the editor AST block array into a valid GitHub-flavored Markdown string.
- * Blocks are separated by a blank line.
+ * Pass `options` to customize badge style and section separators.
  */
-export function serializeBlocks(blocks: Block[]): string {
+export function serializeBlocks(
+  blocks: Block[],
+  options: SerializeOptions = {},
+): string {
   if (blocks.length === 0) return "";
+
+  const opts = { ...DEFAULT_OPTIONS, ...options };
+  const separator = opts.sectionSeparator ? "\n\n---\n\n" : "\n\n";
 
   return blocks
     .map((block) => {
@@ -94,7 +127,7 @@ export function serializeBlocks(blocks: Block[]): string {
         case "hero-bio":
           return serializeHeroBio(block);
         case "tech-stack":
-          return serializeTechStack(block);
+          return serializeTechStack(block, opts);
         case "github-stats":
           return serializeGithubStats(block);
         case "ascii-banner":
@@ -103,5 +136,5 @@ export function serializeBlocks(blocks: Block[]): string {
           return serializeMarkdownCustom(block);
       }
     })
-    .join("\n\n");
+    .join(separator);
 }

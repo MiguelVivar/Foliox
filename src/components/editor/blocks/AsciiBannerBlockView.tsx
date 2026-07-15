@@ -1,28 +1,44 @@
+"use client";
+
+import { useFiglet } from "@/hooks/useFiglet";
 import type { AsciiBannerBlock } from "@/types/ast";
 
 type Props = { block: AsciiBannerBlock };
 
-// Simple ASCII art generator — renders text as block letters using a dot matrix.
-// Full figlet integration is planned for Phase 6 (Web Worker offscreen canvas).
-function toSimpleAscii(text: string): string {
-  if (!text) return "";
-  // Placeholder: wrap the text in a decorative ASCII frame
-  const line = `+-${"─".repeat(text.length + 2)}-+`;
-  return `${line}\n|  ${text}  |\n${line}`;
-}
-
 export function AsciiBannerBlockView({ block }: Props) {
   const { text, font } = block.content;
-  const ascii = toSimpleAscii(text);
+  const { art, loading } = useFiglet(text, font);
 
   return (
     <div className="flex flex-col gap-2">
-      <pre className="overflow-x-auto font-mono text-xs leading-tight text-[var(--text-primary)]">
-        {ascii || <span className="italic text-[var(--text-muted)]">ASCII banner preview</span>}
-      </pre>
-      {font && (
-        <span className="font-mono text-[10px] text-[var(--text-muted)]">font: {font}</span>
-      )}
+      <div className="flex items-center justify-between">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
+          ASCII Banner
+        </span>
+        <span className="font-mono text-[10px] text-[var(--text-muted)]">
+          {font}
+        </span>
+      </div>
+
+      <div className="overflow-x-auto rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-3">
+        {!text ? (
+          <span className="font-mono text-xs italic text-[var(--text-muted)]">
+            Type text in the sidebar to preview…
+          </span>
+        ) : loading ? (
+          <span className="animate-pulse font-mono text-xs text-[var(--text-muted)]">
+            Rendering…
+          </span>
+        ) : art ? (
+          <pre className="font-mono text-[10px] leading-tight text-[var(--text-primary)]">
+            {art}
+          </pre>
+        ) : (
+          <span className="font-mono text-xs italic text-[var(--text-muted)]">
+            {text}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 
-export type AiProvider = "openai" | "anthropic";
+export type AiProvider = "openai" | "anthropic" | "deepseek" | "google";
 
 const PROVIDER_KEY = "foliox-ai-provider";
 const API_KEY_KEY = "foliox-ai-key";
@@ -10,7 +10,15 @@ const API_KEY_KEY = "foliox-ai-key";
 function readStoredProvider(): AiProvider {
   if (typeof window === "undefined") return "anthropic";
   const stored = window.localStorage.getItem(PROVIDER_KEY);
-  return stored === "openai" || stored === "anthropic" ? stored : "anthropic";
+  if (
+    stored === "openai" ||
+    stored === "anthropic" ||
+    stored === "deepseek" ||
+    stored === "google"
+  ) {
+    return stored;
+  }
+  return "anthropic";
 }
 
 function readStoredApiKey(): string {

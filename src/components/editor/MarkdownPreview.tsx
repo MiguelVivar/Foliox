@@ -9,8 +9,8 @@ import { serializeBlocks } from "@/lib/markdownSerializer";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
 
 export function MarkdownPreview() {
-  const { blocks } = useEditorStore();
-  const markdown = serializeBlocks(blocks);
+  const { blocks, badgeStyle, sectionSeparator } = useEditorStore();
+  const markdown = serializeBlocks(blocks, { badgeStyle, sectionSeparator });
 
   const [copied, setCopied] = useState(false);
   const user = useAuthStore((state) => state.user);
