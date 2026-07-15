@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Download, GitCommitHorizontal } from "lucide-react";
+import { Check, Copy, Download, GitCommitHorizontal, Printer } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useGithubCommit } from "@/hooks/useGithubCommit";
@@ -34,6 +34,10 @@ export function MarkdownPreview() {
     anchor.download = "foliox-readme.md";
     anchor.click();
     URL.revokeObjectURL(url);
+  }
+
+  function handlePrint() {
+    window.print();
   }
 
   function handleCommit() {
@@ -74,6 +78,10 @@ export function MarkdownPreview() {
             <Download size={11} />
             Download .md
           </button>
+          <button type="button" onClick={handlePrint} className={iconBtn}>
+            <Printer size={11} />
+            Export as PDF
+          </button>
           <button
             type="button"
             onClick={handleCommit}
@@ -110,7 +118,10 @@ export function MarkdownPreview() {
       {/* Preview body */}
       <div className="flex-1 overflow-y-auto p-4">
         {markdown ? (
-          <pre className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]">
+          <pre
+            id="foliox-print-target"
+            className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]"
+          >
             {markdown}
           </pre>
         ) : (
