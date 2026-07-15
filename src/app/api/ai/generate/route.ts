@@ -1,5 +1,6 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText } from "ai";
 import type { AiProvider } from "@/hooks/useApiKey";
 
@@ -16,7 +17,16 @@ export type GenerateRequestBody = {
 };
 
 export function resolveModelId(provider: AiProvider): string {
-  return provider === "openai" ? "gpt-4o-mini" : "claude-sonnet-5";
+  switch (provider) {
+    case "openai":
+      return "gpt-4o-mini";
+    case "anthropic":
+      return "claude-3-5-sonnet-latest";
+    case "deepseek":
+      return "deepseek-chat";
+    case "google":
+      return "gemini-2.5-flash";
+  }
 }
 
 export function validateGenerateRequest(
@@ -32,7 +42,12 @@ export function validateGenerateRequest(
   if (typeof candidate?.bio !== "string" || candidate.bio.length === 0) {
     return { error: "bio is required" };
   }
-  if (candidate.provider !== "openai" && candidate.provider !== "anthropic") {
+  if (
+    candidate.provider !== "openai" &&
+    candidate.provider !== "anthropic" &&
+    candidate.provider !== "deepseek" &&
+    candidate.provider !== "google"
+  ) {
     return { error: "invalid provider" };
   }
 
@@ -54,10 +69,20 @@ export async function POST(request: Request): Promise<Response> {
   const { provider, apiKey, bio } = validated;
 
   try {
-    const model =
-      provider === "openai"
-        ? createOpenAI({ apiKey })(resolveModelId(provider))
-        : createAnthropic({ apiKey })(resolveModelId(provider));
+    let model;
+    if (provider === "openai") {
+      model = createOpenAI({ apiKey })(resolveModelId(provider));
+    } else if (provider === "anthropic") {
+      model = createAnthropic({ apiKey })(resolveModelId(provider));
+    } else if (provider === "deepseek") {
+      // DeepSeek is OpenAI API-compatible, override baseURL
+      model = createOpenAI({
+        apiKey,
+        baseURL: "https://api.deepseek.com/v1",
+      })(resolveModelId(provider));
+    } else {
+      model = createGoogleGenerativeAI({ apiKey })(resolveModelId(provider));
+    }
 
     const { text } = await generateText({
       model,

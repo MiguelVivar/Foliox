@@ -63,9 +63,6 @@ export function AsciiBannerForm({ block }: Props) {
         </select>
       </div>
 
-      <p className="font-mono text-[10px] text-[var(--text-muted)]">
-        Full figlet rendering via Web Worker — Phase 6.
-      </p>
     </div>
   );
 }

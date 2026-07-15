@@ -5,6 +5,7 @@ import { ArrowLeft, Trash2 } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
 import { AiBYOKPanel } from "./AiBYOKPanel";
+import { StylePanel } from "./StylePanel";
 import { cn } from "@/lib/cn";
 import type { Block } from "@/types/ast";
 
@@ -205,16 +206,7 @@ export function EditorSidebar() {
         )}
 
         {/* ── STYLE tab ── */}
-        {activeTab === "style" && (
-          <div className="flex flex-col gap-3">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
-              Style
-            </p>
-            <p className="font-mono text-xs text-[var(--text-muted)]">
-              Visual customization coming in Phase 6.
-            </p>
-          </div>
-        )}
+        {activeTab === "style" && <StylePanel />}
 
         {/* ── AI tab ── */}
         {activeTab === "ai" && <AiBYOKPanel />}

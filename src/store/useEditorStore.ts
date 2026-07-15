@@ -4,10 +4,26 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Block } from "@/types/ast";
 
+// ---------------------------------------------------------------------------
+// Style types (exported so serializer + StylePanel can share them)
+// ---------------------------------------------------------------------------
+
+export type BadgeStyle =
+  | "flat-square"
+  | "flat"
+  | "for-the-badge"
+  | "plastic";
+
+// ---------------------------------------------------------------------------
+// Store types
+// ---------------------------------------------------------------------------
+
 type EditorState = {
   blocks: Block[];
   selectedBlockId: string | null;
   splitView: boolean;
+  badgeStyle: BadgeStyle;
+  sectionSeparator: boolean;
 };
 
 type EditorActions = {
@@ -17,6 +33,8 @@ type EditorActions = {
   reorderBlocks: (fromIndex: number, toIndex: number) => void;
   selectBlock: (id: string | null) => void;
   toggleSplitView: () => void;
+  setBadgeStyle: (style: BadgeStyle) => void;
+  toggleSectionSeparator: () => void;
 };
 
 export const useEditorStore = create<EditorState & EditorActions>()(
@@ -25,6 +43,8 @@ export const useEditorStore = create<EditorState & EditorActions>()(
       blocks: [],
       selectedBlockId: null,
       splitView: false,
+      badgeStyle: "flat-square",
+      sectionSeparator: false,
       addBlock: (block) =>
         set((state) => ({ blocks: [...state.blocks, block] })),
       removeBlock: (id) =>
@@ -56,6 +76,9 @@ export const useEditorStore = create<EditorState & EditorActions>()(
       selectBlock: (id) => set({ selectedBlockId: id }),
       toggleSplitView: () =>
         set((state) => ({ splitView: !state.splitView })),
+      setBadgeStyle: (style) => set({ badgeStyle: style }),
+      toggleSectionSeparator: () =>
+        set((state) => ({ sectionSeparator: !state.sectionSeparator })),
     }),
     { name: "foliox-editor-draft" },
   ),
