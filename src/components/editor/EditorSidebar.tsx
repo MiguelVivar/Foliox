@@ -19,6 +19,8 @@ import { SocialLinksForm } from "./forms/SocialLinksForm";
 import { RichMediaForm } from "./forms/RichMediaForm";
 import { MarkdownCustomForm } from "./forms/MarkdownCustomForm";
 
+import { useAuthStore } from "@/store/useAuthStore";
+
 // ------------------------------------------------------------------
 // Block catalog (same as before)
 // ------------------------------------------------------------------
@@ -26,7 +28,7 @@ function makeId() {
   return `block-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-const BLOCK_CATALOG: { label: string; description: string; factory: () => Block }[] = [
+const BLOCK_CATALOG: { label: string; description: string; factory: (username: string) => Block }[] = [
   {
     label: "Hero / Bio",
     description: "Name, tagline & avatar",
@@ -48,10 +50,10 @@ const BLOCK_CATALOG: { label: string; description: string; factory: () => Block 
   {
     label: "GitHub Stats",
     description: "Dynamic stats card",
-    factory: () => ({
+    factory: (username: string) => ({
       id: makeId(),
       kind: "github-stats",
-      content: { username: "", showPrivate: false, showLangs: false, showTrophies: false, showVisitorCounter: false },
+      content: { username: username || "MiguelVivar", showPrivate: false, showLangs: false, showTrophies: false, showVisitorCounter: false },
     }),
   },
   {
@@ -155,7 +157,10 @@ type Tab = "blocks" | "style" | "ai";
 export function EditorSidebar() {
   const { blocks, selectedBlockId, selectBlock, addBlock, removeBlock, lang } =
     useEditorStore();
+  const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<Tab>("blocks");
+
+  const defaultUsername = user?.name ? user.name.replace(/\s+/g, "") : "MiguelVivar";
 
   useEffect(() => {
     if (selectedBlockId) {
@@ -247,7 +252,7 @@ export function EditorSidebar() {
                   <button
                     key={item.label}
                     type="button"
-                    onClick={() => addBlock(item.factory())}
+                    onClick={() => addBlock(item.factory(defaultUsername))}
                     className="flex flex-col items-start rounded-sm border border-[var(--border-subtle)] bg-transparent px-3 py-2.5 text-left hover:border-[var(--accent-phosphor)] hover:bg-[var(--bg-canvas)] focus-visible:border-[var(--accent-phosphor)] focus-visible:outline-none transition-colors group"
                   >
                     <span className="text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-phosphor)] transition-colors">

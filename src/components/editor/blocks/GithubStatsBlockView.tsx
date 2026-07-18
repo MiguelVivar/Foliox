@@ -4,58 +4,76 @@ import type { GithubStatsBlock } from "@/types/ast";
 type Props = { block: GithubStatsBlock };
 
 export function GithubStatsBlockView({ block }: Props) {
-  const { username, showLangs, showTrophies, showVisitorCounter } = block.content;
+  const { username, showPrivate, showLangs, showTrophies, showVisitorCounter } = block.content;
+  const safeUser = username || "MiguelVivar";
+
+  // URL configs for github-readme-stats
+  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${safeUser}&show_icons=true&theme=dark&count_private=${showPrivate ? "true" : "false"}`;
+  const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${safeUser}&layout=compact&theme=dark`;
+  const trophiesUrl = `https://github-profile-trophy.vercel.app/?username=${safeUser}&theme=onedark`;
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Username row */}
-      <div className="flex items-center gap-2">
-        <GitBranch size={16} className="text-[var(--text-muted)]" />
-        <span className="font-mono text-sm text-[var(--text-primary)]">
-          {username || <span className="italic text-[var(--text-muted)]">your-username</span>}
-        </span>
+    <div className="flex flex-col gap-4">
+      {/* Title */}
+      <div className="flex items-center justify-between border-b border-[#30363d] pb-2 select-none">
+        <div className="flex items-center gap-2">
+          <GitBranch size={15} className="text-[#8b949e]" />
+          <span className="font-mono text-xs text-[#8b949e]">GitHub Infographics ({safeUser})</span>
+        </div>
       </div>
 
-      {/* Visitor counter preview */}
-      {showVisitorCounter && username && (
-        <div className="flex justify-center border border-[var(--border-subtle)] p-2 rounded-sm bg-[var(--bg-canvas)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`https://profile-counter.glitch.me/${username}/count.svg`} alt="Visitor count" className="h-6 object-contain" />
+      {/* Visitor Counter badge */}
+      {showVisitorCounter && (
+        <div className="flex justify-start">
+          <img
+            src={`https://profile-counter.glitch.me/${safeUser}/count.svg`}
+            alt="Visitor Count"
+            className="h-6"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
         </div>
       )}
 
-      {/* Stats preview placeholders */}
-      <div className="grid grid-cols-3 gap-2">
-        {["Commits", "PRs", "Stars"].map((label) => (
-          <div
-            key={label}
-            className="flex flex-col items-center rounded-sm border border-[var(--border-subtle)] px-2 py-2"
-          >
-            <span className="font-mono text-xs text-[var(--text-muted)]">—</span>
-            <span className="mt-1 font-mono text-[10px] text-[var(--text-muted)]">{label}</span>
-          </div>
-        ))}
+      {/* Real GitHub Stats Image Card */}
+      <div className="flex flex-col gap-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={statsUrl}
+          alt={`${safeUser}'s GitHub Stats`}
+          className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
+          onError={(e) => {
+            e.currentTarget.src = ""; // Fallback if API fails
+          }}
+        />
+
+        {/* Top Languages card */}
+        {showLangs && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={langsUrl}
+            alt={`${safeUser}'s Top Languages`}
+            className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        )}
+
+        {/* Trophies Case card */}
+        {showTrophies && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={trophiesUrl}
+            alt={`${safeUser}'s Trophies`}
+            className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        )}
       </div>
-
-      {/* Extra widgets indicators */}
-      {(showLangs || showTrophies) && (
-        <div className="flex flex-wrap gap-2 pt-1">
-          {showLangs && (
-            <span className="text-[8px] bg-[var(--accent-phosphor)]/10 text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)]/30 px-1.5 py-0.5 rounded-sm uppercase tracking-wider font-mono font-bold">
-              [+] Lang_Chart
-            </span>
-          )}
-          {showTrophies && (
-            <span className="text-[8px] bg-[var(--accent-phosphor)]/10 text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)]/30 px-1.5 py-0.5 rounded-sm uppercase tracking-wider font-mono font-bold">
-              [+] Trophies_Case
-            </span>
-          )}
-        </div>
-      )}
-
-      <p className="font-mono text-[10px] text-[var(--text-muted)]">
-        [stats rendered via github-readme-stats / profile-counter APIs]
-      </p>
     </div>
   );
 }
