@@ -105,17 +105,17 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
       aria-label={`${KIND_LABELS[block.kind]} block. Press Alt+ArrowUp or Alt+ArrowDown to reorder.`}
       className={cn(
         // Base card (DESIGN.md §4.1 Bento Cards)
-        "group relative rounded-sm border bg-[var(--bg-surface)] p-4 outline-none transition-all duration-200",
-        // Border: subtle by default, phosphor when selected
+        "group relative rounded-sm border p-5 outline-none transition-all duration-300",
+        // Sleek neon glow styling
         isSelected
-          ? "border-[var(--accent-phosphor)] -translate-y-1 shadow-[4px_4px_0_0_var(--accent-phosphor)]"
-          : "border-[var(--border-subtle)] hover:border-[var(--accent-phosphor)] hover:-translate-y-1 hover:shadow-[4px_4px_0_0_var(--accent-phosphor)]",
+          ? "border-[var(--accent-phosphor)] bg-[var(--bg-surface)] -translate-y-1 shadow-[0_0_15px_rgba(110,231,167,0.25),4px_4px_0_0_var(--accent-phosphor)]"
+          : "border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 hover:border-[var(--accent-phosphor)] hover:-translate-y-1 hover:shadow-[0_0_12px_rgba(110,231,167,0.15),4px_4px_0_0_var(--accent-phosphor)]",
         // Ghost state while dragging (DESIGN.md §4.1)
         isDragging ? "opacity-30 shadow-none -translate-y-0" : "opacity-100",
         // Keyboard focus ring
         "focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)]",
         // Hover surface
-        "hover:bg-[var(--bg-surface-hover)]",
+        "hover:bg-[var(--bg-surface-hover)]/95",
       )}
     >
       {/* Card header: drag handle + label + remove */}

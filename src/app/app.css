@@ -263,3 +263,40 @@
     size: A4;
   }
 }
+
+/* ─── Sleek Glassmorphism & Premium Neon CRT Glow ─────────────────── */
+.crt-glass {
+  background: rgba(16, 19, 23, 0.7) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(110, 231, 167, 0.15) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+}
+
+.crt-glass-glowing {
+  background: rgba(16, 19, 23, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(110, 231, 167, 0.3) !important;
+  box-shadow: 0 0 20px rgba(110, 231, 167, 0.1), inset 0 0 15px rgba(110, 231, 167, 0.05) !important;
+}
+
+.crt-glowing-glow {
+  text-shadow: 0 0 8px rgba(110, 231, 167, 0.6) !important;
+}
+
+.crt-scanlines {
+  position: relative;
+  overflow: hidden;
+}
+.crt-scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04)) !important;
+  z-index: 20;
+  background-size: 100% 4px, 6px 100% !important;
+  pointer-events: none;
+}
+

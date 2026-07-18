@@ -14,7 +14,7 @@ export function ClientOnlyEditor() {
   const [selectedProfile, setSelectedProfile] = useState("architect-cv");
 
   return (
-    <main className="flex flex-col md:flex-row flex-1 overflow-hidden bg-[var(--bg-canvas)]">
+    <main className="crt-scanlines flex flex-col md:flex-row flex-1 overflow-hidden bg-[var(--bg-canvas)]">
       {/* ── Canvas zone ── */}
       <section
         className={cn(
@@ -22,26 +22,26 @@ export function ClientOnlyEditor() {
           splitView ? "w-full md:w-[60%]" : "flex-1",
         )}
       >
-        {/* Flat Swiss Premium Toolbar Strip */}
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-2 font-mono text-[10px] bg-[var(--bg-canvas)] select-none">
+        {/* Glassmorphic Premium Toolbar Strip */}
+        <div className="crt-glass flex items-center justify-between px-4 py-3 font-mono text-[10px] select-none border-b border-[var(--accent-phosphor)]/20">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--accent-phosphor)] border border-transparent hover:border-[var(--border-subtle)] rounded-sm px-1.5 py-0.5 transition-colors uppercase tracking-widest"
+              className="flex items-center gap-1.5 text-[var(--accent-phosphor)] hover:text-white border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--accent-phosphor)]/10 rounded-sm px-2.5 py-1 transition-all uppercase tracking-widest font-bold crt-glowing-glow"
             >
               <Home size={11} />
               <span>Home</span>
             </Link>
 
-            <span className="text-[var(--border-subtle)]">|</span>
+            <span className="text-[var(--accent-phosphor)]/30">|</span>
 
             {/* Profile switching dropdown */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[var(--text-muted)]">Profile:</span>
+              <span className="text-[var(--text-muted)] uppercase tracking-wider text-[9px]">Workspace:</span>
               <select
                 value={selectedProfile}
                 onChange={(e) => setSelectedProfile(e.target.value)}
-                className="bg-[var(--bg-canvas)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded-sm text-[var(--accent-phosphor)] focus:outline-none focus:border-[var(--accent-phosphor)] font-mono text-[10px] uppercase tracking-widest"
+                className="bg-[var(--bg-canvas)] border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] px-2 py-1 rounded-sm text-[var(--accent-phosphor)] focus:outline-none focus:border-[var(--accent-phosphor)] font-mono text-[9px] uppercase tracking-widest transition-all"
               >
                 <option value="architect-cv">Systems Architect CV</option>
                 <option value="github-readme">GitHub Special README</option>
@@ -53,14 +53,14 @@ export function ClientOnlyEditor() {
           <div className="flex items-center gap-3">
             {/* User status */}
             <div className="hidden lg:flex items-center gap-1.5 text-[var(--text-muted)]">
-              <User size={11} />
-              <span>Jane Doe</span>
-              <span className="bg-[var(--bg-canvas)] text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)] px-1 rounded-sm text-[8px] tracking-widest uppercase animate-pulse">PRO</span>
+              <User size={11} className="text-[var(--accent-phosphor)]" />
+              <span className="font-bold text-[var(--text-primary)]">JANE_DOE</span>
+              <span className="bg-[var(--accent-phosphor)]/20 text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)]/50 px-1.5 py-0.5 rounded-sm text-[8px] tracking-widest uppercase animate-pulse font-extrabold shadow-[0_0_8px_var(--glow-color)]">PRO</span>
             </div>
 
             <Link
               href="/settings"
-              className="p-1 border border-[var(--border-subtle)] hover:border-[var(--accent-phosphor)] rounded-sm text-[var(--text-muted)] hover:text-[var(--accent-phosphor)] transition-colors"
+              className="p-1.5 border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--bg-canvas)] rounded-sm text-[var(--accent-phosphor)] hover:text-white transition-all hover:shadow-[0_0_8px_var(--glow-color)]"
               title="Configurations"
             >
               <Settings size={12} />
@@ -74,10 +74,10 @@ export function ClientOnlyEditor() {
               }
               aria-pressed={splitView}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)]",
+                "flex items-center gap-1.5 rounded-sm border px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-all font-bold cursor-pointer",
                 splitView
-                  ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
-                  : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--accent-phosphor)] hover:text-[var(--accent-phosphor)]",
+                  ? "border-[var(--accent-phosphor)] bg-[var(--accent-phosphor)]/20 text-[var(--accent-phosphor)] shadow-[0_0_10px_var(--glow-color)]"
+                  : "border-[var(--accent-phosphor)]/30 text-[var(--accent-phosphor)] hover:border-[var(--accent-phosphor)] hover:bg-[var(--accent-phosphor)]/10 hover:shadow-[0_0_8px_var(--glow-color)]",
               )}
             >
               {splitView ? (
@@ -95,13 +95,13 @@ export function ClientOnlyEditor() {
 
       {/* ── Markdown preview (split view only) ── */}
       {splitView && (
-        <section className="flex w-full md:w-[40%] flex-col overflow-hidden border-t md:border-t-0 md:border-l border-[var(--border-subtle)]">
+        <section className="flex w-full md:w-[40%] flex-col overflow-hidden border-t md:border-t-0 md:border-l border-[var(--accent-phosphor)]/20 bg-[var(--bg-canvas)]/90 backdrop-blur-md">
           <MarkdownPreview />
         </section>
       )}
 
       {/* ── Sidebar ── */}
-      <aside className="flex w-full md:w-80 flex-shrink-0 flex-col overflow-y-auto border-t md:border-t-0 md:border-l border-[var(--border-subtle)] bg-[var(--bg-surface)]">
+      <aside className="flex w-full md:w-80 flex-shrink-0 flex-col overflow-y-auto border-t md:border-t-0 md:border-l border-[var(--accent-phosphor)]/20 bg-[var(--bg-surface)]/95 backdrop-blur-md">
         <EditorSidebar />
       </aside>
     </main>
