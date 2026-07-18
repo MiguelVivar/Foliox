@@ -1,16 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useEditorStore } from "@/store/useEditorStore";
-import type { GithubStatsBlock, HeroBioBlock, TechStackBlock, MarkdownCustomBlock } from "@/types/ast";
-import { Download } from "lucide-react";
+import type { GithubStatsBlock } from "@/types/ast";
 
 type Props = { block: GithubStatsBlock };
 
 export function GithubStatsForm({ block }: Props) {
-  const { updateBlock, blocks, addBlock } = useEditorStore();
-  const [loading, setLoading] = useState(false);
-  const [statusMsg, setStatusMsg] = useState("");
+  const { updateBlock } = useEditorStore();
 
   function patch(partial: Partial<GithubStatsBlock["content"]>) {
     updateBlock(block.id, (b) =>
@@ -18,132 +14,6 @@ export function GithubStatsForm({ block }: Props) {
         ? { ...b, content: { ...b.content, ...partial } }
         : b,
     );
-  }
-
-  async function handleImport() {
-    let rawUsername = block.content.username;
-    if (!rawUsername.trim()) {
-      setStatusMsg("ERR: USERNAME_REQUIRED");
-      return;
-    }
-
-    // Sanitize to extract username from full URLs or repo paths
-    let cleaned = rawUsername.trim().replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "");
-    const segments = cleaned.split("/").filter(Boolean);
-    const username = segments[0] || rawUsername.trim();
-
-    setLoading(true);
-    setStatusMsg("IMPORTING...");
-
-    try {
-      // 1. Fetch user profile
-      const userRes = await fetch(`https://api.github.com/users/${username}`);
-      if (!userRes.ok) throw new Error("USER_NOT_FOUND");
-      const userData = await userRes.json();
-
-      // Find or create Hero Bio
-      const existingHero = blocks.find((b) => b.kind === "hero-bio") as HeroBioBlock | undefined;
-      if (existingHero) {
-        updateBlock(existingHero.id, (b) =>
-          b.kind === "hero-bio"
-            ? {
-                ...b,
-                content: {
-                  name: userData.name || b.content.name || userData.login,
-                  tagline: userData.bio || b.content.tagline || "",
-                  avatarUrl: userData.avatar_url || b.content.avatarUrl,
-                },
-              }
-            : b
-        );
-      } else {
-        addBlock({
-          id: `block-${Date.now()}-hb`,
-          kind: "hero-bio",
-          content: {
-            name: userData.name || userData.login,
-            tagline: userData.bio || "",
-            avatarUrl: userData.avatar_url,
-          },
-        });
-      }
-
-      // 2. Fetch repo languages
-      const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=60&sort=updated`);
-      if (reposRes.ok) {
-        const repos = await reposRes.json();
-        const langCounts: Record<string, number> = {};
-        repos.forEach((repo: any) => {
-          if (repo.language) {
-            langCounts[repo.language] = (langCounts[repo.language] || 0) + 1;
-          }
-        });
-
-        const sortedLangs = Object.entries(langCounts)
-          .sort((a, b) => b[1] - a[1])
-          .map(([lang]) => lang)
-          .slice(0, 6);
-
-        if (sortedLangs.length > 0) {
-          const existingTech = blocks.find((b) => b.kind === "tech-stack") as TechStackBlock | undefined;
-          if (existingTech) {
-            updateBlock(existingTech.id, (b) =>
-              b.kind === "tech-stack"
-                ? {
-                    ...b,
-                    content: {
-                      technologies: Array.from(new Set([...b.content.technologies, ...sortedLangs])),
-                    },
-                  }
-                : b
-            );
-          } else {
-            addBlock({
-              id: `block-${Date.now()}-ts`,
-              kind: "tech-stack",
-              content: { technologies: sortedLangs },
-            });
-          }
-        }
-      }
-
-      // 3. Fetch existing profile README.md from username/username repo
-      try {
-        let readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/main/README.md`);
-        if (!readmeRes.ok) {
-          readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/master/README.md`);
-        }
-
-        if (readmeRes.ok) {
-          const readmeContent = await readmeRes.text();
-          if (readmeContent && readmeContent.trim()) {
-            const existingMarkdown = blocks.find((b) => b.kind === "markdown-custom") as MarkdownCustomBlock | undefined;
-            if (existingMarkdown) {
-              updateBlock(existingMarkdown.id, (b) =>
-                b.kind === "markdown-custom"
-                  ? { ...b, content: { ...b.content, markdown: readmeContent } }
-                  : b
-              );
-            } else {
-              addBlock({
-                id: `block-${Date.now()}-md`,
-                kind: "markdown-custom",
-                content: { markdown: readmeContent },
-              });
-            }
-          }
-        }
-      } catch (readmeErr) {
-        console.error("Failed to fetch existing profile README", readmeErr);
-      }
-
-      setStatusMsg("SUCCESS: PROFILE_IMPORTED");
-    } catch (err: any) {
-      setStatusMsg(err.message === "USER_NOT_FOUND" ? "ERR: USER_NOT_FOUND" : "ERR: FETCH_FAILED");
-    } finally {
-      setLoading(false);
-      setTimeout(() => setStatusMsg(""), 3000);
-    }
   }
 
   const inputClass =
@@ -157,30 +27,14 @@ export function GithubStatsForm({ block }: Props) {
         <label htmlFor="gs-username" className={labelClass}>
           GitHub Username
         </label>
-        <div className="flex gap-2">
-          <input
-            id="gs-username"
-            type="text"
-            value={block.content.username}
-            onChange={(e) => patch({ username: e.target.value })}
-            placeholder="your-github-username"
-            className={inputClass}
-          />
-          <button
-            type="button"
-            onClick={handleImport}
-            disabled={loading}
-            className="flex items-center justify-center rounded-sm border border-[var(--border-subtle)] px-3 hover:border-[var(--accent-phosphor)] hover:text-[var(--accent-phosphor)] text-[var(--text-muted)] focus:outline-none transition-colors"
-            title="Import profile details from GitHub"
-          >
-            <Download size={14} className={loading ? "animate-bounce" : ""} />
-          </button>
-        </div>
-        {statusMsg && (
-          <p className="font-mono text-[9px] uppercase tracking-wider text-[var(--accent-phosphor)]">
-            [{statusMsg}]
-          </p>
-        )}
+        <input
+          id="gs-username"
+          type="text"
+          value={block.content.username}
+          onChange={(e) => patch({ username: e.target.value })}
+          placeholder="your-github-username"
+          className={inputClass}
+        />
       </div>
 
       <label className="flex cursor-pointer items-center gap-3">
