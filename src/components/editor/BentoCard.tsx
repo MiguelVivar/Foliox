@@ -13,6 +13,8 @@ import { HeroBioBlockView } from "./blocks/HeroBioBlockView";
 import { TechStackBlockView } from "./blocks/TechStackBlockView";
 import { GithubStatsBlockView } from "./blocks/GithubStatsBlockView";
 import { AsciiBannerBlockView } from "./blocks/AsciiBannerBlockView";
+import { AsciiImageBlockView } from "./blocks/AsciiImageBlockView";
+import { SocialLinksBlockView } from "./blocks/SocialLinksBlockView";
 import { MarkdownCustomBlockView } from "./blocks/MarkdownCustomBlockView";
 
 // Label shown in the card header per block kind
@@ -21,6 +23,8 @@ const KIND_LABELS: Record<Block["kind"], string> = {
   "tech-stack": "Tech Stack",
   "github-stats": "GitHub Stats",
   "ascii-banner": "ASCII Banner",
+  "ascii-image": "ASCII Image",
+  "social-links": "Social Links",
   "markdown-custom": "Custom Markdown",
 };
 
@@ -77,6 +81,10 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
         return <GithubStatsBlockView block={block} />;
       case "ascii-banner":
         return <AsciiBannerBlockView block={block} />;
+      case "ascii-image":
+        return <AsciiImageBlockView block={block} />;
+      case "social-links":
+        return <SocialLinksBlockView block={block} />;
       case "markdown-custom":
         return <MarkdownCustomBlockView block={block} />;
     }

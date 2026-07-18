@@ -14,6 +14,8 @@ import { HeroBioForm } from "./forms/HeroBioForm";
 import { TechStackForm } from "./forms/TechStackForm";
 import { GithubStatsForm } from "./forms/GithubStatsForm";
 import { AsciiBannerForm } from "./forms/AsciiBannerForm";
+import { AsciiImageForm } from "./forms/AsciiImageForm";
+import { SocialLinksForm } from "./forms/SocialLinksForm";
 import { MarkdownCustomForm } from "./forms/MarkdownCustomForm";
 
 // ------------------------------------------------------------------
@@ -61,6 +63,24 @@ const BLOCK_CATALOG: { label: string; description: string; factory: () => Block 
     }),
   },
   {
+    label: "ASCII Image",
+    description: "Convert image file to ASCII art",
+    factory: () => ({
+      id: makeId(),
+      kind: "ascii-image",
+      content: { asciiArt: "", width: 60, colorMode: "mono" },
+    }),
+  },
+  {
+    label: "Social Links",
+    description: "Connect social media badges",
+    factory: () => ({
+      id: makeId(),
+      kind: "social-links",
+      content: { links: [] },
+    }),
+  },
+  {
     label: "Custom Markdown",
     description: "Any raw Markdown section",
     factory: () => ({
@@ -79,6 +99,8 @@ const KIND_LABELS: Record<Block["kind"], string> = {
   "tech-stack": "Tech Stack",
   "github-stats": "GitHub Stats",
   "ascii-banner": "ASCII Banner",
+  "ascii-image": "ASCII Image",
+  "social-links": "Social Links",
   "markdown-custom": "Custom Markdown",
 };
 
@@ -91,6 +113,8 @@ function BlockForm({ block }: { block: Block }) {
     case "tech-stack":   return <TechStackForm block={block} />;
     case "github-stats": return <GithubStatsForm block={block} />;
     case "ascii-banner": return <AsciiBannerForm block={block} />;
+    case "ascii-image":  return <AsciiImageForm block={block} />;
+    case "social-links": return <SocialLinksForm block={block} />;
     case "markdown-custom": return <MarkdownCustomForm block={block} />;
   }
 }
