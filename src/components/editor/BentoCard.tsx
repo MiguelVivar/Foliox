@@ -93,15 +93,15 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
       aria-label={`${KIND_LABELS[block.kind]} block. Press Alt+ArrowUp or Alt+ArrowDown to reorder.`}
       className={cn(
         // Base card (DESIGN.md §4.1 Bento Cards)
-        "group relative rounded-md border bg-[var(--bg-surface)] p-4 outline-none",
-        // Border: subtle by default, focus-color when selected
+        "group relative rounded-sm border bg-[var(--bg-surface)] p-4 outline-none transition-all duration-200",
+        // Border: subtle by default, phosphor when selected
         isSelected
-          ? "border-[var(--border-focus)]"
-          : "border-[var(--border-subtle)]",
+          ? "border-[var(--accent-phosphor)] -translate-y-1 shadow-[4px_4px_0_0_var(--accent-phosphor)]"
+          : "border-[var(--border-subtle)] hover:border-[var(--accent-phosphor)] hover:-translate-y-1 hover:shadow-[4px_4px_0_0_var(--accent-phosphor)]",
         // Ghost state while dragging (DESIGN.md §4.1)
-        isDragging ? "opacity-30" : "opacity-100",
-        // Keyboard focus ring (DESIGN.md §5: outline-2 outline-mauve-500)
-        "focus-visible:outline-2 focus-visible:outline-[var(--border-focus)]",
+        isDragging ? "opacity-30 shadow-none -translate-y-0" : "opacity-100",
+        // Keyboard focus ring
+        "focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)]",
         // Hover surface
         "hover:bg-[var(--bg-surface-hover)]",
       )}
@@ -116,7 +116,7 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
           className="cursor-grab active:cursor-grabbing"
         />
 
-        <span className="flex-1 font-mono text-xs text-[var(--text-muted)]">
+        <span className="flex-1 font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] group-hover:text-[var(--accent-phosphor)] transition-colors">
           [{KIND_LABELS[block.kind]}]
         </span>
 
@@ -128,7 +128,7 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
             removeBlock(block.id);
           }}
           aria-label={`Remove ${KIND_LABELS[block.kind]} block`}
-          className="flex h-5 w-5 items-center justify-center rounded-sm text-[var(--text-muted)] opacity-0 hover:text-[var(--text-primary)] group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-[var(--border-focus)]"
+          className="flex h-5 w-5 items-center justify-center rounded-sm text-[var(--text-muted)] opacity-0 hover:text-[var(--accent-phosphor)] group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)] transition-colors"
         >
           <X size={12} />
         </button>
