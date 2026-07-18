@@ -42,6 +42,19 @@ export type TechStackBlock = {
   };
 };
 
+export const GITHUB_STATS_THEMES = [
+  "dark",
+  "radical",
+  "merko",
+  "gruvbox",
+  "tokyonight",
+  "dracula",
+  "onedark",
+  "cobalt",
+] as const;
+
+export type GithubStatsTheme = (typeof GITHUB_STATS_THEMES)[number];
+
 export type GithubStatsBlock = {
   id: string;
   kind: "github-stats";
@@ -53,6 +66,7 @@ export type GithubStatsBlock = {
     showLangs?: boolean;
     showTrophies?: boolean;
     showVisitorCounter?: boolean;
+    theme?: GithubStatsTheme;
   };
 };
 
