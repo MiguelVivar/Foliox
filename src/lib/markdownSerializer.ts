@@ -11,6 +11,7 @@ import type {
   MarkdownCustomBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
+import { findTechMeta } from "./techCatalog";
 
 // ---------------------------------------------------------------------------
 // Serialization options
@@ -39,27 +40,6 @@ const SOCIAL_METADATA: Record<string, { label: string; color: string; logo: stri
 // Per-kind serializers
 // ---------------------------------------------------------------------------
 
-// Brand metadata from Ileriayo/markdown-badges spec
-const TECH_BADGE_META: Record<string, { color: string; logo: string }> = {
-  typescript: { color: "3178C6", logo: "typescript" },
-  javascript: { color: "F7DF1E", logo: "javascript" },
-  react: { color: "20232A", logo: "react" },
-  "next.js": { color: "000000", logo: "nextdotjs" },
-  node: { color: "339933", logo: "nodedotjs" },
-  "node.js": { color: "339933", logo: "nodedotjs" },
-  docker: { color: "2496ED", logo: "docker" },
-  python: { color: "3776AB", logo: "python" },
-  rust: { color: "000000", logo: "rust" },
-  go: { color: "00ADD8", logo: "go" },
-  html5: { color: "E34F26", logo: "html5" },
-  css3: { color: "1572B6", logo: "css3" },
-  git: { color: "F05032", logo: "git" },
-  aws: { color: "232F3E", logo: "amazon-aws" },
-  supabase: { color: "3ECF8E", logo: "supabase" },
-  postgresql: { color: "4169E1", logo: "postgresql" },
-  mysql: { color: "4479A1", logo: "mysql" },
-  mongodb: { color: "47A248", logo: "mongodb" },
-};
 
 function serializeHeroBio(block: HeroBioBlock): string {
   const { name, tagline, avatarUrl } = block.content;
@@ -89,8 +69,7 @@ function serializeTechStack(
 
   const badges = technologies
     .map((tech) => {
-      const lower = tech.toLowerCase();
-      const meta = TECH_BADGE_META[lower];
+      const meta = findTechMeta(tech);
       if (meta) {
         const logoColor = meta.color === "F7DF1E" ? "black" : "white";
         return `![${tech}](https://img.shields.io/badge/${tech}-${meta.color}?style=${opts.badgeStyle}&logo=${meta.logo}&logoColor=${logoColor})`;
@@ -104,9 +83,10 @@ function serializeTechStack(
 }
 
 function serializeGithubStats(block: GithubStatsBlock): string {
-  const { username, showLangs, showTrophies, showVisitorCounter } = block.content;
+  const { username, showLangs, showTrophies, showVisitorCounter, theme } = block.content;
   if (!username) return `<!-- github-stats: no username set -->`;
 
+  const safeTheme = theme || "dark";
   const lines: string[] = [`## GitHub Stats`, ``];
 
   if (showVisitorCounter) {
@@ -118,8 +98,8 @@ function serializeGithubStats(block: GithubStatsBlock): string {
     );
   }
 
-  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=dark&hide_border=true`;
-  const streakUrl = `https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=dark&hide_border=true`;
+  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${safeTheme}&hide_border=true`;
+  const streakUrl = `https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${safeTheme}&hide_border=true`;
 
   lines.push(
     `<div align="center">`,
@@ -130,7 +110,7 @@ function serializeGithubStats(block: GithubStatsBlock): string {
   );
 
   if (showLangs) {
-    const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=dark&hide_border=true`;
+    const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${safeTheme}&hide_border=true`;
     lines.push(
       `<div align="center">`,
       `  <img src="${langsUrl}" alt="Top Languages" />`,
@@ -236,7 +216,16 @@ export function serializeBlocks(
   const opts = { ...DEFAULT_OPTIONS, ...options };
   const separator = opts.sectionSeparator ? "\n\n---\n\n" : "\n\n";
 
-  return blocks
+  const orderedBlocks = [...blocks].sort((a, b) => {
+    const ay = a.position?.y ?? 0;
+    const by = b.position?.y ?? 0;
+    if (ay !== by) return ay - by;
+    const ax = a.position?.x ?? 0;
+    const bx = b.position?.x ?? 0;
+    return ax - bx;
+  });
+
+  return orderedBlocks
     .map((block) => {
       let serialized = "";
       switch (block.kind) {
