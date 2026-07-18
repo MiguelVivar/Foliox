@@ -78,13 +78,6 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
           </a>
           <span className="text-[var(--border-subtle)]">|</span>
           <a
-            href="#open-source"
-            className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
-          >
-            {t.openSource}
-          </a>
-          <span className="text-[var(--border-subtle)]">|</span>
-          <a
             href="#pricing"
             className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
           >
@@ -191,28 +184,21 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // {t.features}
+              {t.features}
             </a>
             <a
               href="#philosophy"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // {t.philosophy}
-            </a>
-            <a
-              href="#open-source"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-2 hover:text-[var(--text-primary)]"
-            >
-              // {t.openSource}
+              {t.philosophy}
             </a>
             <a
               href="#pricing"
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 hover:text-[var(--text-primary)]"
             >
-              // {t.pricing}
+              {t.pricing}
             </a>
 
             <div className="mt-2 flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-4">
