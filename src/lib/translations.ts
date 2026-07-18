@@ -5,7 +5,6 @@ export const translations = {
     navbar: {
       features: "Features",
       philosophy: "Philosophy",
-      openSource: "Open Source",
       pricing: "Pricing",
       launchWorkspace: "Launch Workspace",
       searchPlaceholder: "Search or type command (⌘K)",
@@ -81,7 +80,6 @@ export const translations = {
     navbar: {
       features: "Características",
       philosophy: "Filosofía",
-      openSource: "Código Abierto",
       pricing: "Precios",
       launchWorkspace: "Iniciar Workspace",
       searchPlaceholder: "Buscar o ejecutar comando (⌘K)",
