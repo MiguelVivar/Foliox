@@ -45,7 +45,7 @@ export const translations = {
       ideLabel: "manifesto.md",
     },
     pricing: {
-      sectionBadge: "03 // LICENSING & DEPLOYMENT",
+      sectionBadge: "05 // LICENSING & DEPLOYMENT",
       sectionTitle: "Clear pricing. Lifetime license.",
       sectionDesc: "Choose between hosting it locally for free or boosting your presence with our auto-syncing cloud.",
       billingMonthly: "Monthly",
@@ -120,7 +120,7 @@ export const translations = {
       ideLabel: "manifiesto.md",
     },
     pricing: {
-      sectionBadge: "03 // LICENCIAS Y DESPLIEGUE",
+      sectionBadge: "05 // LICENCIAS Y DESPLIEGUE",
       sectionTitle: "Planes claros. Licencia de por vida.",
       sectionDesc: "Elige entre hostearlo localmente de forma gratuita o potenciar tu marca con nuestra nube auto-sincronizada.",
       billingMonthly: "Mensual",

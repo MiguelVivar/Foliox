@@ -57,13 +57,14 @@ $ git log --oneline -n 5
 
   return (
     <section className="relative w-full overflow-hidden border-b border-[var(--border-subtle)] px-6 py-20 md:py-32">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 lg:grid lg:grid-cols-12 lg:gap-8 bg-[var(--bg-canvas)]">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 lg:grid lg:grid-cols-12 lg:gap-8">
         
         {/* Left column: Text copy & CTAs */}
         <div className="flex flex-col items-start gap-6 text-left lg:col-span-6 relative z-10">
           <div className="inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-1 font-mono text-[10px] text-[var(--text-primary)]">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>{t.tag}</span>
+            <span className="cursor-blink text-[var(--accent-phosphor)] ml-0.5 select-none">█</span>
           </div>
 
           <h1 className="font-sans text-4xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-5xl md:text-6xl">
