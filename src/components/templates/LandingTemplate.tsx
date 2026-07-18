@@ -17,28 +17,28 @@ export function LandingTemplate() {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   return (
-    <div className="landing-retro relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[var(--bg-canvas)]">
+    <div className="landing-retro relative min-h-screen w-full bg-[var(--bg-canvas)] overflow-x-hidden flex flex-col">
       {/* Background Dot Grid */}
-      <div className="pointer-events-none absolute inset-0 z-0">
+      <div className="absolute inset-0 pointer-events-none z-0">
         <DotGrid scanlines />
       </div>
 
       {/* Main Content Sections */}
-      <div className="relative z-10 flex flex-1 flex-col">
+      <div className="relative z-10 flex flex-col flex-1">
         <Navbar
           lang={lang}
           setLang={setLang}
           onOpenPalette={() => setPaletteOpen(true)}
         />
-
-        <main className="flex flex-1 flex-col">
+        
+        <main className="flex-1 flex flex-col">
           <HeroSection lang={lang} />
           <TechTicker />
           <BentoFeatures lang={lang} />
           <AboutSection lang={lang} />
           <PricingSection lang={lang} />
         </main>
-
+        
         <Footer lang={lang} />
       </div>
 
