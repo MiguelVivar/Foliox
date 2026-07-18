@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useEditorStore } from "@/store/useEditorStore";
 import type { MarkdownCustomBlock } from "@/types/ast";
-import { Heading, Bold, Link2, Image, Table, AlignCenter, Eye, Code } from "lucide-react";
+import { Heading, Bold, Link2, Image, Table, AlignCenter, Eye, Code, FileText } from "lucide-react";
 import { MarkdownRenderedView } from "../MarkdownRenderedView";
 
 type Props = { block: MarkdownCustomBlock };
@@ -11,7 +11,7 @@ type Props = { block: MarkdownCustomBlock };
 export function MarkdownCustomForm({ block }: Props) {
   const { updateBlock } = useEditorStore();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [editMode, setEditMode] = useState<"code" | "preview">("code");
+  const [editMode, setEditMode] = useState<"text" | "code" | "preview">("text");
 
   function handleChange(value: string) {
     updateBlock(block.id, (b) =>
@@ -48,6 +48,18 @@ export function MarkdownCustomForm({ block }: Props) {
     }, 50);
   }
 
+  // Parse markdown content split by double newlines
+  const paragraphs = block.content.markdown.split(/\n\n+/).filter((p) => p.trim());
+
+  function handleParagraphChange(index: number, newValue: string) {
+    const updated = [...paragraphs];
+    updated[index] = newValue;
+    const joined = updated.join("\n\n");
+    updateBlock(block.id, (b) =>
+      b.kind === "markdown-custom" ? { ...b, content: { markdown: joined } } : b
+    );
+  }
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
@@ -62,9 +74,17 @@ export function MarkdownCustomForm({ block }: Props) {
         <div className="flex items-center gap-1 border border-[var(--border-subtle)] p-0.5 rounded-sm bg-[var(--bg-canvas)]">
           <button
             type="button"
+            onClick={() => setEditMode("text")}
+            className={`p-1 rounded-sm transition-all ${editMode === "text" ? "text-[var(--accent-phosphor)] bg-[var(--bg-surface-hover)]" : "text-[var(--text-muted)] hover:text-white"}`}
+            title="Text Mode (Simple edit)"
+          >
+            <FileText size={11} />
+          </button>
+          <button
+            type="button"
             onClick={() => setEditMode("code")}
             className={`p-1 rounded-sm transition-all ${editMode === "code" ? "text-[var(--accent-phosphor)] bg-[var(--bg-surface-hover)]" : "text-[var(--text-muted)] hover:text-white"}`}
-            title="Code Mode"
+            title="Code Mode (Source markdown)"
           >
             <Code size={11} />
           </button>
@@ -79,7 +99,31 @@ export function MarkdownCustomForm({ block }: Props) {
         </div>
       </div>
       
-      {editMode === "code" ? (
+      {editMode === "text" && (
+        <div className="flex flex-col gap-3 max-h-[380px] overflow-y-auto pr-1">
+          {paragraphs.length === 0 ? (
+            <span className="italic text-[var(--text-muted)] font-mono text-[10px]">No paragraphs found. Switch to Code mode to write.</span>
+          ) : (
+            paragraphs.map((p, idx) => {
+              const isHtml = p.trim().startsWith("<") && p.trim().endsWith(">");
+              const label = isHtml ? `// HTML Layout Element [${idx + 1}]:` : `// Paragraph / Section [${idx + 1}]:`;
+              return (
+                <div key={idx} className="flex flex-col gap-1 border-b border-[var(--border-subtle)]/30 pb-2">
+                  <span className="font-mono text-[9px] text-[var(--accent-phosphor)] opacity-85">{label}</span>
+                  <textarea
+                    value={p}
+                    onChange={(e) => handleParagraphChange(idx, e.target.value)}
+                    rows={p.length > 120 ? 4 : 2}
+                    className="w-full resize-none rounded-none border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-2.5 py-1.5 font-sans text-xs text-[var(--text-primary)] outline-none focus:border-[var(--accent-phosphor)]"
+                  />
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
+
+      {editMode === "code" && (
         <>
           {/* Helper edit bar */}
           <div className="flex gap-1.5 border border-[var(--border-subtle)] p-1 rounded-sm bg-[var(--bg-canvas)] justify-between select-none">
@@ -144,7 +188,9 @@ export function MarkdownCustomForm({ block }: Props) {
             spellCheck={false}
           />
         </>
-      ) : (
+      )}
+
+      {editMode === "preview" && (
         <div className="w-full min-h-[180px] p-3 border border-[var(--border-subtle)] bg-[var(--bg-canvas)] overflow-y-auto max-h-[350px]">
           {block.content.markdown ? (
             <MarkdownRenderedView markdown={block.content.markdown} className="!bg-transparent !p-0 !text-inherit" />

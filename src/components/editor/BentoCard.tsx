@@ -216,8 +216,10 @@ export function BentoCard({ block, index }: Props) {
         </button>
       </div>
 
-      {/* Block-specific content */}
-      {renderBlockContent()}
+      {/* Content wrapper */}
+      <div className="flex-1 overflow-y-auto pointer-events-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        {renderBlockContent()}
+      </div>
     </div>
   );
 }
