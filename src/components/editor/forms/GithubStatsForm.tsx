@@ -21,11 +21,16 @@ export function GithubStatsForm({ block }: Props) {
   }
 
   async function handleImport() {
-    const { username } = block.content;
-    if (!username.trim()) {
+    let rawUsername = block.content.username;
+    if (!rawUsername.trim()) {
       setStatusMsg("ERR: USERNAME_REQUIRED");
       return;
     }
+
+    // Sanitize to extract username from full URLs or repo paths
+    let cleaned = rawUsername.trim().replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "");
+    const segments = cleaned.split("/").filter(Boolean);
+    const username = segments[0] || rawUsername.trim();
 
     setLoading(true);
     setStatusMsg("IMPORTING...");

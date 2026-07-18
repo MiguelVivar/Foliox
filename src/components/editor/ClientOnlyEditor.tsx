@@ -17,8 +17,13 @@ export function ClientOnlyEditor() {
   const [showImportBanner, setShowImportBanner] = useState(true);
 
   async function handleAutoImport() {
-    const username = prompt("Enter your GitHub username to auto-import profile & existing README.md:");
-    if (!username) return;
+    const rawUsername = prompt("Enter your GitHub username to auto-import profile & existing README.md:");
+    if (!rawUsername) return;
+
+    // Sanitize to extract username from full URLs or repo paths
+    let cleaned = rawUsername.trim().replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "");
+    const segments = cleaned.split("/").filter(Boolean);
+    const username = segments[0] || rawUsername.trim();
 
     try {
       // 1. User details
