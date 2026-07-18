@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
@@ -156,6 +156,12 @@ export function EditorSidebar() {
   const { blocks, selectedBlockId, selectBlock, addBlock, removeBlock, lang } =
     useEditorStore();
   const [activeTab, setActiveTab] = useState<Tab>("blocks");
+
+  useEffect(() => {
+    if (selectedBlockId) {
+      setActiveTab("blocks");
+    }
+  }, [selectedBlockId]);
 
   const t = translations[lang] || translations.en;
 
