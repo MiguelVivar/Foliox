@@ -18,7 +18,9 @@ export function AboutSection({ lang }: AboutSectionProps) {
   const files = {
     manifesto: {
       name: "manifesto.md",
-      content: lang === "en" ? `
+      content:
+        lang === "en"
+          ? `
 # The Foliox Manifesto
 
 ## 1. Software is art; portfolio is also.
@@ -29,7 +31,8 @@ We don't generate messy layout code. Every pixel is calculated and compiled dire
 
 ## 3. Your data, your keys.
 We advocate for BYOK (Bring Your Own Key) for LLM tools. Zero third-party databases tracking your profile content.
-      ` : `
+      `
+          : `
 # El Manifiesto Foliox
 
 ## 1. El software es arte; el portafolio también.
@@ -62,14 +65,17 @@ Fomentamos el BYOK (Bring Your Own Key) para la IA. Cero base de datos propietar
     },
     privacy: {
       name: "security.txt",
-      content: lang === "en" ? `
+      content:
+        lang === "en"
+          ? `
 [SECURITY PRINCIPLE]
 All API Keys (OpenAI, Gemini, DeepSeek) are stored solely inside your browser's window.localStorage.
 
 No data is sent to Foliox servers.
 Encryption: WebCrypto API (AES-GCM).
 Network: Direct browser-to-LLM REST calls.
-      ` : `
+      `
+          : `
 [PRINCIPIO DE SEGURIDAD]
 Todas las API Keys (OpenAI, Gemini, DeepSeek) se almacenan únicamente dentro del window.localStorage de tu navegador.
 
@@ -80,7 +86,9 @@ Red: Llamadas REST directas del navegador al LLM.
     },
     community: {
       name: "community.md",
-      content: lang === "en" ? `
+      content:
+        lang === "en"
+          ? `
 [COMMUNITY & LICENSE]
 
 Repository: github.com/MiguelVivar/Foliox
@@ -95,7 +103,8 @@ License: MIT (permissive)
 ✓ Private use permitted
 
 100% Open Source. No vendor lock-in — audit it, run it, self-host it forever.
-      ` : `
+      `
+          : `
 [COMUNIDAD Y LICENCIA]
 
 Repositorio: github.com/MiguelVivar/Foliox
@@ -115,38 +124,40 @@ Licencia: MIT (permisiva)
   };
 
   return (
-    <section id="philosophy" className="mx-auto max-w-7xl px-6 py-24 border-b border-[var(--border-subtle)]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <section
+      id="philosophy"
+      className="mx-auto max-w-7xl border-b border-[var(--border-subtle)] px-6 py-24"
+    >
+      <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
         {/* Left Column: Heading Copy */}
-        <div className="lg:col-span-5 flex flex-col justify-center">
+        <div className="flex flex-col justify-center lg:col-span-5">
           <SectionHeader
             badge={t.sectionBadge}
             title={t.sectionTitle}
             description={t.sectionDesc}
             className="mb-8"
           />
-          <div className="font-sans text-sm text-[var(--text-muted)] space-y-4">
+          <div className="space-y-4 font-sans text-sm text-[var(--text-muted)]">
             <p>{t.p1}</p>
             <p>{t.p2}</p>
           </div>
         </div>
 
         {/* Right Column: Code/Manifesto Editor Mockup with Sidebar Selector */}
-        <div className="lg:col-span-7 w-full">
-          <div className="w-full rounded-md border border-[var(--border-subtle)] bg-[var(--bg-canvas)] overflow-hidden flex flex-col md:flex-row h-[360px]">
-            
+        <div className="w-full lg:col-span-7">
+          <div className="flex h-[360px] w-full flex-col overflow-hidden rounded-md border border-[var(--border-subtle)] bg-[var(--bg-canvas)] md:flex-row">
             {/* Sidebar Folder list */}
-            <div className="w-full md:w-44 border-b md:border-b-0 md:border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 flex flex-row md:flex-col gap-2 font-mono text-[10px] overflow-x-auto md:overflow-x-visible shrink-0 select-none">
-              <div className="hidden md:flex items-center gap-1.5 text-[9px] uppercase tracking-wider text-[var(--text-muted)] pb-2 border-b border-[var(--border-subtle)] mb-1">
+            <div className="flex w-full shrink-0 flex-row gap-2 overflow-x-auto border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 font-mono text-[10px] select-none md:w-44 md:flex-col md:overflow-x-visible md:border-r md:border-b-0">
+              <div className="mb-1 hidden items-center gap-1.5 border-b border-[var(--border-subtle)] pb-2 text-[9px] tracking-wider text-[var(--text-muted)] uppercase md:flex">
                 <FolderOpen size={10} />
                 <span>WORKSPACE</span>
               </div>
-              
+
               {(Object.keys(files) as FileKey[]).map((key) => (
                 <button
                   key={key}
                   onClick={() => setActiveFile(key)}
-                  className={`flex items-center gap-2 px-2 py-1.5 rounded-sm w-full text-left border ${
+                  className={`flex w-full items-center gap-2 rounded-sm border px-2 py-1.5 text-left ${
                     activeFile === key
                       ? "border-[var(--border-focus)] bg-[var(--bg-canvas)] text-[var(--text-primary)]"
                       : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
@@ -159,9 +170,11 @@ Licencia: MIT (permisiva)
             </div>
 
             {/* Main File Contents Editor */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex min-w-0 flex-1 flex-col">
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 select-none">
-                <span className="font-mono text-xs text-[var(--text-muted)]">{files[activeFile].name}</span>
+                <span className="font-mono text-xs text-[var(--text-muted)]">
+                  {files[activeFile].name}
+                </span>
                 <div className="flex gap-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--border-subtle)]" />
@@ -170,16 +183,15 @@ Licencia: MIT (permisiva)
               </div>
 
               {/* Text Area contents */}
-              <div className="flex-1 p-5 font-mono text-xs text-[var(--text-primary)] leading-relaxed select-text overflow-y-auto bg-[var(--bg-canvas)] whitespace-pre-wrap">
+              <div className="flex-1 overflow-y-auto bg-[var(--bg-canvas)] p-5 font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)] select-text">
                 {files[activeFile].content.trim()}
               </div>
 
-              <div className="border-t border-[var(--border-subtle)] px-4 py-1.5 text-[9px] text-[var(--text-muted)] flex justify-between bg-[var(--bg-surface)] select-none">
+              <div className="flex justify-between border-t border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-1.5 text-[9px] text-[var(--text-muted)] select-none">
                 <span>UTF-8 // Static Workspace</span>
-                <span className="text-emerald-400">[READY]</span>
+                <span className="text-[var(--accent-phosphor)]">[READY]</span>
               </div>
             </div>
-
           </div>
 
           {activeFile === "community" && (
@@ -187,7 +199,7 @@ Licencia: MIT (permisiva)
               href="https://github.com/MiguelVivar/Foliox"
               target="_blank"
               rel="noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 font-mono text-xs text-[var(--text-primary)] hover:border-[var(--border-focus)] transition-colors"
+              className="mt-4 inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 font-mono text-xs text-[var(--text-primary)] transition-colors hover:border-[var(--border-focus)]"
             >
               {lang === "en" ? "Explore Repository" : "Explorar Repositorio"} →
             </a>
