@@ -9,7 +9,7 @@ interface AboutSectionProps {
   lang: Language;
 }
 
-type FileKey = "manifesto" | "architecture" | "privacy";
+type FileKey = "manifesto" | "architecture" | "privacy" | "community";
 
 export function AboutSection({ lang }: AboutSectionProps) {
   const t = translations[lang].about;
@@ -76,6 +76,40 @@ Todas las API Keys (OpenAI, Gemini, DeepSeek) se almacenan únicamente dentro de
 Ningún dato es enviado a los servidores de Foliox.
 Cifrado: WebCrypto API (AES-GCM).
 Red: Llamadas REST directas del navegador al LLM.
+      `,
+    },
+    community: {
+      name: "community.md",
+      content: lang === "en" ? `
+[COMMUNITY & LICENSE]
+
+Repository: github.com/MiguelVivar/Foliox
+★ Stars: 1,420+
+⑂ Forks: 184
+⇄ Pull Requests: 42 Open
+
+License: MIT (permissive)
+✓ Commercial use permitted
+✓ Modification permitted
+✓ Distribution permitted
+✓ Private use permitted
+
+100% Open Source. No vendor lock-in — audit it, run it, self-host it forever.
+      ` : `
+[COMUNIDAD Y LICENCIA]
+
+Repositorio: github.com/MiguelVivar/Foliox
+★ Estrellas: 1,420+
+⑂ Forks: 184
+⇄ Pull Requests: 42 Abiertos
+
+Licencia: MIT (permisiva)
+✓ Uso comercial permitido
+✓ Modificación permitida
+✓ Distribución permitida
+✓ Uso privado permitido
+
+100% Código Abierto. Sin dependencia de proveedor — audítalo, ejecútalo, auto-alójalo para siempre.
       `,
     },
   };
@@ -147,6 +181,17 @@ Red: Llamadas REST directas del navegador al LLM.
             </div>
 
           </div>
+
+          {activeFile === "community" && (
+            <a
+              href="https://github.com/MiguelVivar/Foliox"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 font-mono text-xs text-[var(--text-primary)] hover:border-[var(--border-focus)] transition-colors"
+            >
+              {lang === "en" ? "Explore Repository" : "Explorar Repositorio"} →
+            </a>
+          )}
         </div>
       </div>
     </section>

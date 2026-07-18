@@ -6,7 +6,6 @@ import { HeroSection } from "@/components/organisms/landing/HeroSection";
 import { TechTicker } from "@/components/organisms/landing/TechTicker";
 import { BentoFeatures } from "@/components/organisms/landing/BentoFeatures";
 import { AboutSection } from "@/components/organisms/landing/AboutSection";
-import { OpenSourceSection } from "@/components/organisms/landing/OpenSourceSection";
 import { PricingSection } from "@/components/organisms/landing/PricingSection";
 import { Footer } from "@/components/organisms/landing/Footer";
 import { DotGrid } from "@/components/atoms/DotGrid";
@@ -18,29 +17,28 @@ export function LandingTemplate() {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   return (
-    <div className="landing-retro relative min-h-screen w-full bg-[var(--bg-canvas)] overflow-x-hidden flex flex-col">
+    <div className="landing-retro relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[var(--bg-canvas)]">
       {/* Background Dot Grid */}
-      <div className="absolute inset-0 pointer-events-none z-0">
+      <div className="pointer-events-none absolute inset-0 z-0">
         <DotGrid scanlines />
       </div>
 
       {/* Main Content Sections */}
-      <div className="relative z-10 flex flex-col flex-1">
+      <div className="relative z-10 flex flex-1 flex-col">
         <Navbar
           lang={lang}
           setLang={setLang}
           onOpenPalette={() => setPaletteOpen(true)}
         />
-        
-        <main className="flex-1 flex flex-col">
+
+        <main className="flex flex-1 flex-col">
           <HeroSection lang={lang} />
           <TechTicker />
           <BentoFeatures lang={lang} />
           <AboutSection lang={lang} />
-          <OpenSourceSection lang={lang} />
           <PricingSection lang={lang} />
         </main>
-        
+
         <Footer lang={lang} />
       </div>
 
