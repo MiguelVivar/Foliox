@@ -44,8 +44,7 @@ export function AiBYOKPanel() {
 
   const hasKey = apiKey.trim().length > 0;
 
-  const inputClass =
-    "w-full rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--border-focus)]";
+    "w-full rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent-phosphor)] transition-colors";
   const labelClass =
     "block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]";
 
@@ -114,8 +113,8 @@ export function AiBYOKPanel() {
           </button>
         </div>
         {hasKey && (
-          <p className="font-mono text-[10px] text-green-400">
-            ✓ Key saved to localStorage
+          <p className="font-mono text-[10px] text-[var(--accent-phosphor)] uppercase tracking-widest">
+            [✓] Key saved to localStorage
           </p>
         )}
       </div>
@@ -134,8 +133,8 @@ export function AiBYOKPanel() {
               className={cn(
                 "rounded-sm border px-3 py-2 text-left font-mono text-xs transition-colors",
                 tone === t.value
-                  ? "border-[var(--border-focus)] text-[var(--text-primary)]"
-                  : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--border-focus)] hover:text-[var(--text-primary)]",
+                  ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
+                  : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--accent-phosphor)] hover:text-[var(--accent-phosphor)]",
               )}
             >
               {t.label}

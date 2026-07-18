@@ -65,14 +65,14 @@ export function EditorCanvas() {
             {blocks.length === 0 ? (
               /* Empty state */
               <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
-                <span className="font-mono text-4xl text-[var(--text-muted)]" aria-hidden="true">
-                  □
+                <span className="font-mono text-4xl text-[var(--text-muted)] flex items-center justify-center h-12 w-12 border border-[var(--border-subtle)] bg-[var(--bg-surface)] rounded-sm shadow-[4px_4px_0_0_var(--border-subtle)]" aria-hidden="true">
+                  +
                 </span>
-                <p className="text-sm font-medium text-[var(--text-primary)]">
-                  Your canvas is empty
+                <p className="text-sm font-medium text-[var(--text-primary)] mt-4">
+                  CANVAS_EMPTY
                 </p>
-                <p className="max-w-xs font-mono text-xs text-[var(--text-muted)]">
-                  Add a block from the sidebar to start building your README →
+                <p className="max-w-xs font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
+                  Add a block from the sidebar to start building <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">█</span>
                 </p>
               </div>
             ) : (

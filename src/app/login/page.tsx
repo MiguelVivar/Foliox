@@ -36,21 +36,20 @@ export default function LoginPage() {
         <DotGrid />
       </div>
 
-      <div className="relative z-10 w-full max-w-sm rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 font-mono text-xs text-[var(--text-primary)]">
-        
+      <div className="relative z-10 w-full max-w-sm rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 font-mono text-xs text-[var(--text-primary)]">        
         {/* Header Back */}
         <div className="flex items-center justify-between pb-6 border-b border-[var(--border-subtle)] mb-6 select-none">
-          <Link href="/" className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/" className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--accent-phosphor)] transition-colors">
             <ArrowLeft size={12} />
-            <span>Home</span>
+            <span className="uppercase tracking-widest">Home</span>
           </Link>
           <span className="text-[var(--text-muted)]">foliox-auth-client</span>
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <h2 className="font-sans text-xl font-bold tracking-tight mb-1 text-[var(--text-primary)]">
-              Login
+            <h2 className="font-sans text-xl font-bold tracking-tight mb-1 text-[var(--text-primary)] flex items-center gap-2">
+              Login <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">█</span>
             </h2>
             <p className="text-[10px] text-[var(--text-muted)]">
               Sign in using Appwrite Cloud securely with your GitHub account.
@@ -61,7 +60,7 @@ export default function LoginPage() {
           <button
             onClick={login}
             disabled={isLoading}
-            className="w-full text-center py-3 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-transparent hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2"
+            className="w-full text-center py-3 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-[var(--border-subtle)] hover:bg-[var(--accent-phosphor)] hover:text-black hover:border-[var(--accent-phosphor)] active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,13 +92,16 @@ export default function LoginPage() {
                 <Mail size={12} />
                 <span>// EMAIL:</span>
               </label>
-              <input
-                id="email"
-                type="email"
-                disabled
-                placeholder="developer@foliox.dev"
-                className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)]"
-              />
+              <div className="relative">
+                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--accent-phosphor)]">&gt;_</span>
+                <input
+                  id="email"
+                  type="email"
+                  disabled
+                  placeholder="developer@foliox.dev"
+                  className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 pl-7 rounded-sm text-[var(--text-primary)] opacity-60"
+                />
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -107,13 +109,16 @@ export default function LoginPage() {
                 <Key size={12} />
                 <span>// PASSWORD:</span>
               </label>
-              <input
-                id="password"
-                type="password"
-                disabled
-                placeholder="••••••••••••"
-                className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)]"
-              />
+              <div className="relative">
+                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--accent-phosphor)]">&gt;_</span>
+                <input
+                  id="password"
+                  type="password"
+                  disabled
+                  placeholder="••••••••••••"
+                  className="w-full bg-[var(--bg-canvas)] border border-[var(--border-subtle)] p-2 pl-7 rounded-sm text-[var(--text-primary)] opacity-60"
+                />
+              </div>
             </div>
           </form>
 
