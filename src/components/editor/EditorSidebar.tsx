@@ -115,20 +115,31 @@ const KIND_LABELS: Record<Block["kind"], string> = {
   "markdown-custom": "Custom Markdown",
 };
 
+import { BlockStyleForm } from "./forms/BlockStyleForm";
+
 // ------------------------------------------------------------------
 // Form dispatcher
 // ------------------------------------------------------------------
 function BlockForm({ block }: { block: Block }) {
-  switch (block.kind) {
-    case "hero-bio":      return <HeroBioForm block={block} />;
-    case "tech-stack":   return <TechStackForm block={block} />;
-    case "github-stats": return <GithubStatsForm block={block} />;
-    case "ascii-banner": return <AsciiBannerForm block={block} />;
-    case "ascii-image":  return <AsciiImageForm block={block} />;
-    case "social-links": return <SocialLinksForm block={block} />;
-    case "rich-media":   return <RichMediaForm block={block} />;
-    case "markdown-custom": return <MarkdownCustomForm block={block} />;
-  }
+  const formElement = (() => {
+    switch (block.kind) {
+      case "hero-bio":      return <HeroBioForm block={block} />;
+      case "tech-stack":   return <TechStackForm block={block} />;
+      case "github-stats": return <GithubStatsForm block={block} />;
+      case "ascii-banner": return <AsciiBannerForm block={block} />;
+      case "ascii-image":  return <AsciiImageForm block={block} />;
+      case "social-links": return <SocialLinksForm block={block} />;
+      case "rich-media":   return <RichMediaForm block={block} />;
+      case "markdown-custom": return <MarkdownCustomForm block={block} />;
+    }
+  })();
+
+  return (
+    <div className="flex flex-col gap-2">
+      {formElement}
+      <BlockStyleForm block={block} />
+    </div>
+  );
 }
 
 // ------------------------------------------------------------------
