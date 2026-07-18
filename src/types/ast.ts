@@ -5,6 +5,7 @@ export type BlockKind =
   | "ascii-banner"
   | "ascii-image"
   | "social-links"
+  | "rich-media"
   | "markdown-custom";
 
 export type HeroBioBlock = {
@@ -31,6 +32,9 @@ export type GithubStatsBlock = {
   content: {
     username: string;
     showPrivate: boolean;
+    showLangs?: boolean;
+    showTrophies?: boolean;
+    showVisitorCounter?: boolean;
   };
 };
 
@@ -61,6 +65,18 @@ export type SocialLinksBlock = {
   };
 };
 
+export type RichMediaBlock = {
+  id: string;
+  kind: "rich-media";
+  content: {
+    url: string;
+    mediaType: "image" | "video";
+    align: "left" | "center" | "right";
+    width?: number;
+    height?: number;
+  };
+};
+
 export type MarkdownCustomBlock = {
   id: string;
   kind: "markdown-custom";
@@ -76,4 +92,5 @@ export type Block =
   | AsciiBannerBlock
   | AsciiImageBlock
   | SocialLinksBlock
+  | RichMediaBlock
   | MarkdownCustomBlock;

@@ -7,6 +7,7 @@ import type {
   AsciiBannerBlock,
   AsciiImageBlock,
   SocialLinksBlock,
+  RichMediaBlock,
   MarkdownCustomBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
@@ -38,6 +39,28 @@ const SOCIAL_METADATA: Record<string, { label: string; color: string; logo: stri
 // Per-kind serializers
 // ---------------------------------------------------------------------------
 
+// Brand metadata from Ileriayo/markdown-badges spec
+const TECH_BADGE_META: Record<string, { color: string; logo: string }> = {
+  typescript: { color: "3178C6", logo: "typescript" },
+  javascript: { color: "F7DF1E", logo: "javascript" },
+  react: { color: "20232A", logo: "react" },
+  "next.js": { color: "000000", logo: "nextdotjs" },
+  node: { color: "339933", logo: "nodedotjs" },
+  "node.js": { color: "339933", logo: "nodedotjs" },
+  docker: { color: "2496ED", logo: "docker" },
+  python: { color: "3776AB", logo: "python" },
+  rust: { color: "000000", logo: "rust" },
+  go: { color: "00ADD8", logo: "go" },
+  html5: { color: "E34F26", logo: "html5" },
+  css3: { color: "1572B6", logo: "css3" },
+  git: { color: "F05032", logo: "git" },
+  aws: { color: "232F3E", logo: "amazon-aws" },
+  supabase: { color: "3ECF8E", logo: "supabase" },
+  postgresql: { color: "4169E1", logo: "postgresql" },
+  mysql: { color: "4479A1", logo: "mysql" },
+  mongodb: { color: "47A248", logo: "mongodb" },
+};
+
 function serializeHeroBio(block: HeroBioBlock): string {
   const { name, tagline, avatarUrl } = block.content;
   const lines: string[] = [];
@@ -66,6 +89,12 @@ function serializeTechStack(
 
   const badges = technologies
     .map((tech) => {
+      const lower = tech.toLowerCase();
+      const meta = TECH_BADGE_META[lower];
+      if (meta) {
+        const logoColor = meta.color === "F7DF1E" ? "black" : "white";
+        return `![${tech}](https://img.shields.io/badge/${tech}-${meta.color}?style=${opts.badgeStyle}&logo=${meta.logo}&logoColor=${logoColor})`;
+      }
       const encoded = encodeURIComponent(tech);
       return `![${tech}](https://img.shields.io/badge/${encoded}-555555?style=${opts.badgeStyle})`;
     })
@@ -75,20 +104,52 @@ function serializeTechStack(
 }
 
 function serializeGithubStats(block: GithubStatsBlock): string {
-  const { username } = block.content;
+  const { username, showLangs, showTrophies, showVisitorCounter } = block.content;
   if (!username) return `<!-- github-stats: no username set -->`;
+
+  const lines: string[] = [`## GitHub Stats`, ``];
+
+  if (showVisitorCounter) {
+    lines.push(
+      `<div align="center">`,
+      `  <img src="https://profile-counter.glitch.me/${username}/count.svg" alt="Visitor Count" />`,
+      `</div>`,
+      ``,
+    );
+  }
 
   const statsUrl = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=dark&hide_border=true`;
   const streakUrl = `https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=dark&hide_border=true`;
 
-  return [
-    `## GitHub Stats`,
-    ``,
+  lines.push(
     `<div align="center">`,
     `  <img src="${statsUrl}" alt="${username} GitHub stats" />`,
     `  <img src="${streakUrl}" alt="${username} streak" />`,
     `</div>`,
-  ].join("\n");
+    ``,
+  );
+
+  if (showLangs) {
+    const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=dark&hide_border=true`;
+    lines.push(
+      `<div align="center">`,
+      `  <img src="${langsUrl}" alt="Top Languages" />`,
+      `</div>`,
+      ``,
+    );
+  }
+
+  if (showTrophies) {
+    const trophiesUrl = `https://github-profile-trophy.vercel.app/?username=${username}&theme=onedark&column=5&no-background=true&no-border=true`;
+    lines.push(
+      `<div align="center">`,
+      `  <img src="${trophiesUrl}" alt="GitHub Trophies" />`,
+      `</div>`,
+      ``,
+    );
+  }
+
+  return lines.join("\n").trimEnd();
 }
 
 function serializeAsciiBanner(block: AsciiBannerBlock): string {
@@ -134,6 +195,26 @@ function serializeSocialLinks(block: SocialLinksBlock, opts: Required<SerializeO
   return `## Connect with me\n\n${badges}`;
 }
 
+function serializeRichMedia(block: RichMediaBlock): string {
+  const { url, mediaType, align, width, height } = block.content;
+  if (!url) return "<!-- rich-media: empty -->";
+
+  const wAttr = width ? ` width="${width}"` : "";
+  const hAttr = height ? ` height="${height}"` : "";
+
+  let tag = "";
+  if (mediaType === "video") {
+    tag = `<video src="${url}" controls${wAttr}${hAttr} />`;
+  } else {
+    tag = `<img src="${url}" alt="media"${wAttr}${hAttr} />`;
+  }
+
+  if (align === "center" || align === "right") {
+    return `<div align="${align}">\n  ${tag}\n</div>`;
+  }
+  return tag;
+}
+
 function serializeMarkdownCustom(block: MarkdownCustomBlock): string {
   return block.content.markdown.trimEnd();
 }
@@ -170,6 +251,8 @@ export function serializeBlocks(
           return serializeAsciiImage(block);
         case "social-links":
           return serializeSocialLinks(block, opts);
+        case "rich-media":
+          return serializeRichMedia(block);
         case "markdown-custom":
           return serializeMarkdownCustom(block);
       }
