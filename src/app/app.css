@@ -33,63 +33,62 @@
 
 /* Semantic tokens (DESIGN.md 2.2) — dark is the default theme */
 :root {
-  --bg-canvas: var(--color-neutral-900);
-  --bg-surface: var(--color-mauve-900);
-  --bg-surface-hover: var(--color-mauve-800);
-  --border-subtle: var(--color-mauve-800);
-  --border-focus: var(--color-mauve-400);
-  --text-primary: var(--color-mauve-50);
-  --text-muted: var(--color-neutral-400);
-  --bg-brand-cta: var(--color-mauve-50);
-  --text-brand-cta: var(--color-neutral-900);
+  --accent-phosphor: #6ee7a7;
+  --glow-color: rgba(110, 231, 167, 0.35);
+  --bg-canvas: #0a0b0d;
+  --bg-surface: #101317;
+  --bg-surface-hover: #171b20;
+  --border-subtle: #1c1f24;
+  --border-focus: var(--accent-phosphor);
+  --text-primary: #f2f0ea;
+  --text-muted: #8b9089;
+  --bg-brand-cta: var(--accent-phosphor);
+  --text-brand-cta: #061109;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg-canvas: var(--color-neutral-50);
-    --bg-surface: var(--color-neutral-100);
-    --bg-surface-hover: var(--color-mauve-200);
-    --border-subtle: var(--color-neutral-300);
-    --border-focus: var(--color-mauve-600);
-    --text-primary: var(--color-neutral-900);
-    --text-muted: var(--color-neutral-600);
-    --bg-brand-cta: var(--color-mauve-900);
-    --text-brand-cta: var(--color-mauve-50);
+    --accent-phosphor: #1f3a24;
+    --glow-color: transparent;
+    --bg-canvas: #f2ede1;
+    --bg-surface: #ece5d5;
+    --bg-surface-hover: #e3dbc7;
+    --border-subtle: #c9c0aa;
+    --border-focus: #1f3a24;
+    --text-primary: #1f3a24;
+    --text-muted: #5a6b57;
+    --bg-brand-cta: var(--accent-phosphor);
+    --text-brand-cta: #f2ede1;
   }
 }
 
-/* Dot Grid workspace background (DESIGN.md 4.1) — aplicado directo por el componente DotGrid */
-.dot-grid {
-  background-image: radial-gradient(var(--text-muted) 1px, transparent 1px);
-  background-size: 1.5rem 1.5rem;
-  opacity: 0.15;
-  mask-image: radial-gradient(ellipse at 50% 30%, black 0%, transparent 70%);
-}
-
-/* Manual theme override via ThemeToggle (takes precedence over prefers-color-scheme
-   because attribute selectors have higher specificity than a bare :root). */
+/* Manual theme override via ThemeToggle */
 :root[data-theme="dark"] {
-  --bg-canvas: var(--color-neutral-900);
-  --bg-surface: var(--color-mauve-900);
-  --bg-surface-hover: var(--color-mauve-800);
-  --border-subtle: var(--color-mauve-800);
-  --border-focus: var(--color-mauve-400);
-  --text-primary: var(--color-mauve-50);
-  --text-muted: var(--color-neutral-400);
-  --bg-brand-cta: var(--color-mauve-50);
-  --text-brand-cta: var(--color-neutral-900);
+  --accent-phosphor: #6ee7a7;
+  --glow-color: rgba(110, 231, 167, 0.35);
+  --bg-canvas: #0a0b0d;
+  --bg-surface: #101317;
+  --bg-surface-hover: #171b20;
+  --border-subtle: #1c1f24;
+  --border-focus: var(--accent-phosphor);
+  --text-primary: #f2f0ea;
+  --text-muted: #8b9089;
+  --bg-brand-cta: var(--accent-phosphor);
+  --text-brand-cta: #061109;
 }
 
 :root[data-theme="light"] {
-  --bg-canvas: var(--color-neutral-50);
-  --bg-surface: var(--color-neutral-100);
-  --bg-surface-hover: var(--color-mauve-200);
-  --border-subtle: var(--color-neutral-300);
-  --border-focus: var(--color-mauve-600);
-  --text-primary: var(--color-neutral-900);
-  --text-muted: var(--color-neutral-600);
-  --bg-brand-cta: var(--color-mauve-900);
-  --text-brand-cta: var(--color-mauve-50);
+  --accent-phosphor: #1f3a24;
+  --glow-color: transparent;
+  --bg-canvas: #f2ede1;
+  --bg-surface: #ece5d5;
+  --bg-surface-hover: #e3dbc7;
+  --border-subtle: #c9c0aa;
+  --border-focus: #1f3a24;
+  --text-primary: #1f3a24;
+  --text-muted: #5a6b57;
+  --bg-brand-cta: var(--accent-phosphor);
+  --text-brand-cta: #f2ede1;
 }
 
 /* ─── Landing Page: Retro CRT/ASCII theme scope (spec 2026-07-18) ──────── */
