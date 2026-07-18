@@ -127,8 +127,8 @@ export function EditorSidebar() {
             className={cn(
               "flex-1 px-3 py-3 font-mono text-xs transition-colors",
               activeTab === tab.id
-                ? "border-b-2 border-[var(--border-focus)] text-[var(--text-primary)]"
-                : "text-[var(--text-muted)] hover:text-[var(--text-primary)]",
+                ? "border-b-2 border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
+                : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-b-2 hover:border-[var(--border-subtle)]",
             )}
           >
             {tab.label}
@@ -155,8 +155,8 @@ export function EditorSidebar() {
                   >
                     <ArrowLeft size={14} />
                   </button>
-                  <span className="font-mono text-xs text-[var(--text-primary)]">
-                    {KIND_LABELS[selectedBlock.kind]}
+                  <span className="font-mono text-xs text-[var(--text-primary)] flex items-center gap-1.5">
+                    {KIND_LABELS[selectedBlock.kind]} <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">█</span>
                   </span>
                 </div>
 
@@ -190,12 +190,12 @@ export function EditorSidebar() {
                     key={item.label}
                     type="button"
                     onClick={() => addBlock(item.factory())}
-                    className="flex flex-col items-start rounded-md border border-[var(--border-subtle)] bg-transparent px-3 py-2.5 text-left hover:border-[var(--border-focus)] hover:bg-[var(--bg-surface-hover)] focus-visible:border-[var(--border-focus)] focus-visible:outline-none"
+                    className="flex flex-col items-start rounded-sm border border-[var(--border-subtle)] bg-transparent px-3 py-2.5 text-left hover:border-[var(--accent-phosphor)] hover:bg-[var(--bg-canvas)] focus-visible:border-[var(--accent-phosphor)] focus-visible:outline-none transition-colors group"
                   >
-                    <span className="text-sm font-medium text-[var(--text-primary)]">
+                    <span className="text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-phosphor)] transition-colors">
                       {item.label}
                     </span>
-                    <span className="mt-0.5 font-mono text-xs text-[var(--text-muted)]">
+                    <span className="mt-0.5 font-mono text-[10px] text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors uppercase tracking-widest">
                       {item.description}
                     </span>
                   </button>

@@ -27,7 +27,7 @@ export function ClientOnlyEditor() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-transparent hover:border-[var(--border-subtle)] rounded px-1.5 py-0.5 transition-colors"
+              className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--accent-phosphor)] border border-transparent hover:border-[var(--border-subtle)] rounded-sm px-1.5 py-0.5 transition-colors uppercase tracking-widest"
             >
               <Home size={11} />
               <span>Home</span>
@@ -41,7 +41,7 @@ export function ClientOnlyEditor() {
               <select
                 value={selectedProfile}
                 onChange={(e) => setSelectedProfile(e.target.value)}
-                className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)] font-mono text-[10px]"
+                className="bg-[var(--bg-canvas)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded-sm text-[var(--accent-phosphor)] focus:outline-none focus:border-[var(--accent-phosphor)] font-mono text-[10px] uppercase tracking-widest"
               >
                 <option value="architect-cv">Systems Architect CV</option>
                 <option value="github-readme">GitHub Special README</option>
@@ -55,12 +55,12 @@ export function ClientOnlyEditor() {
             <div className="hidden lg:flex items-center gap-1.5 text-[var(--text-muted)]">
               <User size={11} />
               <span>Jane Doe</span>
-              <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 px-1 rounded-sm text-[8px]">PRO</span>
+              <span className="bg-[var(--bg-canvas)] text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)] px-1 rounded-sm text-[8px] tracking-widest uppercase animate-pulse">PRO</span>
             </div>
 
             <Link
               href="/settings"
-              className="p-1 border border-[var(--border-subtle)] hover:border-[var(--border-focus)] rounded text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+              className="p-1 border border-[var(--border-subtle)] hover:border-[var(--accent-phosphor)] rounded-sm text-[var(--text-muted)] hover:text-[var(--accent-phosphor)] transition-colors"
               title="Configurations"
             >
               <Settings size={12} />
@@ -74,10 +74,10 @@ export function ClientOnlyEditor() {
               }
               aria-pressed={splitView}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-[10px] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--border-focus)]",
+                "flex items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)]",
                 splitView
-                  ? "border-[var(--border-focus)] text-[var(--text-primary)]"
-                  : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--border-focus)] hover:text-[var(--text-primary)]",
+                  ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
+                  : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--accent-phosphor)] hover:text-[var(--accent-phosphor)]",
               )}
             >
               {splitView ? (

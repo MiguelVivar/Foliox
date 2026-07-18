@@ -28,21 +28,21 @@ export default function RegisterPage() {
         <DotGrid />
       </div>
 
-      <div className="relative z-10 w-full max-w-sm rounded-md border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 font-mono text-xs text-[var(--text-primary)]">
+      <div className="relative z-10 w-full max-w-sm rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 font-mono text-xs text-[var(--text-primary)]">
         
         {/* Header Back */}
         <div className="flex items-center justify-between pb-6 border-b border-[var(--border-subtle)] mb-6 select-none">
-          <Link href="/" className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/" className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--accent-phosphor)] transition-colors">
             <ArrowLeft size={12} />
-            <span>Home</span>
+            <span className="uppercase tracking-widest">Home</span>
           </Link>
           <span className="text-[var(--text-muted)]">foliox-auth-client</span>
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <h2 className="font-sans text-xl font-bold tracking-tight mb-1 text-[var(--text-primary)]">
-              Register
+            <h2 className="font-sans text-xl font-bold tracking-tight mb-1 text-[var(--text-primary)] flex items-center gap-2">
+              Register <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">█</span>
             </h2>
             <p className="text-[10px] text-[var(--text-muted)]">
               Appwrite handles registration dynamically on your first GitHub connection.
@@ -53,7 +53,7 @@ export default function RegisterPage() {
           <button
             onClick={login}
             disabled={isLoading}
-            className="w-full text-center py-3 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-transparent hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2"
+            className="w-full text-center py-3 bg-[var(--bg-brand-cta)] text-[var(--text-brand-cta)] font-semibold rounded-sm border border-[var(--border-subtle)] hover:bg-[var(--accent-phosphor)] hover:text-black hover:border-[var(--accent-phosphor)] active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ export default function RegisterPage() {
 
           <div className="mt-4 pt-4 border-t border-[var(--border-subtle)] text-[10px] text-center text-[var(--text-muted)]">
             <span>Already have an account? </span>
-            <Link href="/login" className="text-[var(--text-primary)] underline">
+            <Link href="/login" className="text-[var(--accent-phosphor)] hover:underline">
               Login here
             </Link>
           </div>

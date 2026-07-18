@@ -56,13 +56,16 @@ export function StylePanel() {
               type="button"
               onClick={() => setBadgeStyle(opt.value)}
               className={cn(
-                "flex items-center justify-between rounded-sm border px-3 py-2.5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-[var(--border-focus)]",
+                "flex items-center justify-between rounded-sm border px-3 py-2.5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)] group",
                 badgeStyle === opt.value
-                  ? "border-[var(--border-focus)] bg-[var(--bg-surface-hover)]"
-                  : "border-[var(--border-subtle)] hover:border-[var(--border-focus)] hover:bg-[var(--bg-surface-hover)]",
+                  ? "border-[var(--accent-phosphor)] bg-[var(--bg-canvas)]"
+                  : "border-[var(--border-subtle)] hover:border-[var(--accent-phosphor)] hover:bg-[var(--bg-canvas)]",
               )}
             >
-              <span className="font-mono text-xs text-[var(--text-primary)]">
+              <span className={cn(
+                "font-mono text-xs transition-colors",
+                badgeStyle === opt.value ? "text-[var(--accent-phosphor)]" : "text-[var(--text-primary)] group-hover:text-[var(--accent-phosphor)]"
+              )}>
                 {opt.label}
               </span>
               {/* Live preview via shields.io */}
@@ -81,8 +84,8 @@ export function StylePanel() {
       {/* Section separator */}
       <div className="flex flex-col gap-3">
         <p className={labelClass}>Section Separator</p>
-        <label className="flex cursor-pointer items-center justify-between rounded-sm border border-[var(--border-subtle)] px-3 py-2.5 hover:border-[var(--border-focus)]">
-          <span className="font-mono text-xs text-[var(--text-primary)]">
+        <label className="flex cursor-pointer items-center justify-between rounded-sm border border-[var(--border-subtle)] px-3 py-2.5 hover:border-[var(--accent-phosphor)] transition-colors group">
+          <span className="font-mono text-xs text-[var(--text-primary)] group-hover:text-[var(--accent-phosphor)] transition-colors">
             Add{" "}
             <code className="rounded-sm bg-[var(--bg-canvas)] px-1 font-mono text-[10px]">
               ---
@@ -93,7 +96,7 @@ export function StylePanel() {
             type="checkbox"
             checked={sectionSeparator}
             onChange={toggleSectionSeparator}
-            className="h-4 w-4 accent-[var(--border-focus)]"
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
         </label>
         <p className="font-mono text-[10px] leading-relaxed text-[var(--text-muted)]">
