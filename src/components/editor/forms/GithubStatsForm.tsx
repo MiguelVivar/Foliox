@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useEditorStore } from "@/store/useEditorStore";
-import type { GithubStatsBlock, HeroBioBlock, TechStackBlock } from "@/types/ast";
+import type { GithubStatsBlock, HeroBioBlock, TechStackBlock, MarkdownCustomBlock } from "@/types/ast";
 import { Download } from "lucide-react";
 
 type Props = { block: GithubStatsBlock };
@@ -100,6 +100,36 @@ export function GithubStatsForm({ block }: Props) {
             });
           }
         }
+      }
+
+      // 3. Fetch existing profile README.md from username/username repo
+      try {
+        let readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/main/README.md`);
+        if (!readmeRes.ok) {
+          readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/master/README.md`);
+        }
+
+        if (readmeRes.ok) {
+          const readmeContent = await readmeRes.text();
+          if (readmeContent && readmeContent.trim()) {
+            const existingMarkdown = blocks.find((b) => b.kind === "markdown-custom") as MarkdownCustomBlock | undefined;
+            if (existingMarkdown) {
+              updateBlock(existingMarkdown.id, (b) =>
+                b.kind === "markdown-custom"
+                  ? { ...b, content: { ...b.content, markdown: readmeContent } }
+                  : b
+              );
+            } else {
+              addBlock({
+                id: `block-${Date.now()}-md`,
+                kind: "markdown-custom",
+                content: { markdown: readmeContent },
+              });
+            }
+          }
+        }
+      } catch (readmeErr) {
+        console.error("Failed to fetch existing profile README", readmeErr);
       }
 
       setStatusMsg("SUCCESS: PROFILE_IMPORTED");

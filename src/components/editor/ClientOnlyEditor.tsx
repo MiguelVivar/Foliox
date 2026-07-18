@@ -7,11 +7,123 @@ import { useEditorStore } from "@/store/useEditorStore";
 import { EditorCanvas } from "@/components/editor/EditorCanvas";
 import { EditorSidebar } from "@/components/editor/EditorSidebar";
 import { MarkdownPreview } from "@/components/editor/MarkdownPreview";
+import { useAuthStore } from "@/store/useAuthStore";
 import { cn } from "@/lib/cn";
 
 export function ClientOnlyEditor() {
-  const { splitView, toggleSplitView } = useEditorStore();
+  const { splitView, toggleSplitView, blocks, addBlock, updateBlock } = useEditorStore();
+  const { user } = useAuthStore();
   const [selectedProfile, setSelectedProfile] = useState("architect-cv");
+  const [showImportBanner, setShowImportBanner] = useState(true);
+
+  async function handleAutoImport() {
+    const username = prompt("Enter your GitHub username to auto-import profile & existing README.md:");
+    if (!username) return;
+
+    try {
+      // 1. User details
+      const userRes = await fetch(`https://api.github.com/users/${username}`);
+      if (!userRes.ok) throw new Error("User not found");
+      const userData = await userRes.json();
+
+      // Update or add Hero Bio
+      const existingHero = blocks.find((b) => b.kind === "hero-bio");
+      if (existingHero) {
+        updateBlock(existingHero.id, (b) =>
+          b.kind === "hero-bio"
+            ? {
+                ...b,
+                style: b.style,
+                content: {
+                  name: userData.name || b.content.name || userData.login,
+                  tagline: userData.bio || b.content.tagline || "",
+                  avatarUrl: userData.avatar_url || b.content.avatarUrl,
+                },
+              }
+            : b
+        );
+      } else {
+        addBlock({
+          id: `block-${Date.now()}-hb`,
+          kind: "hero-bio",
+          content: {
+            name: userData.name || userData.login,
+            tagline: userData.bio || "",
+            avatarUrl: userData.avatar_url,
+          },
+        });
+      }
+
+      // 2. Languages
+      const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=60&sort=updated`);
+      if (reposRes.ok) {
+        const repos = await reposRes.json();
+        const langCounts: Record<string, number> = {};
+        repos.forEach((repo: any) => {
+          if (repo.language) {
+            langCounts[repo.language] = (langCounts[repo.language] || 0) + 1;
+          }
+        });
+
+        const sortedLangs = Object.entries(langCounts)
+          .sort((a, b) => b[1] - a[1])
+          .map(([lang]) => lang)
+          .slice(0, 6);
+
+        if (sortedLangs.length > 0) {
+          const existingTech = blocks.find((b) => b.kind === "tech-stack");
+          if (existingTech) {
+            updateBlock(existingTech.id, (b) =>
+              b.kind === "tech-stack"
+                ? {
+                    ...b,
+                    style: b.style,
+                    content: {
+                      technologies: Array.from(new Set([...b.content.technologies, ...sortedLangs])),
+                    },
+                  }
+                : b
+            );
+          } else {
+            addBlock({
+              id: `block-${Date.now()}-ts`,
+              kind: "tech-stack",
+              content: { technologies: sortedLangs },
+            });
+          }
+        }
+      }
+
+      // 3. GitHub README
+      let readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/main/README.md`);
+      if (!readmeRes.ok) {
+        readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/master/README.md`);
+      }
+      if (readmeRes.ok) {
+        const readmeContent = await readmeRes.text();
+        if (readmeContent && readmeContent.trim()) {
+          const existingMarkdown = blocks.find((b) => b.kind === "markdown-custom");
+          if (existingMarkdown) {
+            updateBlock(existingMarkdown.id, (b) =>
+              b.kind === "markdown-custom"
+                ? { ...b, style: b.style, content: { markdown: readmeContent } }
+                : b
+            );
+          } else {
+            addBlock({
+              id: `block-${Date.now()}-md`,
+              kind: "markdown-custom",
+              content: { markdown: readmeContent },
+            });
+          }
+        }
+      }
+      setShowImportBanner(false);
+      alert("SUCCESS: Profile details, languages & existing README imported!");
+    } catch (err: any) {
+      alert("Error importing profile: " + err.message);
+    }
+  }
 
   return (
     <main className="crt-scanlines flex flex-col md:flex-row flex-1 overflow-hidden bg-[var(--bg-canvas)]">
@@ -54,7 +166,7 @@ export function ClientOnlyEditor() {
             {/* User status */}
             <div className="hidden lg:flex items-center gap-1.5 text-[var(--text-muted)]">
               <User size={11} className="text-[var(--accent-phosphor)]" />
-              <span className="font-bold text-[var(--text-primary)]">JANE_DOE</span>
+              <span className="font-bold text-[var(--text-primary)]">{user?.name ? user.name.toUpperCase().replace(" ", "_") : "JANE_DOE"}</span>
               <span className="bg-[var(--accent-phosphor)]/20 text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)]/50 px-1.5 py-0.5 rounded-sm text-[8px] tracking-widest uppercase animate-pulse font-extrabold shadow-[0_0_8px_var(--glow-color)]">PRO</span>
             </div>
 
@@ -89,6 +201,31 @@ export function ClientOnlyEditor() {
             </button>
           </div>
         </div>
+
+        {user && showImportBanner && (
+          <div className="mx-6 mt-4 p-3 bg-[var(--accent-phosphor)]/10 border border-[var(--accent-phosphor)]/30 rounded-sm flex items-center justify-between font-mono text-[10px] z-20">
+            <div className="flex items-center gap-2">
+              <span className="animate-pulse text-[var(--accent-phosphor)]">●</span>
+              <span className="text-[var(--text-primary)]">Connected to GitHub via OAuth. Populate editor with your active README?</span>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleAutoImport}
+                className="bg-[var(--accent-phosphor)] text-[var(--bg-canvas)] font-bold px-3 py-1 rounded-sm hover:-translate-y-0.5 transition-all uppercase tracking-wider cursor-pointer"
+              >
+                Auto-Import Profile
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowImportBanner(false)}
+                className="text-[var(--text-muted)] hover:text-white uppercase tracking-wider px-2 cursor-pointer"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         <EditorCanvas />
       </section>

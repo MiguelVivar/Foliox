@@ -8,6 +8,8 @@ import { Menu, X, Star, Search, Globe, User, Settings } from "lucide-react";
 import logo from "../../../../public/logo_foliox.png";
 import { Language, translations } from "@/lib/translations";
 
+import { useAuthStore } from "@/store/useAuthStore";
+
 interface NavbarProps {
   lang: Language;
   setLang: (lang: Language) => void;
@@ -18,7 +20,12 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [stars, setStars] = useState(1420);
   const [isStarring, setIsStarring] = useState(false);
+  const { user, checkSession, logout } = useAuthStore();
   const t = translations[lang].navbar;
+
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
 
   // Keydown listener for Command Palette shortcut (Ctrl+K or Cmd+K)
   useEffect(() => {
@@ -123,13 +130,28 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
           </button>
 
           {/* Flat Auth links */}
-          <div className="flex items-center gap-1 font-mono text-[10px] border-l border-[var(--border-subtle)] pl-3">
-            <Link
-              href="/login"
-              className="px-2 py-1 rounded-sm hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)]"
-            >
-              Login
-            </Link>
+          <div className="flex items-center gap-1.5 font-mono text-[10px] border-l border-[var(--border-subtle)] pl-3">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="text-[var(--accent-phosphor)] font-bold uppercase tracking-wider">
+                  {user.name.split(" ")[0] || "USER"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  className="px-1.5 py-0.5 rounded-sm border border-red-500/30 hover:border-red-500 text-red-400 hover:text-red-300 transition-colors uppercase tracking-widest font-mono text-[9px]"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="px-2 py-1 rounded-sm hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)]"
+              >
+                Login
+              </Link>
+            )}
             <Link
               href="/profile"
               className="p-1.5 rounded-sm hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)]"
