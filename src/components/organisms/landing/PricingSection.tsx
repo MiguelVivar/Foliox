@@ -70,23 +70,23 @@ export function PricingSection({ lang }: PricingSectionProps) {
 
             <ul className="space-y-3 font-mono text-xs text-[var(--text-muted)] border-t border-[var(--border-subtle)] pt-6">
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span>{t.features.drag}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span>{t.features.ast}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span>{t.features.byok}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span>{t.features.export}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span>{t.features.telemetry}</span>
               </li>
             </ul>
@@ -130,23 +130,23 @@ export function PricingSection({ lang }: PricingSectionProps) {
 
             <ul className="space-y-3 font-mono text-xs text-[var(--text-muted)] border-t border-[var(--border-subtle)] pt-6">
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span className="text-[var(--text-primary)]">{t.features.sync}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span className="text-[var(--text-primary)]">{t.features.deploy}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span className="text-[var(--text-primary)]">{t.features.pdf}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span className="text-[var(--text-primary)]">{t.features.scrapers}</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                <Check size={14} className="text-[var(--accent-phosphor)] shrink-0 mt-0.5" />
                 <span className="text-[var(--text-primary)]">{t.features.analytics}</span>
               </li>
             </ul>

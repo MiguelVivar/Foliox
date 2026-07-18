@@ -67,7 +67,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
         <FlatBentoCard className="md:col-span-2 flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
+              <span className="rounded-sm bg-[var(--bg-surface-hover)] p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <LayoutGrid size={16} className="text-[var(--text-primary)]" />
               </span>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
@@ -116,7 +116,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
 
             <div className="text-[10px] text-[var(--text-muted)] flex flex-col gap-1">
               <div>Output Markdown:</div>
-              <pre className="bg-[var(--bg-surface)] p-2 rounded-sm text-emerald-400 overflow-x-auto">
+              <pre className="bg-[var(--bg-surface)] p-2 rounded-sm text-[var(--accent-phosphor)] overflow-x-auto">
                 {isCompiling ? "// Compiling to AST..." : `${astBlocks.join(" -> ")} compiled successfully`}
               </pre>
             </div>
@@ -127,7 +127,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
         <FlatBentoCard className="flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
+              <span className="rounded-sm bg-[var(--bg-surface-hover)] p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <Key size={16} className="text-[var(--text-primary)]" />
               </span>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
@@ -151,7 +151,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
               onChange={(e) => setKeyInput(e.target.value)}
               className="w-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-2 rounded-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--border-focus)]"
             />
-            <div className="text-[9px] text-emerald-400 uppercase tracking-wide">
+            <div className="text-[9px] text-[var(--accent-phosphor)] uppercase tracking-wide">
               [✓ LOCAL STORAGE ONLY - SECURE ENVIRONMENT]
             </div>
           </div>
@@ -161,7 +161,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
         <FlatBentoCard className="flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
+              <span className="rounded-sm bg-[var(--bg-surface-hover)] p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -205,7 +205,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
             {deployStep !== "idle" && (
               <div className="w-full bg-[var(--bg-surface)] h-1.5 mt-2 rounded overflow-hidden">
                 <div
-                  className={`h-full bg-emerald-400 transition-all duration-1000 ${
+                  className={`h-full bg-[var(--accent-phosphor)] transition-all duration-1000 ${
                     deployStep === "oauth" ? "w-1/3" : deployStep === "push" ? "w-2/3" : "w-full"
                   }`}
                 />
@@ -218,7 +218,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
         <FlatBentoCard className="md:col-span-2 flex flex-col justify-between min-h-[380px]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <span className="rounded-sm bg-neutral-800 p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
+              <span className="rounded-sm bg-[var(--bg-surface-hover)] p-1.5 border border-[var(--border-subtle)] flex items-center justify-center">
                 <Palette size={16} className="text-[var(--text-primary)]" />
               </span>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
@@ -254,7 +254,7 @@ export function BentoFeatures({ lang }: BentoFeaturesProps) {
             </div>
 
             {/* ASCII Output Rendering */}
-            <pre className="font-mono text-[9px] leading-tight text-emerald-400 bg-neutral-950 p-3 rounded-sm border border-[var(--border-subtle)] tracking-widest min-w-[120px] text-center select-none">
+            <pre className="font-mono text-[9px] leading-tight text-[var(--accent-phosphor)] bg-[var(--bg-canvas)] p-3 rounded-sm border border-[var(--border-subtle)] tracking-widest min-w-[120px] text-center select-none">
               {getAsciiArt()}
             </pre>
           </div>
