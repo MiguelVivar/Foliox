@@ -5,7 +5,9 @@ import { Navbar } from "@/components/organisms/landing/Navbar";
 import { HeroSection } from "@/components/organisms/landing/HeroSection";
 import { TechTicker } from "@/components/organisms/landing/TechTicker";
 import { BentoFeatures } from "@/components/organisms/landing/BentoFeatures";
+import { SocialProofSection } from "@/components/organisms/landing/SocialProofSection";
 import { AboutSection } from "@/components/organisms/landing/AboutSection";
+import { FAQSection } from "@/components/organisms/landing/FAQSection";
 import { PricingSection } from "@/components/organisms/landing/PricingSection";
 import { Footer } from "@/components/organisms/landing/Footer";
 import { DotGrid } from "@/components/atoms/DotGrid";
@@ -30,15 +32,17 @@ export function LandingTemplate() {
           setLang={setLang}
           onOpenPalette={() => setPaletteOpen(true)}
         />
-        
+
         <main className="flex-1 flex flex-col">
           <HeroSection lang={lang} />
           <TechTicker />
           <BentoFeatures lang={lang} />
+          <SocialProofSection lang={lang} />
           <AboutSection lang={lang} />
+          <FAQSection lang={lang} />
           <PricingSection lang={lang} />
         </main>
-        
+
         <Footer lang={lang} />
       </div>
 
