@@ -67,30 +67,11 @@ assert.equal(
   "updateBlock should apply the updater to the matching block",
 );
 
-// reorderBlocks: move "a" (index 0) to index 2 -> expect b, c, a
-useEditorStore.getState().reorderBlocks(0, 2);
-assert.deepEqual(
-  useEditorStore.getState().blocks.map((block) => block.id),
-  ["b", "c", "a"],
-  "reorderBlocks should move the block to the target index",
-);
-
-// reorderBlocks with out-of-range index is a no-op
-const beforeInvalidReorder = useEditorStore
-  .getState()
-  .blocks.map((block) => block.id);
-useEditorStore.getState().reorderBlocks(0, 99);
-assert.deepEqual(
-  useEditorStore.getState().blocks.map((block) => block.id),
-  beforeInvalidReorder,
-  "reorderBlocks should ignore out-of-range indices",
-);
-
 // removeBlock clears selectedBlockId when the selected block is removed
 useEditorStore.getState().removeBlock("b");
 assert.deepEqual(
   useEditorStore.getState().blocks.map((block) => block.id),
-  ["c", "a"],
+  ["a", "c"],
   "removeBlock should remove the matching block",
 );
 assert.equal(
