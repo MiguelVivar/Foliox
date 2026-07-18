@@ -161,6 +161,47 @@ export function GithubStatsForm({ block }: Props) {
         </span>
       </label>
 
+      {/* Toggles for Extra Widgets */}
+      <div className="flex flex-col gap-2.5 border-t border-[var(--border-subtle)] pt-3">
+        <span className={labelClass}>Infographics & Metrics</span>
+        
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!!block.content.showLangs}
+            onChange={(e) => patch({ showLangs: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+            [+] Language Pie Chart
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!!block.content.showTrophies}
+            onChange={(e) => patch({ showTrophies: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+            [+] Trophy Case (trophies)
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!!block.content.showVisitorCounter}
+            onChange={(e) => patch({ showVisitorCounter: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+            [+] Visitor Counter
+          </span>
+        </label>
+      </div>
+
       {block.content.username && (
         <p className="font-mono text-[10px] text-[var(--text-muted)]">
           Preview URL:{" "}

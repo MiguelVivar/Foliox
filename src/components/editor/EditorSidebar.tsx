@@ -16,6 +16,7 @@ import { GithubStatsForm } from "./forms/GithubStatsForm";
 import { AsciiBannerForm } from "./forms/AsciiBannerForm";
 import { AsciiImageForm } from "./forms/AsciiImageForm";
 import { SocialLinksForm } from "./forms/SocialLinksForm";
+import { RichMediaForm } from "./forms/RichMediaForm";
 import { MarkdownCustomForm } from "./forms/MarkdownCustomForm";
 
 // ------------------------------------------------------------------
@@ -50,7 +51,7 @@ const BLOCK_CATALOG: { label: string; description: string; factory: () => Block 
     factory: () => ({
       id: makeId(),
       kind: "github-stats",
-      content: { username: "", showPrivate: false },
+      content: { username: "", showPrivate: false, showLangs: false, showTrophies: false, showVisitorCounter: false },
     }),
   },
   {
@@ -81,6 +82,15 @@ const BLOCK_CATALOG: { label: string; description: string; factory: () => Block 
     }),
   },
   {
+    label: "Rich Media",
+    description: "Images, videos & embeds",
+    factory: () => ({
+      id: makeId(),
+      kind: "rich-media",
+      content: { url: "", mediaType: "image", align: "left" },
+    }),
+  },
+  {
     label: "Custom Markdown",
     description: "Any raw Markdown section",
     factory: () => ({
@@ -101,6 +111,7 @@ const KIND_LABELS: Record<Block["kind"], string> = {
   "ascii-banner": "ASCII Banner",
   "ascii-image": "ASCII Image",
   "social-links": "Social Links",
+  "rich-media": "Rich Media",
   "markdown-custom": "Custom Markdown",
 };
 
@@ -115,6 +126,7 @@ function BlockForm({ block }: { block: Block }) {
     case "ascii-banner": return <AsciiBannerForm block={block} />;
     case "ascii-image":  return <AsciiImageForm block={block} />;
     case "social-links": return <SocialLinksForm block={block} />;
+    case "rich-media":   return <RichMediaForm block={block} />;
     case "markdown-custom": return <MarkdownCustomForm block={block} />;
   }
 }
