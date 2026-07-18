@@ -41,6 +41,8 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
     useEditorStore();
 
   const isSelected = selectedBlockId === block.id;
+  const hasBorder = block.style?.hasBorder ?? true;
+  const isAnimated = block.style?.animate ?? false;
 
   // dnd-kit sortable wiring
   const {
@@ -104,12 +106,18 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
       onClick={() => selectBlock(isSelected ? null : block.id)}
       aria-label={`${KIND_LABELS[block.kind]} block. Press Alt+ArrowUp or Alt+ArrowDown to reorder.`}
       className={cn(
-        // Base card (DESIGN.md §4.1 Bento Cards)
-        "group relative rounded-sm border p-5 outline-none transition-all duration-300",
-        // Sleek neon glow styling
-        isSelected
-          ? "border-[var(--accent-phosphor)] bg-[var(--bg-surface)] -translate-y-1 shadow-[0_0_15px_rgba(110,231,167,0.25),4px_4px_0_0_var(--accent-phosphor)]"
-          : "border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 hover:border-[var(--accent-phosphor)] hover:-translate-y-1 hover:shadow-[0_0_12px_rgba(110,231,167,0.15),4px_4px_0_0_var(--accent-phosphor)]",
+        // Base card layout
+        "group relative rounded-sm p-5 outline-none transition-all duration-300",
+        // Conditional animations
+        isAnimated && "animate-[pulse_2s_infinite]",
+        // Border: subtle/phosphor based on hasBorder options
+        hasBorder
+          ? isSelected
+            ? "border border-[var(--accent-phosphor)] bg-[var(--bg-surface)] -translate-y-1 shadow-[0_0_15px_rgba(110,231,167,0.25),4px_4px_0_0_var(--accent-phosphor)]"
+            : "border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 hover:border-[var(--accent-phosphor)] hover:-translate-y-1 hover:shadow-[0_0_12px_rgba(110,231,167,0.15),4px_4px_0_0_var(--accent-phosphor)]"
+          : isSelected
+            ? "border border-dashed border-[var(--accent-phosphor)]/60 bg-[var(--bg-canvas)]/40 -translate-y-1 shadow-[0_0_10px_rgba(110,231,167,0.15)]"
+            : "border border-dashed border-[var(--border-subtle)]/40 bg-[var(--bg-canvas)]/20 hover:border-[var(--accent-phosphor)]/40 hover:-translate-y-1 hover:shadow-[0_0_8px_rgba(110,231,167,0.08)]",
         // Ghost state while dragging (DESIGN.md §4.1)
         isDragging ? "opacity-30 shadow-none -translate-y-0" : "opacity-100",
         // Keyboard focus ring

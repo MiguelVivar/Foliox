@@ -238,24 +238,37 @@ export function serializeBlocks(
 
   return blocks
     .map((block) => {
+      let serialized = "";
       switch (block.kind) {
         case "hero-bio":
-          return serializeHeroBio(block);
+          serialized = serializeHeroBio(block);
+          break;
         case "tech-stack":
-          return serializeTechStack(block, opts);
+          serialized = serializeTechStack(block, opts);
+          break;
         case "github-stats":
-          return serializeGithubStats(block);
+          serialized = serializeGithubStats(block);
+          break;
         case "ascii-banner":
-          return serializeAsciiBanner(block);
+          serialized = serializeAsciiBanner(block);
+          break;
         case "ascii-image":
-          return serializeAsciiImage(block);
+          serialized = serializeAsciiImage(block);
+          break;
         case "social-links":
-          return serializeSocialLinks(block, opts);
+          serialized = serializeSocialLinks(block, opts);
+          break;
         case "rich-media":
-          return serializeRichMedia(block);
+          serialized = serializeRichMedia(block);
+          break;
         case "markdown-custom":
-          return serializeMarkdownCustom(block);
+          serialized = serializeMarkdownCustom(block);
+          break;
       }
+      if (block.style?.hasBorder && serialized.trim()) {
+        return `<div style="border: 1px solid #30363d; border-radius: 6px; padding: 16px;">\n\n${serialized}\n\n</div>`;
+      }
+      return serialized;
     })
     .join(separator);
 }
