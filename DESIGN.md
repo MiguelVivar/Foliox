@@ -57,15 +57,15 @@ El sistema cromático se articula en torno a dos escalas principales: **Neutral*
 
 | Token UI | Dark Mode (Default) | Light Mode | Aplicación en Componentes |
 | --- | --- | --- | --- |
-| `bg-canvas` | `neutral-900` | `neutral-50` | Fondo principal de toda la aplicación y zona de trabajo. |
-| `bg-surface` | `mauve-900` | `neutral-100` | Tarjetas del editor (Bento Grid), barra de herramientas lateral. |
-| `bg-surface-hover` | `mauve-800` | `mauve-200` | Estado hover y drag-active en bloques modulares. |
-| `border-subtle` | `mauve-800` | `neutral-300` | Bordes divisorios de los bloques (`border border-subtle`). |
-| `border-focus` | `mauve-400` | `mauve-600` | Anillo de selección al hacer clic en un bloque del editor. |
-| `text-primary` | `mauve-50` | `neutral-900` | Títulos principales, logotipos e iconos de alta prioridad. |
-| `text-muted` | `neutral-400` | `neutral-600` | Descripciones, placeholders y metadatos secundarios. |
-| `bg-brand-cta` | `mauve-50` | `mauve-900` | Botones de acción principales (Ej: "Deploy to GitHub"). |
-| `text-brand-cta` | `neutral-900` | `mauve-50` | Texto dentro del botón principal de acción. |
+| `bg-canvas` | `#0a0b0d` | `#f2ede1` | Fondo principal de toda la aplicación y zona de trabajo. |
+| `bg-surface` | `#101317` | `#ece5d5` | Tarjetas del editor (Bento Grid), barra de herramientas lateral. |
+| `bg-surface-hover` | `#171b20` | `#e3dbc7` | Estado hover y drag-active en bloques modulares. |
+| `border-subtle` | `#1c1f24` | `#c9c0aa` | Bordes divisorios de los bloques (`border border-subtle`). |
+| `border-focus` | `var(--accent-phosphor)` | `#1f3a24` | Anillo de selección al hacer clic en un bloque del editor. |
+| `text-primary` | `#f2f0ea` | `#1f3a24` | Títulos principales, logotipos e iconos de alta prioridad. |
+| `text-muted` | `#8b9089` | `#5a6b57` | Descripciones, placeholders y metadatos secundarios. |
+| `bg-brand-cta` | `var(--accent-phosphor)` | `var(--accent-phosphor)` | Botones de acción principales (Ej: "Deploy to GitHub"). |
+| `text-brand-cta` | `#061109` | `#f2ede1` | Texto dentro del botón principal de acción. |
 
 ---
 
