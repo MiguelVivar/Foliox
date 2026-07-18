@@ -7,6 +7,7 @@ import { useApiKey } from "@/hooks/useApiKey";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
 import { Badge } from "@/components/atoms/Badge";
 import { cn } from "@/lib/cn";
+import { useEditorStore } from "@/store/useEditorStore";
 import type { AiProvider } from "@/hooks/useApiKey";
 
 const PROVIDERS: { value: AiProvider; label: string; model: string }[] = [
@@ -155,8 +156,96 @@ export function AiBYOKPanel() {
         </p>
       </div>
 
+      {/* LinkedIn & CV Copywriting Assistant */}
+      <LinkedInAssistant />
+
       {/* Security badge */}
       <MonospaceLabel>[LOCAL STORAGE ONLY - ZERO DATA LOGGING]</MonospaceLabel>
+    </div>
+  );
+}
+
+function LinkedInAssistant() {
+  const { provider, apiKey } = useApiKey();
+  const { blocks, badgeStyle, sectionSeparator } = useEditorStore();
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const labelClass =
+    "block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]";
+
+  async function handleGenerate() {
+    if (!apiKey) {
+      setErrorMsg("ERR: API_KEY_REQUIRED");
+      return;
+    }
+    setErrorMsg("");
+    setLoading(true);
+
+    try {
+      const { serializeBlocks } = await import("@/lib/markdownSerializer");
+      const profileData = serializeBlocks(blocks, { badgeStyle, sectionSeparator });
+
+      const res = await fetch("/api/ai/linkedin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider, apiKey, profileData }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || "Generation failed");
+
+      setResult(data.result);
+    } catch (err: any) {
+      setErrorMsg(err.message || "ERR: GENERATION_FAILED");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleCopy() {
+    if (!result) return;
+    navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div className="flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-4">
+      <span className={labelClass}>LinkedIn & CV Copywriter</span>
+      <button
+        type="button"
+        onClick={handleGenerate}
+        disabled={loading}
+        className="flex items-center justify-center gap-1.5 bg-[var(--accent-phosphor)] text-[var(--bg-canvas)] font-bold rounded-sm py-2 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_var(--text-primary)] transition-all uppercase tracking-wider text-[10px]"
+      >
+        {loading ? "GENERATING..." : "GENERATE_LINKEDIN_BIO_AND_CV"}
+      </button>
+
+      {errorMsg && (
+        <p className="font-mono text-[9px] uppercase tracking-wider text-red-400">
+          [{errorMsg}]
+        </p>
+      )}
+
+      {result && (
+        <div className="flex flex-col gap-2">
+          <textarea
+            readOnly
+            value={result}
+            className="w-full h-40 bg-[var(--bg-canvas)] border border-[var(--border-subtle)] rounded-sm p-2 font-mono text-[10px] text-[var(--text-primary)] focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="text-center font-mono text-[9px] uppercase tracking-widest text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)] rounded-sm py-1.5 hover:bg-[var(--accent-phosphor)]/10"
+          >
+            {copied ? "[ COPIED_TO_CLIPBOARD ]" : "[ COPY_TO_CLIPBOARD ]"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

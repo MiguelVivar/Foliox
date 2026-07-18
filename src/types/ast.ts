@@ -3,6 +3,8 @@ export type BlockKind =
   | "tech-stack"
   | "github-stats"
   | "ascii-banner"
+  | "ascii-image"
+  | "social-links"
   | "markdown-custom";
 
 export type HeroBioBlock = {
@@ -41,6 +43,24 @@ export type AsciiBannerBlock = {
   };
 };
 
+export type AsciiImageBlock = {
+  id: string;
+  kind: "ascii-image";
+  content: {
+    asciiArt: string;
+    width: number;
+    colorMode: "mono" | "invert";
+  };
+};
+
+export type SocialLinksBlock = {
+  id: string;
+  kind: "social-links";
+  content: {
+    links: { platform: string; username: string }[];
+  };
+};
+
 export type MarkdownCustomBlock = {
   id: string;
   kind: "markdown-custom";
@@ -54,4 +74,6 @@ export type Block =
   | TechStackBlock
   | GithubStatsBlock
   | AsciiBannerBlock
+  | AsciiImageBlock
+  | SocialLinksBlock
   | MarkdownCustomBlock;

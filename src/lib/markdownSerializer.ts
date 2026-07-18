@@ -5,6 +5,8 @@ import type {
   TechStackBlock,
   GithubStatsBlock,
   AsciiBannerBlock,
+  AsciiImageBlock,
+  SocialLinksBlock,
   MarkdownCustomBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
@@ -21,6 +23,15 @@ export type SerializeOptions = {
 const DEFAULT_OPTIONS: Required<SerializeOptions> = {
   badgeStyle: "flat-square",
   sectionSeparator: false,
+};
+
+const SOCIAL_METADATA: Record<string, { label: string; color: string; logo: string; url: (username: string) => string }> = {
+  github: { label: "GitHub", color: "181717", logo: "github", url: (u) => `https://github.com/${u}` },
+  linkedin: { label: "LinkedIn", color: "0077B5", logo: "linkedin", url: (u) => `https://linkedin.com/in/${u}` },
+  twitter: { label: "Twitter", color: "1DA1F2", logo: "twitter", url: (u) => `https://twitter.com/${u}` },
+  instagram: { label: "Instagram", color: "E4405F", logo: "instagram", url: (u) => `https://instagram.com/${u}` },
+  devto: { label: "Dev.to", color: "0A0A0A", logo: "devdotto", url: (u) => `https://dev.to/${u}` },
+  huggingface: { label: "Hugging Face", color: "FFD21E", logo: "huggingface", url: (u) => `https://huggingface.co/${u}` },
 };
 
 // ---------------------------------------------------------------------------
@@ -100,6 +111,29 @@ function serializeAsciiBanner(block: AsciiBannerBlock): string {
   }
 }
 
+function serializeAsciiImage(block: AsciiImageBlock): string {
+  const { asciiArt } = block.content;
+  if (!asciiArt) return `<!-- ascii-image: empty -->`;
+  return "```\n" + asciiArt + "\n```";
+}
+
+function serializeSocialLinks(block: SocialLinksBlock, opts: Required<SerializeOptions>): string {
+  const { links } = block.content;
+  if (links.length === 0) return `<!-- social-links: empty -->`;
+
+  const badges = links
+    .map(({ platform, username }) => {
+      const meta = SOCIAL_METADATA[platform.toLowerCase()];
+      if (!meta) return "";
+      const badgeUrl = `https://img.shields.io/badge/${meta.label}-${meta.color}?style=${opts.badgeStyle}&logo=${meta.logo}&logoColor=${meta.color === "FFD21E" ? "black" : "white"}`;
+      return `[![${meta.label}](${badgeUrl})](${meta.url(username)})`;
+    })
+    .filter(Boolean)
+    .join(" ");
+
+  return `## Connect with me\n\n${badges}`;
+}
+
 function serializeMarkdownCustom(block: MarkdownCustomBlock): string {
   return block.content.markdown.trimEnd();
 }
@@ -132,6 +166,10 @@ export function serializeBlocks(
           return serializeGithubStats(block);
         case "ascii-banner":
           return serializeAsciiBanner(block);
+        case "ascii-image":
+          return serializeAsciiImage(block);
+        case "social-links":
+          return serializeSocialLinks(block, opts);
         case "markdown-custom":
           return serializeMarkdownCustom(block);
       }
