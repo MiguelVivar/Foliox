@@ -50,7 +50,15 @@ export const useEditorStore = create<EditorState & EditorActions>()(
       sectionSeparator: false,
       lang: "es",
       addBlock: (block) =>
-        set((state) => ({ blocks: [...state.blocks, block] })),
+        set((state) => {
+          const position = block.position || {
+            x: 40,
+            y: 40 + state.blocks.length * 120,
+            w: 320,
+            h: 220,
+          };
+          return { blocks: [...state.blocks, { ...block, position }] };
+        }),
       removeBlock: (id) =>
         set((state) => ({
           blocks: state.blocks.filter((block) => block.id !== id),

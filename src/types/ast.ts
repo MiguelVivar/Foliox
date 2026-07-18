@@ -13,10 +13,18 @@ export type BlockStyleConfig = {
   animate?: boolean;
 };
 
+export type Position = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
 export type HeroBioBlock = {
   id: string;
   kind: "hero-bio";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     name: string;
     tagline: string;
@@ -28,6 +36,7 @@ export type TechStackBlock = {
   id: string;
   kind: "tech-stack";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     technologies: string[];
   };
@@ -37,6 +46,7 @@ export type GithubStatsBlock = {
   id: string;
   kind: "github-stats";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     username: string;
     showPrivate: boolean;
@@ -50,6 +60,7 @@ export type AsciiBannerBlock = {
   id: string;
   kind: "ascii-banner";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     text: string;
     font: string;
@@ -60,6 +71,7 @@ export type AsciiImageBlock = {
   id: string;
   kind: "ascii-image";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     asciiArt: string;
     width: number;
@@ -71,6 +83,7 @@ export type SocialLinksBlock = {
   id: string;
   kind: "social-links";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     links: { platform: string; username: string }[];
   };
@@ -80,6 +93,7 @@ export type RichMediaBlock = {
   id: string;
   kind: "rich-media";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     url: string;
     mediaType: "image" | "video";
@@ -93,6 +107,7 @@ export type MarkdownCustomBlock = {
   id: string;
   kind: "markdown-custom";
   style?: BlockStyleConfig;
+  position?: Position;
   content: {
     markdown: string;
   };

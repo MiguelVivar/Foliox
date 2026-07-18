@@ -1,9 +1,7 @@
 "use client";
 
-import { useCallback, type KeyboardEvent } from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { X } from "lucide-react";
+import React, { useState } from "react";
+import { X, CornerRightDown } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { DragHandle } from "@/components/atoms/DragHandle";
 import { useEditorStore } from "@/store/useEditorStore";
@@ -36,43 +34,118 @@ type Props = {
   totalBlocks: number;
 };
 
-export function BentoCard({ block, index, totalBlocks }: Props) {
-  const { selectedBlockId, selectBlock, removeBlock, reorderBlocks } =
+export function BentoCard({ block, index }: Props) {
+  const { selectedBlockId, selectBlock, removeBlock, updateBlock } =
     useEditorStore();
 
   const isSelected = selectedBlockId === block.id;
   const hasBorder = block.style?.hasBorder ?? true;
   const isAnimated = block.style?.animate ?? false;
 
-  // dnd-kit sortable wiring
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: block.id });
+  const [dragging, setDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [blockStart, setBlockStart] = useState({ x: 0, y: 0 });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+  const [resizing, setResizing] = useState(false);
+  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0 });
+  const [sizeStart, setSizeStart] = useState({ w: 0, h: 0 });
+
+  function handleDragStart(e: React.PointerEvent) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+    selectBlock(block.id);
+
+    setDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    setBlockStart({
+      x: block.position?.x ?? 40,
+      y: block.position?.y ?? (40 + index * 120),
+    });
+
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }
+
+  function handleDragMove(e: React.PointerEvent) {
+    if (!dragging) return;
+    e.stopPropagation();
+
+    const dx = e.clientX - dragStart.x;
+    const dy = e.clientY - dragStart.y;
+
+    const snapGrid = 10;
+    const newX = Math.round((blockStart.x + dx) / snapGrid) * snapGrid;
+    const newY = Math.round((blockStart.y + dy) / snapGrid) * snapGrid;
+
+    updateBlock(block.id, (b) => ({
+      ...b,
+      position: {
+        x: Math.max(0, newX),
+        y: Math.max(0, newY),
+        w: b.position?.w ?? 320,
+        h: b.position?.h ?? 220,
+      },
+    }));
+  }
+
+  function handleDragEnd(e: React.PointerEvent) {
+    if (dragging) {
+      setDragging(false);
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    }
+  }
+
+  function handleResizeStart(e: React.PointerEvent) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    setResizing(true);
+    setResizeStart({ x: e.clientX, y: e.clientY });
+    setSizeStart({
+      w: block.position?.w ?? 320,
+      h: block.position?.h ?? 220,
+    });
+
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }
+
+  function handleResizeMove(e: React.PointerEvent) {
+    if (!resizing) return;
+    e.stopPropagation();
+
+    const dx = e.clientX - resizeStart.x;
+    const dy = e.clientY - resizeStart.y;
+
+    const newW = Math.round((sizeStart.w + dx) / 10) * 10;
+    const newH = Math.round((sizeStart.h + dy) / 10) * 10;
+
+    updateBlock(block.id, (b) => ({
+      ...b,
+      position: {
+        x: b.position?.x ?? 40,
+        y: b.position?.y ?? (40 + index * 120),
+        w: Math.max(150, newW),
+        h: Math.max(80, newH),
+      },
+    }));
+  }
+
+  function handleResizeEnd(e: React.PointerEvent) {
+    if (resizing) {
+      setResizing(false);
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    }
+  }
+
+  const cardStyle = {
+    position: "absolute" as const,
+    left: `${block.position?.x ?? 40}px`,
+    top: `${block.position?.y ?? (40 + index * 120)}px`,
+    width: `${block.position?.w ?? 320}px`,
+    height: `${block.position?.h ?? 220}px`,
+    zIndex: isSelected ? 30 : 10,
   };
-
-  // Keyboard reorder: Alt+ArrowUp / Alt+ArrowDown (DESIGN.md §5, WCAG spec)
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLDivElement>) => {
-      if (!e.altKey) return;
-      if (e.key === "ArrowUp" && index > 0) {
-        e.preventDefault();
-        reorderBlocks(index, index - 1);
-      } else if (e.key === "ArrowDown" && index < totalBlocks - 1) {
-        e.preventDefault();
-        reorderBlocks(index, index + 1);
-      }
-    },
-    [index, totalBlocks, reorderBlocks],
-  );
 
   // Block content dispatcher
   function renderBlockContent() {
@@ -98,57 +171,46 @@ export function BentoCard({ block, index, totalBlocks }: Props) {
 
   return (
     <div
-      ref={setNodeRef}
-      style={style}
-      // Accessible focus target for keyboard reorder
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-      onClick={() => selectBlock(isSelected ? null : block.id)}
-      aria-label={`${KIND_LABELS[block.kind]} block. Press Alt+ArrowUp or Alt+ArrowDown to reorder.`}
+      style={cardStyle}
+      onClick={(e) => {
+        e.stopPropagation();
+        selectBlock(block.id);
+      }}
       className={cn(
-        // Base card layout
-        "group relative rounded-sm p-5 outline-none transition-all duration-300",
-        // Conditional animations
+        "group relative rounded-sm p-4 outline-none transition-all duration-100 overflow-hidden flex flex-col",
         isAnimated && "animate-[pulse_2s_infinite]",
-        // Border: subtle/phosphor based on hasBorder options
         hasBorder
           ? isSelected
-            ? "border border-[var(--accent-phosphor)] bg-[var(--bg-surface)] -translate-y-1 shadow-[0_0_15px_rgba(110,231,167,0.25),4px_4px_0_0_var(--accent-phosphor)]"
-            : "border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 hover:border-[var(--accent-phosphor)] hover:-translate-y-1 hover:shadow-[0_0_12px_rgba(110,231,167,0.15),4px_4px_0_0_var(--accent-phosphor)]"
+            ? "border border-[var(--accent-phosphor)] bg-[var(--bg-surface)] shadow-[0_0_15px_rgba(110,231,167,0.25),4px_4px_0_0_var(--accent-phosphor)]"
+            : "border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 hover:border-[var(--accent-phosphor)] hover:shadow-[0_0_12px_rgba(110,231,167,0.15),4px_4px_0_0_var(--accent-phosphor)]"
           : isSelected
-            ? "border border-dashed border-[var(--accent-phosphor)]/60 bg-[var(--bg-canvas)]/40 -translate-y-1 shadow-[0_0_10px_rgba(110,231,167,0.15)]"
-            : "border border-dashed border-[var(--border-subtle)]/40 bg-[var(--bg-canvas)]/20 hover:border-[var(--accent-phosphor)]/40 hover:-translate-y-1 hover:shadow-[0_0_8px_rgba(110,231,167,0.08)]",
-        // Ghost state while dragging (DESIGN.md §4.1)
-        isDragging ? "opacity-30 shadow-none -translate-y-0" : "opacity-100",
-        // Keyboard focus ring
-        "focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)]",
-        // Hover surface
-        "hover:bg-[var(--bg-surface-hover)]/95",
+            ? "border border-dashed border-[var(--accent-phosphor)]/60 bg-[var(--bg-canvas)]/40 shadow-[0_0_10px_rgba(110,231,167,0.15)]"
+            : "border border-dashed border-[var(--border-subtle)]/40 bg-[var(--bg-canvas)]/20 hover:border-[var(--accent-phosphor)]/40 hover:shadow-[0_0_8px_rgba(110,231,167,0.08)]",
+        dragging && "opacity-80 shadow-none cursor-grabbing",
       )}
     >
-      {/* Card header: drag handle + label + remove */}
-      <div className="mb-3 flex items-center gap-2">
-        {/* Drag handle — visible on hover, wired to dnd-kit listeners */}
-        <DragHandle
-          {...attributes}
-          {...listeners}
-          // Override cursor while drag attributes are active
-          className="cursor-grab active:cursor-grabbing"
-        />
+      {/* Card header */}
+      <div className="mb-2 flex items-center justify-between border-b border-[var(--border-subtle)]/50 pb-1 select-none">
+        <div
+          onPointerDown={handleDragStart}
+          onPointerMove={handleDragMove}
+          onPointerUp={handleDragEnd}
+          className="flex items-center gap-1.5 cursor-grab active:cursor-grabbing hover:text-[var(--accent-phosphor)] transition-colors flex-1"
+        >
+          <DragHandle className="h-3 w-3 text-inherit" />
+          <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--text-muted)]">
+            [{KIND_LABELS[block.kind]}]
+          </span>
+        </div>
 
-        <span className="flex-1 font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] group-hover:text-[var(--accent-phosphor)] transition-colors">
-          [{KIND_LABELS[block.kind]}]
-        </span>
-
-        {/* Remove button */}
         <button
           type="button"
           onClick={(e) => {
-            e.stopPropagation(); // don't trigger card selection
+            e.stopPropagation();
             removeBlock(block.id);
           }}
-          aria-label={`Remove ${KIND_LABELS[block.kind]} block`}
-          className="flex h-5 w-5 items-center justify-center rounded-sm text-[var(--text-muted)] opacity-0 hover:text-[var(--accent-phosphor)] group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-[var(--accent-phosphor)] transition-colors"
+          className="text-[var(--text-muted)] hover:text-red-400 transition-colors"
+          title="Remove block"
         >
           <X size={12} />
         </button>
