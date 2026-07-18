@@ -97,25 +97,28 @@
   /* Hide everything except the markdown preview panel */
   body > * { display: none !important; }
 
-  /* Show only the print target */
+  /* Show only the print target — descendants keep their natural display
+     (table/table-cell/inline/list-item all matter for rendered Markdown) */
   #foliox-print-target,
   #foliox-print-target * {
-    display: block !important;
     visibility: visible !important;
   }
 
   #foliox-print-target {
+    display: block !important;
     position: fixed !important;
     inset: 0 !important;
     width: 100vw !important;
     background: white !important;
     color: black !important;
-    font-family: ui-monospace, "Geist Mono", monospace !important;
     font-size: 11pt !important;
     line-height: 1.6 !important;
     padding: 2cm !important;
-    white-space: pre-wrap !important;
     overflow: visible !important;
+  }
+
+  #foliox-print-target img {
+    max-width: 100% !important;
   }
 
   @page {

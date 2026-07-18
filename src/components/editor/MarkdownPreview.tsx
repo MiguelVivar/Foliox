@@ -7,12 +7,15 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useGithubCommit } from "@/hooks/useGithubCommit";
 import { serializeBlocks } from "@/lib/markdownSerializer";
 import { MonospaceLabel } from "@/components/atoms/MonospaceLabel";
+import { MarkdownRenderedView } from "./MarkdownRenderedView";
+import { cn } from "@/lib/cn";
 
 export function MarkdownPreview() {
   const { blocks, badgeStyle, sectionSeparator } = useEditorStore();
   const markdown = serializeBlocks(blocks, { badgeStyle, sectionSeparator });
 
   const [copied, setCopied] = useState(false);
+  const [viewMode, setViewMode] = useState<"raw" | "preview">("preview");
   const user = useAuthStore((state) => state.user);
   const { status, errorMessage, repoUrl, commit } = useGithubCommit();
 
@@ -64,7 +67,35 @@ export function MarkdownPreview() {
     <div className="flex h-full flex-col border-l border-[var(--border-subtle)] bg-[var(--bg-surface)]">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-3">
-        <MonospaceLabel>[MARKDOWN OUTPUT]</MonospaceLabel>
+        <div className="flex items-center gap-3">
+          <MonospaceLabel>[MARKDOWN OUTPUT]</MonospaceLabel>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setViewMode("raw")}
+              className={cn(
+                "rounded-sm border px-2 py-1 font-mono text-[10px]",
+                viewMode === "raw"
+                  ? "border-[var(--border-focus)] text-[var(--text-primary)]"
+                  : "border-[var(--border-subtle)] text-[var(--text-muted)]",
+              )}
+            >
+              Raw
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("preview")}
+              className={cn(
+                "rounded-sm border px-2 py-1 font-mono text-[10px]",
+                viewMode === "preview"
+                  ? "border-[var(--border-focus)] text-[var(--text-primary)]"
+                  : "border-[var(--border-subtle)] text-[var(--text-muted)]",
+              )}
+            >
+              Preview
+            </button>
+          </div>
+        </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={handleCopy} className={iconBtn}>
             {copied ? (
@@ -118,12 +149,20 @@ export function MarkdownPreview() {
       {/* Preview body */}
       <div className="flex-1 overflow-y-auto p-4">
         {markdown ? (
-          <pre
-            id="foliox-print-target"
-            className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]"
-          >
-            {markdown}
-          </pre>
+          <>
+            {viewMode === "raw" && (
+              <pre className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]">
+                {markdown}
+              </pre>
+            )}
+            {/* Always mounted (hidden when the Raw tab is active) so window.print()
+                always targets the rendered view, regardless of the visible tab. */}
+            <MarkdownRenderedView
+              markdown={markdown}
+              id="foliox-print-target"
+              className={viewMode === "preview" ? undefined : "hidden"}
+            />
+          </>
         ) : (
           <p className="font-mono text-xs text-[var(--text-muted)] italic">
             Add blocks to see your Markdown output here.
