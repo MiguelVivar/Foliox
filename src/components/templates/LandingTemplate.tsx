@@ -18,10 +18,10 @@ export function LandingTemplate() {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen w-full bg-[var(--bg-canvas)] overflow-x-hidden flex flex-col">
+    <div className="landing-retro relative min-h-screen w-full bg-[var(--bg-canvas)] overflow-x-hidden flex flex-col">
       {/* Background Dot Grid */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <DotGrid />
+        <DotGrid scanlines />
       </div>
 
       {/* Main Content Sections */}

@@ -92,6 +92,85 @@
   --text-brand-cta: var(--color-mauve-50);
 }
 
+/* ─── Landing Page: Retro CRT/ASCII theme scope (spec 2026-07-18) ──────── */
+.landing-retro {
+  --accent-phosphor: #6ee7a7;
+  --glow-color: rgba(110, 231, 167, 0.35);
+  --bg-canvas: #0a0b0d;
+  --bg-surface: #101317;
+  --bg-surface-hover: #171b20;
+  --border-subtle: #1c1f24;
+  --border-focus: #2a2e35;
+  --text-primary: #f2f0ea;
+  --text-muted: #8b9089;
+  --bg-brand-cta: var(--accent-phosphor);
+  --text-brand-cta: #061109;
+}
+
+@media (prefers-color-scheme: light) {
+  .landing-retro {
+    --accent-phosphor: #1f3a24;
+    --glow-color: transparent;
+    --bg-canvas: #f2ede1;
+    --bg-surface: #ece5d5;
+    --bg-surface-hover: #e3dbc7;
+    --border-subtle: #c9c0aa;
+    --border-focus: #1f3a24;
+    --text-primary: #1f3a24;
+    --text-muted: #5a6b57;
+    --bg-brand-cta: var(--accent-phosphor);
+    --text-brand-cta: #f2ede1;
+  }
+}
+
+:root[data-theme="dark"] .landing-retro {
+  --accent-phosphor: #6ee7a7;
+  --glow-color: rgba(110, 231, 167, 0.35);
+  --bg-canvas: #0a0b0d;
+  --bg-surface: #101317;
+  --bg-surface-hover: #171b20;
+  --border-subtle: #1c1f24;
+  --border-focus: #2a2e35;
+  --text-primary: #f2f0ea;
+  --text-muted: #8b9089;
+  --bg-brand-cta: var(--accent-phosphor);
+  --text-brand-cta: #061109;
+}
+
+:root[data-theme="light"] .landing-retro {
+  --accent-phosphor: #1f3a24;
+  --glow-color: transparent;
+  --bg-canvas: #f2ede1;
+  --bg-surface: #ece5d5;
+  --bg-surface-hover: #e3dbc7;
+  --border-subtle: #c9c0aa;
+  --border-focus: #1f3a24;
+  --text-primary: #1f3a24;
+  --text-muted: #5a6b57;
+  --bg-brand-cta: var(--accent-phosphor);
+  --text-brand-cta: #f2ede1;
+}
+
+.crt-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.035) 0px,
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.crt-glow {
+  text-shadow: 0 0 12px var(--glow-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-glow {
+    text-shadow: none;
+  }
+}
+
 /* ─── Print / PDF Export ─────────────────────────────────────────── */
 @media print {
   /* Hide everything except the markdown preview panel */
