@@ -60,7 +60,7 @@ export function BentoCard({ block, index }: Props) {
     setDragStart({ x: e.clientX, y: e.clientY });
     setBlockStart({
       x: block.position?.x ?? 40,
-      y: block.position?.y ?? (40 + index * 120),
+      y: block.position?.y ?? (40 + index * 240),
     });
 
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -124,7 +124,7 @@ export function BentoCard({ block, index }: Props) {
       ...b,
       position: {
         x: b.position?.x ?? 40,
-        y: b.position?.y ?? (40 + index * 120),
+        y: b.position?.y ?? (40 + index * 240),
         w: Math.max(150, newW),
         h: Math.max(80, newH),
       },
@@ -141,7 +141,7 @@ export function BentoCard({ block, index }: Props) {
   const cardStyle = {
     position: "absolute" as const,
     left: `${block.position?.x ?? 40}px`,
-    top: `${block.position?.y ?? (40 + index * 120)}px`,
+    top: `${block.position?.y ?? (40 + index * 240)}px`,
     width: `${block.position?.w ?? 320}px`,
     height: `${block.position?.h ?? 220}px`,
     zIndex: isSelected ? 30 : 10,

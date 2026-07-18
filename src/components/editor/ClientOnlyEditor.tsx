@@ -59,6 +59,7 @@ export function ClientOnlyEditor() {
         addBlock({
           id: `block-${Date.now()}-hb`,
           kind: "hero-bio",
+          position: { x: 30, y: 30, w: 320, h: 220 },
           content: {
             name: userData.name || userData.login,
             tagline: userData.bio || "",
@@ -101,6 +102,7 @@ export function ClientOnlyEditor() {
             addBlock({
               id: `block-${Date.now()}-ts`,
               kind: "tech-stack",
+              position: { x: 380, y: 30, w: 320, h: 220 },
               content: { technologies: sortedLangs },
             });
           }
@@ -126,6 +128,7 @@ export function ClientOnlyEditor() {
             addBlock({
               id: `block-${Date.now()}-md`,
               kind: "markdown-custom",
+              position: { x: 30, y: 280, w: 670, h: 480 },
               content: { markdown: readmeContent },
             });
           }
