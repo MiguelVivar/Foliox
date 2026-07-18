@@ -1,23 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Columns2, LayoutTemplate, Home, Settings, User } from "lucide-react";
+import { Columns2, LayoutTemplate, Home, Settings, User, Globe } from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 import { EditorCanvas } from "@/components/editor/EditorCanvas";
 import { EditorSidebar } from "@/components/editor/EditorSidebar";
 import { MarkdownPreview } from "@/components/editor/MarkdownPreview";
 import { useAuthStore } from "@/store/useAuthStore";
+import { ThemeToggle } from "@/components/molecules/ThemeToggle";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/cn";
 
 export function ClientOnlyEditor() {
-  const { splitView, toggleSplitView, blocks, addBlock, updateBlock } = useEditorStore();
-  const { user } = useAuthStore();
+  const { splitView, toggleSplitView, blocks, addBlock, updateBlock, lang, setLang } = useEditorStore();
+  const { user, checkSession } = useAuthStore();
   const [selectedProfile, setSelectedProfile] = useState("architect-cv");
   const [showImportBanner, setShowImportBanner] = useState(true);
 
+  const t = translations[lang] || translations.en;
+
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
+
   async function handleAutoImport() {
-    const rawUsername = prompt("Enter your GitHub username to auto-import profile & existing README.md:");
+    const rawUsername = prompt(lang === "es" ? "Ingresa tu usuario de GitHub para auto-importar perfil y tu README.md:" : "Enter your GitHub username to auto-import profile & existing README.md:");
     if (!rawUsername) return;
 
     // Sanitize to extract username from full URLs or repo paths
@@ -124,7 +132,7 @@ export function ClientOnlyEditor() {
         }
       }
       setShowImportBanner(false);
-      alert("SUCCESS: Profile details, languages & existing README imported!");
+      alert(lang === "es" ? "ÉXITO: ¡Perfil, lenguajes y README importados con éxito!" : "SUCCESS: Profile details, languages & existing README imported!");
     } catch (err: any) {
       alert("Error importing profile: " + err.message);
     }
@@ -147,14 +155,14 @@ export function ClientOnlyEditor() {
               className="flex items-center gap-1.5 text-[var(--accent-phosphor)] hover:text-white border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--accent-phosphor)]/10 rounded-sm px-2.5 py-1 transition-all uppercase tracking-widest font-bold crt-glowing-glow"
             >
               <Home size={11} />
-              <span>Home</span>
+              <span>{t.editor.home}</span>
             </Link>
 
             <span className="text-[var(--accent-phosphor)]/30">|</span>
 
             {/* Profile switching dropdown */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[var(--text-muted)] uppercase tracking-wider text-[9px]">Workspace:</span>
+              <span className="text-[var(--text-muted)] uppercase tracking-wider text-[9px]">{t.editor.workspace}:</span>
               <select
                 value={selectedProfile}
                 onChange={(e) => setSelectedProfile(e.target.value)}
@@ -171,9 +179,25 @@ export function ClientOnlyEditor() {
             {/* User status */}
             <div className="hidden lg:flex items-center gap-1.5 text-[var(--text-muted)]">
               <User size={11} className="text-[var(--accent-phosphor)]" />
-              <span className="font-bold text-[var(--text-primary)]">{user?.name ? user.name.toUpperCase().replace(" ", "_") : "JANE_DOE"}</span>
+              <span className="font-bold text-[var(--text-primary)]">{user?.name ? user.name.toUpperCase().replace(/\s+/g, "_") : "JANE_DOE"}</span>
               <span className="bg-[var(--accent-phosphor)]/20 text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)]/50 px-1.5 py-0.5 rounded-sm text-[8px] tracking-widest uppercase animate-pulse font-extrabold shadow-[0_0_8px_var(--glow-color)]">PRO</span>
             </div>
+
+            {/* Language toggle selector */}
+            <div className="flex items-center gap-1 border border-[var(--accent-phosphor)]/30 rounded-sm px-1.5 py-1 bg-[var(--bg-canvas)]">
+              <Globe size={11} className="text-[var(--accent-phosphor)]" />
+              <select
+                value={lang}
+                onChange={(e) => setLang(e.target.value as "en" | "es")}
+                className="bg-transparent border-none text-[var(--accent-phosphor)] font-mono text-[9px] uppercase tracking-widest focus:outline-none cursor-pointer"
+              >
+                <option value="es">ESP</option>
+                <option value="en">ENG</option>
+              </select>
+            </div>
+
+            {/* Visual theme toggler */}
+            <ThemeToggle className="p-1.5 border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--bg-canvas)] rounded-sm text-[var(--accent-phosphor)] hover:text-white transition-all hover:shadow-[0_0_8px_var(--glow-color)] cursor-pointer" />
 
             <Link
               href="/settings"
@@ -202,7 +226,7 @@ export function ClientOnlyEditor() {
               ) : (
                 <Columns2 size={11} />
               )}
-              {splitView ? "Canvas only" : "Split view"}
+              {splitView ? t.editor.canvasOnly : t.editor.splitView}
             </button>
           </div>
         </div>
@@ -211,7 +235,7 @@ export function ClientOnlyEditor() {
           <div className="mx-6 mt-4 p-3 bg-[var(--accent-phosphor)]/10 border border-[var(--accent-phosphor)]/30 rounded-sm flex items-center justify-between font-mono text-[10px] z-20">
             <div className="flex items-center gap-2">
               <span className="animate-pulse text-[var(--accent-phosphor)]">●</span>
-              <span className="text-[var(--text-primary)]">Connected to GitHub via OAuth. Populate editor with your active README?</span>
+              <span className="text-[var(--text-primary)]">{t.editor.autoImportTitle}</span>
             </div>
             <div className="flex gap-2">
               <button
@@ -219,14 +243,14 @@ export function ClientOnlyEditor() {
                 onClick={handleAutoImport}
                 className="bg-[var(--accent-phosphor)] text-[var(--bg-canvas)] font-bold px-3 py-1 rounded-sm hover:-translate-y-0.5 transition-all uppercase tracking-wider cursor-pointer"
               >
-                Auto-Import Profile
+                {t.editor.autoImportBtn}
               </button>
               <button
                 type="button"
                 onClick={() => setShowImportBanner(false)}
                 className="text-[var(--text-muted)] hover:text-white uppercase tracking-wider px-2 cursor-pointer"
               >
-                Dismiss
+                {t.editor.dismissBtn}
               </button>
             </div>
           </div>

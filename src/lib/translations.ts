@@ -75,6 +75,22 @@ export const translations = {
       copyright: "© 2026 Foliox. Built for the open-source community.",
       status: "SYSTEM STATUS: 100% OPERATIONAL - ALL SERVICES NORMAL",
     },
+    editor: {
+      workspace: "Workspace",
+      home: "Home",
+      theme: "Theme",
+      language: "Language",
+      splitView: "Split View",
+      canvasOnly: "Canvas Only",
+      autoImportTitle: "Connected to GitHub via OAuth. Populate editor with your active README?",
+      autoImportBtn: "Auto-Import Profile",
+      dismissBtn: "Dismiss",
+      tabs: {
+        blocks: "Blocks",
+        style: "Style",
+        aiByok: "IA / BYOK",
+      },
+    },
   },
   es: {
     navbar: {
@@ -149,6 +165,22 @@ export const translations = {
     footer: {
       copyright: "© 2026 Foliox. Construido para la comunidad de código abierto.",
       status: "ESTADO DEL SISTEMA: 100% OPERATIVO - TODOS LOS SERVICIOS NORMALES",
+    },
+    editor: {
+      workspace: "Lienzo",
+      home: "Inicio",
+      theme: "Tema",
+      language: "Idioma",
+      splitView: "Vista Dividida",
+      canvasOnly: "Solo Lienzo",
+      autoImportTitle: "Conectado a GitHub vía OAuth. ¿Cargar el editor con tu README activo?",
+      autoImportBtn: "Auto-Importar Perfil",
+      dismissBtn: "Descartar",
+      tabs: {
+        blocks: "Bloques",
+        style: "Estilo",
+        aiByok: "IA / BYOK",
+      },
     },
   },
 };

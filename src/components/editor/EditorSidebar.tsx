@@ -117,6 +117,8 @@ const KIND_LABELS: Record<Block["kind"], string> = {
 
 import { BlockStyleForm } from "./forms/BlockStyleForm";
 
+import { translations } from "@/lib/translations";
+
 // ------------------------------------------------------------------
 // Form dispatcher
 // ------------------------------------------------------------------
@@ -146,19 +148,22 @@ function BlockForm({ block }: { block: Block }) {
 // Tabs
 // ------------------------------------------------------------------
 type Tab = "blocks" | "style" | "ai";
-const TABS: { id: Tab; label: string }[] = [
-  { id: "blocks", label: "Blocks" },
-  { id: "style", label: "Style" },
-  { id: "ai", label: "IA / BYOK" },
-];
 
 // ------------------------------------------------------------------
 // Component
 // ------------------------------------------------------------------
 export function EditorSidebar() {
-  const { blocks, selectedBlockId, selectBlock, addBlock, removeBlock } =
+  const { blocks, selectedBlockId, selectBlock, addBlock, removeBlock, lang } =
     useEditorStore();
   const [activeTab, setActiveTab] = useState<Tab>("blocks");
+
+  const t = translations[lang] || translations.en;
+
+  const TABS: { id: Tab; label: string }[] = [
+    { id: "blocks", label: t.editor.tabs.blocks },
+    { id: "style", label: t.editor.tabs.style },
+    { id: "ai", label: t.editor.tabs.aiByok },
+  ];
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId) ?? null;
 

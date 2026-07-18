@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Block } from "@/types/ast";
+import type { Language } from "@/lib/translations";
 
 // ---------------------------------------------------------------------------
 // Style types (exported so serializer + StylePanel can share them)
@@ -24,6 +25,7 @@ type EditorState = {
   splitView: boolean;
   badgeStyle: BadgeStyle;
   sectionSeparator: boolean;
+  lang: Language;
 };
 
 type EditorActions = {
@@ -35,6 +37,7 @@ type EditorActions = {
   toggleSplitView: () => void;
   setBadgeStyle: (style: BadgeStyle) => void;
   toggleSectionSeparator: () => void;
+  setLang: (lang: Language) => void;
 };
 
 export const useEditorStore = create<EditorState & EditorActions>()(
@@ -45,6 +48,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
       splitView: false,
       badgeStyle: "flat-square",
       sectionSeparator: false,
+      lang: "es",
       addBlock: (block) =>
         set((state) => ({ blocks: [...state.blocks, block] })),
       removeBlock: (id) =>
@@ -79,6 +83,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
       setBadgeStyle: (style) => set({ badgeStyle: style }),
       toggleSectionSeparator: () =>
         set((state) => ({ sectionSeparator: !state.sectionSeparator })),
+      setLang: (lang) => set({ lang }),
     }),
     { name: "foliox-editor-draft" },
   ),
