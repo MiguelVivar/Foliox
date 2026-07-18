@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { X, CornerRightDown } from "lucide-react";
+import React from "react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { DragHandle } from "@/components/atoms/DragHandle";
 import { useEditorStore } from "@/store/useEditorStore";
 import type { Block } from "@/types/ast";
 
@@ -16,7 +15,6 @@ import { SocialLinksBlockView } from "./blocks/SocialLinksBlockView";
 import { RichMediaBlockView } from "./blocks/RichMediaBlockView";
 import { MarkdownCustomBlockView } from "./blocks/MarkdownCustomBlockView";
 
-// Label shown in the card header per block kind
 const KIND_LABELS: Record<Block["kind"], string> = {
   "hero-bio": "Hero / Bio",
   "tech-stack": "Tech Stack",
@@ -34,120 +32,13 @@ type Props = {
   totalBlocks: number;
 };
 
-export function BentoCard({ block, index }: Props) {
-  const { selectedBlockId, selectBlock, removeBlock, updateBlock } =
-    useEditorStore();
+export function BentoCard({ block }: Props) {
+  const { selectedBlockId, selectBlock, removeBlock } = useEditorStore();
 
   const isSelected = selectedBlockId === block.id;
   const hasBorder = block.style?.hasBorder ?? true;
   const isAnimated = block.style?.animate ?? false;
 
-  const [dragging, setDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [blockStart, setBlockStart] = useState({ x: 0, y: 0 });
-
-  const [resizing, setResizing] = useState(false);
-  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0 });
-  const [sizeStart, setSizeStart] = useState({ w: 0, h: 0 });
-
-  function handleDragStart(e: React.PointerEvent) {
-    if (e.button !== 0) return;
-    e.preventDefault();
-    e.stopPropagation();
-    selectBlock(block.id);
-
-    setDragging(true);
-    setDragStart({ x: e.clientX, y: e.clientY });
-    setBlockStart({
-      x: block.position?.x ?? 40,
-      y: block.position?.y ?? (40 + index * 240),
-    });
-
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  }
-
-  function handleDragMove(e: React.PointerEvent) {
-    if (!dragging) return;
-    e.stopPropagation();
-
-    const dx = e.clientX - dragStart.x;
-    const dy = e.clientY - dragStart.y;
-
-    const snapGrid = 10;
-    const newX = Math.round((blockStart.x + dx) / snapGrid) * snapGrid;
-    const newY = Math.round((blockStart.y + dy) / snapGrid) * snapGrid;
-
-    updateBlock(block.id, (b) => ({
-      ...b,
-      position: {
-        x: Math.max(0, newX),
-        y: Math.max(0, newY),
-        w: b.position?.w ?? 320,
-        h: b.position?.h ?? 220,
-      },
-    }));
-  }
-
-  function handleDragEnd(e: React.PointerEvent) {
-    if (dragging) {
-      setDragging(false);
-      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    }
-  }
-
-  function handleResizeStart(e: React.PointerEvent) {
-    if (e.button !== 0) return;
-    e.preventDefault();
-    e.stopPropagation();
-
-    setResizing(true);
-    setResizeStart({ x: e.clientX, y: e.clientY });
-    setSizeStart({
-      w: block.position?.w ?? 320,
-      h: block.position?.h ?? 220,
-    });
-
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  }
-
-  function handleResizeMove(e: React.PointerEvent) {
-    if (!resizing) return;
-    e.stopPropagation();
-
-    const dx = e.clientX - resizeStart.x;
-    const dy = e.clientY - resizeStart.y;
-
-    const newW = Math.round((sizeStart.w + dx) / 10) * 10;
-    const newH = Math.round((sizeStart.h + dy) / 10) * 10;
-
-    updateBlock(block.id, (b) => ({
-      ...b,
-      position: {
-        x: b.position?.x ?? 40,
-        y: b.position?.y ?? (40 + index * 240),
-        w: Math.max(150, newW),
-        h: Math.max(80, newH),
-      },
-    }));
-  }
-
-  function handleResizeEnd(e: React.PointerEvent) {
-    if (resizing) {
-      setResizing(false);
-      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    }
-  }
-
-  const cardStyle = {
-    position: "absolute" as const,
-    left: `${block.position?.x ?? 40}px`,
-    top: `${block.position?.y ?? (40 + index * 240)}px`,
-    width: `${block.position?.w ?? 320}px`,
-    height: `${block.position?.h ?? 220}px`,
-    zIndex: isSelected ? 30 : 10,
-  };
-
-  // Block content dispatcher
   function renderBlockContent() {
     switch (block.kind) {
       case "hero-bio":
@@ -171,37 +62,27 @@ export function BentoCard({ block, index }: Props) {
 
   return (
     <div
-      style={cardStyle}
       onClick={(e) => {
         e.stopPropagation();
         selectBlock(block.id);
       }}
       className={cn(
-        "group relative rounded-sm p-4 outline-none transition-all duration-100 overflow-hidden flex flex-col",
+        "group relative rounded-md p-5 outline-none transition-all duration-150 overflow-hidden flex flex-col w-full h-auto",
         isAnimated && "animate-[pulse_2s_infinite]",
         hasBorder
           ? isSelected
-            ? "border border-[var(--accent-phosphor)] bg-[var(--bg-surface)] shadow-[0_0_15px_rgba(110,231,167,0.25),4px_4px_0_0_var(--accent-phosphor)]"
-            : "border border-[var(--border-subtle)] bg-[var(--bg-surface)]/85 hover:border-[var(--accent-phosphor)] hover:shadow-[0_0_12px_rgba(110,231,167,0.15),4px_4px_0_0_var(--accent-phosphor)]"
+            ? "border border-[#f78166] bg-[#0d1117] shadow-[0_0_12px_rgba(247,129,102,0.15)]"
+            : "border border-[#30363d] bg-[#0d1117] hover:border-[#8b949e]"
           : isSelected
-            ? "border border-dashed border-[var(--accent-phosphor)]/60 bg-[var(--bg-canvas)]/40 shadow-[0_0_10px_rgba(110,231,167,0.15)]"
-            : "border border-dashed border-[var(--border-subtle)]/40 bg-[var(--bg-canvas)]/20 hover:border-[var(--accent-phosphor)]/40 hover:shadow-[0_0_8px_rgba(110,231,167,0.08)]",
-        dragging && "opacity-80 shadow-none cursor-grabbing",
+            ? "border border-dashed border-[#f78166]/60 bg-[#0d1117]/80"
+            : "border border-dashed border-[#30363d]/40 bg-[#0d1117]/40 hover:border-[#8b949e]/40",
       )}
     >
-      {/* Card header */}
-      <div className="mb-2 flex items-center justify-between border-b border-[var(--border-subtle)]/50 pb-1 select-none">
-        <div
-          onPointerDown={handleDragStart}
-          onPointerMove={handleDragMove}
-          onPointerUp={handleDragEnd}
-          className="flex items-center gap-1.5 cursor-grab active:cursor-grabbing hover:text-[var(--accent-phosphor)] transition-colors flex-1"
-        >
-          <DragHandle className="h-3 w-3 text-inherit" />
-          <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--text-muted)]">
-            [{KIND_LABELS[block.kind]}]
-          </span>
-        </div>
+      {/* Block header badge (shows on hover or selection to manage blocks easily) */}
+      <div className="mb-3 flex items-center justify-between border-b border-[#30363d]/60 pb-2 select-none text-xs">
+        <span className="font-mono text-[10px] text-[#8b949e] uppercase tracking-wider">
+          {KIND_LABELS[block.kind]}
+        </span>
 
         <button
           type="button"
@@ -209,15 +90,15 @@ export function BentoCard({ block, index }: Props) {
             e.stopPropagation();
             removeBlock(block.id);
           }}
-          className="text-[var(--text-muted)] hover:text-red-400 transition-colors"
+          className="text-[#8b949e] hover:text-[#f78166] transition-colors"
           title="Remove block"
         >
-          <X size={12} />
+          <X size={13} />
         </button>
       </div>
 
-      {/* Content wrapper */}
-      <div className="flex-1 overflow-y-auto pointer-events-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Content wrapper - fluid container with no fixed size limits */}
+      <div className="w-full text-left">
         {renderBlockContent()}
       </div>
     </div>
