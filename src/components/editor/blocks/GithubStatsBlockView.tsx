@@ -1,15 +1,80 @@
-import { GitBranch } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { GitBranch, RefreshCw } from "lucide-react";
 import type { GithubStatsBlock } from "@/types/ast";
+
+type ImageLoadState = "loading" | "loaded" | "error";
+
+function StatsImage({ src, alt }: { src: string; alt: string }) {
+  const [state, setState] = useState<ImageLoadState>("loading");
+  const [retryCount, setRetryCount] = useState(0);
+
+  const resolvedSrc = retryCount === 0 ? src : `${src}&_r=${retryCount}`;
+
+  if (state === "error") {
+    return (
+      <div className="flex flex-col items-start gap-2 rounded-md border border-[#30363d]/50 bg-[#161b22] p-4">
+        <p className="font-mono text-xs text-[#f78166]">
+          No se pudo cargar — la API pública puede estar limitada.
+        </p>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setState("loading");
+              setRetryCount((count) => count + 1);
+            }}
+            className="flex items-center gap-1.5 rounded-sm border border-[#30363d] px-2 py-1 font-mono text-[10px] text-[#8b949e] hover:border-[#8b949e] hover:text-[#f0f6fc]"
+          >
+            <RefreshCw size={11} />
+            Reintentar
+          </button>
+          <a
+            href={src}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[10px] text-[#8b949e] underline hover:text-[#f0f6fc]"
+          >
+            Abrir en nueva pestaña
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative min-h-[4rem]">
+      {state === "loading" && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="animate-pulse font-mono text-[10px] text-[#8b949e]">
+            Cargando…
+          </span>
+        </div>
+      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        key={resolvedSrc}
+        src={resolvedSrc}
+        alt={alt}
+        className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
+        style={{ opacity: state === "loaded" ? 1 : 0 }}
+        onLoad={() => setState("loaded")}
+        onError={() => setState("error")}
+      />
+    </div>
+  );
+}
 
 type Props = { block: GithubStatsBlock };
 
 export function GithubStatsBlockView({ block }: Props) {
-  const { username, showPrivate, showLangs, showTrophies, showVisitorCounter } = block.content;
+  const { username, showLangs, showTrophies, showVisitorCounter, theme } = block.content;
   const safeUser = username || "MiguelVivar";
+  const safeTheme = theme || "dark";
 
-  // URL configs for github-readme-stats
-  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${safeUser}&show_icons=true&theme=dark&count_private=${showPrivate ? "true" : "false"}`;
-  const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${safeUser}&layout=compact&theme=dark`;
+  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${safeUser}&show_icons=true&theme=${safeTheme}&count_private=${block.content.showPrivate ? "true" : "false"}`;
+  const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${safeUser}&layout=compact&theme=${safeTheme}`;
   const trophiesUrl = `https://github-profile-trophy.vercel.app/?username=${safeUser}&theme=onedark`;
 
   return (
@@ -36,43 +101,11 @@ export function GithubStatsBlockView({ block }: Props) {
         </div>
       )}
 
-      {/* Real GitHub Stats Image Card */}
+      {/* Real GitHub Stats image cards, each with its own loading/error state */}
       <div className="flex flex-col gap-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={statsUrl}
-          alt={`${safeUser}'s GitHub Stats`}
-          className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
-          onError={(e) => {
-            e.currentTarget.src = ""; // Fallback if API fails
-          }}
-        />
-
-        {/* Top Languages card */}
-        {showLangs && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={langsUrl}
-            alt={`${safeUser}'s Top Languages`}
-            className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-        )}
-
-        {/* Trophies Case card */}
-        {showTrophies && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={trophiesUrl}
-            alt={`${safeUser}'s Trophies`}
-            className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-        )}
+        <StatsImage src={statsUrl} alt={`${safeUser}'s GitHub Stats`} />
+        {showLangs && <StatsImage src={langsUrl} alt={`${safeUser}'s Top Languages`} />}
+        {showTrophies && <StatsImage src={trophiesUrl} alt={`${safeUser}'s Trophies`} />}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEditorStore } from "@/store/useEditorStore";
+import { GITHUB_STATS_THEMES } from "@/types/ast";
 import type { GithubStatsBlock } from "@/types/ast";
 
 type Props = { block: GithubStatsBlock };
@@ -35,6 +36,26 @@ export function GithubStatsForm({ block }: Props) {
           placeholder="your-github-username"
           className={inputClass}
         />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="gs-theme" className={labelClass}>
+          Theme
+        </label>
+        <select
+          id="gs-theme"
+          value={block.content.theme || "dark"}
+          onChange={(e) =>
+            patch({ theme: e.target.value as GithubStatsBlock["content"]["theme"] })
+          }
+          className={inputClass}
+        >
+          {GITHUB_STATS_THEMES.map((theme) => (
+            <option key={theme} value={theme}>
+              {theme}
+            </option>
+          ))}
+        </select>
       </div>
 
       <label className="flex cursor-pointer items-center gap-3">
