@@ -4,10 +4,9 @@ import { useState, useRef, type ChangeEvent } from "react";
 import { useEditorStore } from "@/store/useEditorStore";
 import type { AsciiImageBlock } from "@/types/ast";
 import { Upload } from "lucide-react";
+import { luminanceToAscii } from "@/lib/asciiArt";
 
 type Props = { block: AsciiImageBlock };
-
-const CHARS = "@%#*+=-:. ";
 
 export function AsciiImageForm({ block }: Props) {
   const { updateBlock } = useEditorStore();
@@ -43,25 +42,17 @@ export function AsciiImageForm({ block }: Props) {
       const imgData = ctx.getImageData(0, 0, width, height);
       const data = imgData.data;
 
-      let asciiStr = "";
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const idx = (y * width + x) * 4;
-          const r = data[idx];
-          const g = data[idx + 1];
-          const b = data[idx + 2];
-          // Standard luminance formula
-          let l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-          if (invert) l = 255 - l;
-
-          // Map luminance (0-255) to character array index (0 to CHARS.length - 1)
-          const charIdx = Math.floor((l / 255) * (CHARS.length - 1));
-          asciiStr += CHARS[charIdx];
-        }
-        asciiStr += "\n";
+      const luminances: number[] = new Array(width * height);
+      for (let p = 0; p < width * height; p++) {
+        const idx = p * 4;
+        const r = data[idx];
+        const g = data[idx + 1];
+        const b = data[idx + 2];
+        // Standard luminance formula
+        luminances[p] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
       }
 
-      patch({ asciiArt: asciiStr });
+      patch({ asciiArt: luminanceToAscii(luminances, width, invert) });
       setLoading(false);
     };
     img.onerror = () => {
