@@ -46,7 +46,9 @@ export function GithubStatsForm({ block }: Props) {
           id="gs-theme"
           value={block.content.theme || "dark"}
           onChange={(e) =>
-            patch({ theme: e.target.value as GithubStatsBlock["content"]["theme"] })
+            patch({
+              theme: e.target.value as GithubStatsBlock["content"]["theme"],
+            })
           }
           className={inputClass}
         >
@@ -74,7 +76,39 @@ export function GithubStatsForm({ block }: Props) {
       {/* Toggles for Extra Widgets */}
       <div className="flex flex-col gap-2.5 border-t border-[var(--border-subtle)] pt-3">
         <span className={labelClass}>Infographics & Metrics</span>
-        
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!!block.content.useMetrics}
+            onChange={(e) => patch({ useMetrics: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+            🚀 Use Metrics API (no rate-limit)
+          </span>
+        </label>
+
+        {block.content.useMetrics && (
+          <div className="flex flex-col gap-1.5 ml-6">
+            <label htmlFor="gs-metrics-template" className={labelClass}>
+              Metrics Template
+            </label>
+            <select
+              id="gs-metrics-template"
+              value={block.content.metricsTemplate || "default"}
+              onChange={(e) =>
+                patch({ metricsTemplate: e.target.value as any })
+              }
+              className={inputClass}
+            >
+              <option value="default">Default</option>
+              <option value="compact">Compact</option>
+              <option value="minimalist">Minimalist</option>
+            </select>
+          </div>
+        )}
+
         <label className="flex cursor-pointer items-center gap-3">
           <input
             type="checkbox"
@@ -82,7 +116,7 @@ export function GithubStatsForm({ block }: Props) {
             onChange={(e) => patch({ showLangs: e.target.checked })}
             className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
-          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
             [+] Language Pie Chart
           </span>
         </label>
@@ -94,7 +128,7 @@ export function GithubStatsForm({ block }: Props) {
             onChange={(e) => patch({ showTrophies: e.target.checked })}
             className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
-          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
             [+] Trophy Case (trophies)
           </span>
         </label>
@@ -106,7 +140,7 @@ export function GithubStatsForm({ block }: Props) {
             onChange={(e) => patch({ showVisitorCounter: e.target.checked })}
             className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
-          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
             [+] Visitor Counter
           </span>
         </label>

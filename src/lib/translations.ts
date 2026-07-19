@@ -12,7 +12,8 @@ export const translations = {
     hero: {
       tag: "v1.0.0-beta RELEASED",
       title: "Notion meets Canva for Developer Branding.",
-      description: "Forget static README generators and boring forms. Design your GitHub profile, technical resume, and portfolio on a modular drag-and-drop canvas powered by local AI (BYOK).",
+      description:
+        "Forget static README generators and boring forms. Design your GitHub profile, technical resume, and portfolio on a modular drag-and-drop canvas powered by local AI (BYOK).",
       ctaPrimary: "Open Visual Editor",
       ctaSecondary: "Explore GitHub Repo",
       mockupTitle: "Interactive Visual Compiler",
@@ -26,20 +27,26 @@ export const translations = {
     features: {
       sectionBadge: "01 // ENGINE ARCHITECTURE",
       sectionTitle: "Designed for precision. Built for developers.",
-      sectionDesc: "Explore the engineering pillars behind Foliox. Power your technical brand without middle-men or proprietary databases.",
+      sectionDesc:
+        "Explore the engineering pillars behind Foliox. Power your technical brand without middle-men or proprietary databases.",
       astTitle: "Drag & Drop AST Architecture",
-      astDesc: "Every component (Bio, Stack, Metrics) maps to a TypeScript Abstract Syntax Tree. Compiles clean Markdown without breaking layouts.",
+      astDesc:
+        "Every component (Bio, Stack, Metrics) maps to a TypeScript Abstract Syntax Tree. Compiles clean Markdown without breaking layouts.",
       aiTitle: "AI BYOK (Bring Your Own Key)",
-      aiDesc: "Connect your local API credentials for OpenAI, DeepSeek, Claude, or Gemini. Zero database logging of your profile content.",
+      aiDesc:
+        "Connect your local API credentials for OpenAI, DeepSeek, Claude, or Gemini. Zero database logging of your profile content.",
       deployTitle: "One-Click Deploy to GitHub",
-      deployDesc: "Integrated OAuth via Appwrite Cloud and Octokit. Push changes directly and atomically to your special username/username repo.",
+      deployDesc:
+        "Integrated OAuth via Appwrite Cloud and Octokit. Push changes directly and atomically to your special username/username repo.",
       asciiTitle: "ASCII Art Engine & Asset Forge",
-      asciiDesc: "Upload your images to the optimized canvas and instantly convert them to textured ASCII portraits in Markdown. Or store assets on Appwrite.",
+      asciiDesc:
+        "Upload your images to the optimized canvas and instantly convert them to textured ASCII portraits in Markdown. Or store assets on Appwrite.",
     },
     about: {
       sectionBadge: "02 // THE MANIFESTO",
       sectionTitle: "Why we built Foliox",
-      sectionDesc: "The developer paradox: we build high-availability systems and elegant architectures, but present our identity in generic templates.",
+      sectionDesc:
+        "The developer paradox: we build high-availability systems and elegant architectures, but present our identity in generic templates.",
       p1: "Foliox was born to bridge this gap. We wanted the visual malleability of design tools like Canva, combined with the semantic structure that engineers value in code.",
       p2: "We want your technical profile to feel as polished as your repositories. And we achieve this by letting you design visually while compiling clean AST directly to standard GitHub Markdown.",
       ideLabel: "manifesto.md",
@@ -47,15 +54,18 @@ export const translations = {
     pricing: {
       sectionBadge: "05 // LICENSING & DEPLOYMENT",
       sectionTitle: "Clear pricing. Lifetime license.",
-      sectionDesc: "Choose between hosting it locally for free or boosting your presence with our auto-syncing cloud.",
+      sectionDesc:
+        "Choose between hosting it locally for free or boosting your presence with our auto-syncing cloud.",
       billingMonthly: "Monthly",
       billingLifetime: "Lifetime",
       freeTitle: "Free Forever",
-      freeDesc: "The entire design engine running fully isolated inside your local browser.",
+      freeDesc:
+        "The entire design engine running fully isolated inside your local browser.",
       freePeriod: "/ lifetime",
       freeCta: "Start Free in Browser",
       proTitle: "Lifetime License",
-      proDesc: "Cloud synchronization and optimized deployment pipelines in a single click.",
+      proDesc:
+        "Cloud synchronization and optimized deployment pipelines in a single click.",
       proPeriod: "/ one-time payment",
       proCta: "Upgrade to Pro Cloud",
       features: {
@@ -82,7 +92,8 @@ export const translations = {
       language: "Language",
       splitView: "Split View",
       canvasOnly: "Canvas Only",
-      autoImportTitle: "Connected to GitHub via OAuth. Populate editor with your active README?",
+      autoImportTitle:
+        "Connected to GitHub via OAuth. Populate editor with your active README?",
       autoImportBtn: "Auto-Import Profile",
       dismissBtn: "Dismiss",
       tabs: {
@@ -103,7 +114,8 @@ export const translations = {
     hero: {
       tag: "v1.0.0-beta LANZADO",
       title: "Notion meets Canva para el Branding de Desarrolladores.",
-      description: "Olvídate de los generadores de README estáticos y formularios aburridos. Diseña tu perfil de GitHub, currículum técnico y portafolio en un lienzo modular drag-and-drop impulsado por IA local (BYOK).",
+      description:
+        "Olvídate de los generadores de README estáticos y formularios aburridos. Diseña tu perfil de GitHub, currículum técnico y portafolio en un lienzo modular drag-and-drop impulsado por IA local (BYOK).",
       ctaPrimary: "Abrir Editor Visual",
       ctaSecondary: "Explorar Repositorio",
       mockupTitle: "Compilador Visual Interactivo",
@@ -116,21 +128,28 @@ export const translations = {
     },
     features: {
       sectionBadge: "01 // ARQUITECTURA DEL MOTOR",
-      sectionTitle: "Diseñado para la precisión. Construido para desarrolladores.",
-      sectionDesc: "Explora los pilares de ingeniería detrás de Foliox. Potencia tu marca técnica sin intermediarios ni bases de datos propietarias.",
+      sectionTitle:
+        "Diseñado para la precisión. Construido para desarrolladores.",
+      sectionDesc:
+        "Explora los pilares de ingeniería detrás de Foliox. Potencia tu marca técnica sin intermediarios ni bases de datos propietarias.",
       astTitle: "Arquitectura AST Drag & Drop",
-      astDesc: "Cada componente (Bio, Stack, Métricas) se mapea a un Árbol de Sintaxis Abstracta en TypeScript. Compila Markdown limpio sin romper layouts.",
+      astDesc:
+        "Cada componente (Bio, Stack, Métricas) se mapea a un Árbol de Sintaxis Abstracta en TypeScript. Compila Markdown limpio sin romper layouts.",
       aiTitle: "IA BYOK (Trae Tu Propia Llave)",
-      aiDesc: "Conecta tus credenciales locales de OpenAI, DeepSeek, Claude o Gemini. Cero registro en bases de datos externas de tu contenido.",
+      aiDesc:
+        "Conecta tus credenciales locales de OpenAI, DeepSeek, Claude o Gemini. Cero registro en bases de datos externas de tu contenido.",
       deployTitle: "Despliegue a GitHub en un Clic",
-      deployDesc: "OAuth integrado mediante Appwrite Cloud y Octokit. Publica los cambios de forma directa y atómica en tu repositorio especial username/username.",
+      deployDesc:
+        "OAuth integrado mediante Appwrite Cloud y Octokit. Publica los cambios de forma directa y atómica en tu repositorio especial username/username.",
       asciiTitle: "Motor de Arte ASCII y Assets",
-      asciiDesc: "Sube imágenes al lienzo optimizado y conviértelas al instante en retratos ASCII texturizados en tu Markdown. O almacena assets en Appwrite.",
+      asciiDesc:
+        "Sube imágenes al lienzo optimizado y conviértelas al instante en retratos ASCII texturizados en tu Markdown. O almacena assets en Appwrite.",
     },
     about: {
       sectionBadge: "02 // EL MANIFIESTO",
       sectionTitle: "Por qué creamos Foliox",
-      sectionDesc: "La paradoja del desarrollador: construimos sistemas de alta disponibilidad y arquitecturas elegantes, pero presentamos nuestro trabajo en plantillas genéricas.",
+      sectionDesc:
+        "La paradoja del desarrollador: construimos sistemas de alta disponibilidad y arquitecturas elegantes, pero presentamos nuestro trabajo en plantillas genéricas.",
       p1: "Foliox nace para cerrar esa brecha. Queríamos la maleabilidad visual de herramientas de diseño modernas como Canva, combinada con la estructura y robustez semántica que los ingenieros valoramos en nuestro código.",
       p2: "Queremos que tu perfil técnico se sienta tan pulido como tus repositorios. Y lo logramos permitiéndote diseñar visualmente mientras compilamos directamente a sintaxis compatible con GitHub en tiempo real.",
       ideLabel: "manifiesto.md",
@@ -138,15 +157,18 @@ export const translations = {
     pricing: {
       sectionBadge: "05 // LICENCIAS Y DESPLIEGUE",
       sectionTitle: "Planes claros. Licencia de por vida.",
-      sectionDesc: "Elige entre hostearlo localmente de forma gratuita o potenciar tu marca con nuestra nube auto-sincronizada.",
+      sectionDesc:
+        "Elige entre hostearlo localmente de forma gratuita o potenciar tu marca con nuestra nube auto-sincronizada.",
       billingMonthly: "Mensual",
       billingLifetime: "De por vida",
       freeTitle: "Gratis para siempre",
-      freeDesc: "Todo el motor de diseño ejecutándose de forma aislada en tu navegador local.",
+      freeDesc:
+        "Todo el motor de diseño ejecutándose de forma aislada en tu navegador local.",
       freePeriod: "/ de por vida",
       freeCta: "Comenzar Gratis en Navegador",
       proTitle: "Licencia de por vida",
-      proDesc: "Sincronización en la nube y pipelines de despliegue optimizados en un solo clic.",
+      proDesc:
+        "Sincronización en la nube y pipelines de despliegue optimizados en un solo clic.",
       proPeriod: "/ pago único",
       proCta: "Mejorar a Pro Cloud",
       features: {
@@ -163,8 +185,10 @@ export const translations = {
       },
     },
     footer: {
-      copyright: "© 2026 Foliox. Construido para la comunidad de código abierto.",
-      status: "ESTADO DEL SISTEMA: 100% OPERATIVO - TODOS LOS SERVICIOS NORMALES",
+      copyright:
+        "© 2026 Foliox. Construido para la comunidad de código abierto.",
+      status:
+        "ESTADO DEL SISTEMA: 100% OPERATIVO - TODOS LOS SERVICIOS NORMALES",
     },
     editor: {
       workspace: "Lienzo",
@@ -173,7 +197,8 @@ export const translations = {
       language: "Idioma",
       splitView: "Vista Dividida",
       canvasOnly: "Solo Lienzo",
-      autoImportTitle: "Conectado a GitHub vía OAuth. ¿Cargar el editor con tu README activo?",
+      autoImportTitle:
+        "Conectado a GitHub vía OAuth. ¿Cargar el editor con tu README activo?",
       autoImportBtn: "Auto-Importar Perfil",
       dismissBtn: "Descartar",
       tabs: {

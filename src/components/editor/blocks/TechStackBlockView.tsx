@@ -1,5 +1,5 @@
-import { Badge } from "@/components/atoms/Badge";
 import type { TechStackBlock } from "@/types/ast";
+import { getBadgeByLabel } from "@/lib/markdownBadges";
 
 type Props = { block: TechStackBlock };
 
@@ -15,12 +15,28 @@ export function TechStackBlockView({ block }: Props) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {technologies.map((tech) => (
-        <Badge key={tech} variant="mauve" mono>
-          {tech}
-        </Badge>
-      ))}
+    <div className="flex flex-wrap gap-3">
+      {technologies.map((tech) => {
+        const badge = getBadgeByLabel(tech);
+        const bgColor = badge?.backgroundColor || "999999";
+        const logoColor = badge?.logoColor || "fff";
+
+        return (
+          <a
+            key={tech}
+            href={`https://img.shields.io/badge/${encodeURIComponent(tech)}-${bgColor}?style=for-the-badge&logo=${badge?.logo || ""}&logoColor=${logoColor}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block hover:opacity-80 transition-opacity"
+          >
+            <img
+              src={`https://img.shields.io/badge/${encodeURIComponent(tech)}-${bgColor}?style=for-the-badge&logo=${badge?.logo || ""}&logoColor=${logoColor}`}
+              alt={tech}
+              className="h-8"
+            />
+          </a>
+        );
+      })}
     </div>
   );
 }

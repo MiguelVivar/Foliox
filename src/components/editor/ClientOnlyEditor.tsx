@@ -2,7 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Columns2, LayoutTemplate, Home, Settings, User, Globe } from "lucide-react";
+import {
+  Columns2,
+  LayoutTemplate,
+  Home,
+  Settings,
+  User,
+  Globe,
+} from "lucide-react";
 import { useEditorStore } from "@/store/useEditorStore";
 import { EditorCanvas } from "@/components/editor/EditorCanvas";
 import { EditorSidebar } from "@/components/editor/EditorSidebar";
@@ -13,7 +20,15 @@ import { translations } from "@/lib/translations";
 import { cn } from "@/lib/cn";
 
 export function ClientOnlyEditor() {
-  const { splitView, toggleSplitView, blocks, addBlock, updateBlock, lang, setLang } = useEditorStore();
+  const {
+    splitView,
+    toggleSplitView,
+    blocks,
+    addBlock,
+    updateBlock,
+    lang,
+    setLang,
+  } = useEditorStore();
   const { user, checkSession } = useAuthStore();
   const [selectedProfile, setSelectedProfile] = useState("architect-cv");
   const [showImportBanner, setShowImportBanner] = useState(true);
@@ -25,11 +40,17 @@ export function ClientOnlyEditor() {
   }, [checkSession]);
 
   async function handleAutoImport() {
-    const rawUsername = prompt(lang === "es" ? "Ingresa tu usuario de GitHub para auto-importar perfil y tu README.md:" : "Enter your GitHub username to auto-import profile & existing README.md:");
+    const rawUsername = prompt(
+      lang === "es"
+        ? "Ingresa tu usuario de GitHub para auto-importar perfil y tu README.md:"
+        : "Enter your GitHub username to auto-import profile & existing README.md:",
+    );
     if (!rawUsername) return;
 
     // Sanitize to extract username from full URLs or repo paths
-    let cleaned = rawUsername.trim().replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "");
+    let cleaned = rawUsername
+      .trim()
+      .replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "");
     const segments = cleaned.split("/").filter(Boolean);
     const username = segments[0] || rawUsername.trim();
 
@@ -53,7 +74,7 @@ export function ClientOnlyEditor() {
                   avatarUrl: userData.avatar_url || b.content.avatarUrl,
                 },
               }
-            : b
+            : b,
         );
       } else {
         addBlock({
@@ -68,7 +89,9 @@ export function ClientOnlyEditor() {
       }
 
       // 2. Languages
-      const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=60&sort=updated`);
+      const reposRes = await fetch(
+        `https://api.github.com/users/${username}/repos?per_page=60&sort=updated`,
+      );
       if (reposRes.ok) {
         const repos = await reposRes.json();
         const langCounts: Record<string, number> = {};
@@ -92,10 +115,12 @@ export function ClientOnlyEditor() {
                     ...b,
                     style: b.style,
                     content: {
-                      technologies: Array.from(new Set([...b.content.technologies, ...sortedLangs])),
+                      technologies: Array.from(
+                        new Set([...b.content.technologies, ...sortedLangs]),
+                      ),
                     },
                   }
-                : b
+                : b,
             );
           } else {
             addBlock({
@@ -108,19 +133,25 @@ export function ClientOnlyEditor() {
       }
 
       // 3. GitHub README
-      let readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/main/README.md`);
+      let readmeRes = await fetch(
+        `https://raw.githubusercontent.com/${username}/${username}/main/README.md`,
+      );
       if (!readmeRes.ok) {
-        readmeRes = await fetch(`https://raw.githubusercontent.com/${username}/${username}/master/README.md`);
+        readmeRes = await fetch(
+          `https://raw.githubusercontent.com/${username}/${username}/master/README.md`,
+        );
       }
       if (readmeRes.ok) {
         const readmeContent = await readmeRes.text();
         if (readmeContent && readmeContent.trim()) {
-          const existingMarkdown = blocks.find((b) => b.kind === "markdown-custom");
+          const existingMarkdown = blocks.find(
+            (b) => b.kind === "markdown-custom",
+          );
           if (existingMarkdown) {
             updateBlock(existingMarkdown.id, (b) =>
               b.kind === "markdown-custom"
                 ? { ...b, style: b.style, content: { markdown: readmeContent } }
-                : b
+                : b,
             );
           } else {
             addBlock({
@@ -132,14 +163,18 @@ export function ClientOnlyEditor() {
         }
       }
       setShowImportBanner(false);
-      alert(lang === "es" ? "ÉXITO: ¡Perfil, lenguajes y README importados con éxito!" : "SUCCESS: Profile details, languages & existing README imported!");
+      alert(
+        lang === "es"
+          ? "ÉXITO: ¡Perfil, lenguajes y README importados con éxito!"
+          : "SUCCESS: Profile details, languages & existing README imported!",
+      );
     } catch (err: any) {
       alert("Error importing profile: " + err.message);
     }
   }
 
   return (
-    <main className="crt-scanlines flex flex-col md:flex-row flex-1 overflow-hidden bg-[var(--bg-canvas)]">
+    <main className="crt-scanlines flex flex-1 flex-col overflow-hidden bg-[var(--bg-canvas)] md:flex-row">
       {/* ── Canvas zone ── */}
       <section
         className={cn(
@@ -148,11 +183,11 @@ export function ClientOnlyEditor() {
         )}
       >
         {/* Glassmorphic Premium Toolbar Strip */}
-        <div className="crt-glass flex items-center justify-between px-4 py-3 font-mono text-[10px] select-none border-b border-[var(--accent-phosphor)]/20">
+        <div className="crt-glass flex items-center justify-between border-b border-[var(--accent-phosphor)]/20 px-4 py-3 font-mono text-[10px] select-none">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-[var(--accent-phosphor)] hover:text-white border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--accent-phosphor)]/10 rounded-sm px-2.5 py-1 transition-all uppercase tracking-widest font-bold crt-glowing-glow"
+              className="crt-glowing-glow flex items-center gap-1.5 rounded-sm border border-[var(--accent-phosphor)]/30 bg-[var(--accent-phosphor)]/10 px-2.5 py-1 font-bold tracking-widest text-[var(--accent-phosphor)] uppercase transition-all hover:border-[var(--accent-phosphor)] hover:text-white"
             >
               <Home size={11} />
               <span>{t.editor.home}</span>
@@ -162,11 +197,13 @@ export function ClientOnlyEditor() {
 
             {/* Profile switching dropdown */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[var(--text-muted)] uppercase tracking-wider text-[9px]">{t.editor.workspace}:</span>
+              <span className="text-[9px] tracking-wider text-[var(--text-muted)] uppercase">
+                {t.editor.workspace}:
+              </span>
               <select
                 value={selectedProfile}
                 onChange={(e) => setSelectedProfile(e.target.value)}
-                className="bg-[var(--bg-canvas)] border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] px-2 py-1 rounded-sm text-[var(--accent-phosphor)] focus:outline-none focus:border-[var(--accent-phosphor)] font-mono text-[9px] uppercase tracking-widest transition-all"
+                className="rounded-sm border border-[var(--accent-phosphor)]/30 bg-[var(--bg-canvas)] px-2 py-1 font-mono text-[9px] tracking-widest text-[var(--accent-phosphor)] uppercase transition-all hover:border-[var(--accent-phosphor)] focus:border-[var(--accent-phosphor)] focus:outline-none"
               >
                 <option value="architect-cv">Systems Architect CV</option>
                 <option value="github-readme">GitHub Special README</option>
@@ -177,19 +214,25 @@ export function ClientOnlyEditor() {
 
           <div className="flex items-center gap-3">
             {/* User status */}
-            <div className="hidden lg:flex items-center gap-1.5 text-[var(--text-muted)]">
+            <div className="hidden items-center gap-1.5 text-[var(--text-muted)] lg:flex">
               <User size={11} className="text-[var(--accent-phosphor)]" />
-              <span className="font-bold text-[var(--text-primary)]">{user?.name ? user.name.toUpperCase().replace(/\s+/g, "_") : "JANE_DOE"}</span>
-              <span className="bg-[var(--accent-phosphor)]/20 text-[var(--accent-phosphor)] border border-[var(--accent-phosphor)]/50 px-1.5 py-0.5 rounded-sm text-[8px] tracking-widest uppercase animate-pulse font-extrabold shadow-[0_0_8px_var(--glow-color)]">PRO</span>
+              <span className="font-bold text-[var(--text-primary)]">
+                {user?.name
+                  ? user.name.toUpperCase().replace(/\s+/g, "_")
+                  : "JANE_DOE"}
+              </span>
+              <span className="animate-pulse rounded-sm border border-[var(--accent-phosphor)]/50 bg-[var(--accent-phosphor)]/20 px-1.5 py-0.5 text-[8px] font-extrabold tracking-widest text-[var(--accent-phosphor)] uppercase shadow-[0_0_8px_var(--glow-color)]">
+                PRO
+              </span>
             </div>
 
             {/* Language toggle selector */}
-            <div className="flex items-center gap-1 border border-[var(--accent-phosphor)]/30 rounded-sm px-1.5 py-1 bg-[var(--bg-canvas)]">
+            <div className="flex items-center gap-1 rounded-sm border border-[var(--accent-phosphor)]/30 bg-[var(--bg-canvas)] px-1.5 py-1">
               <Globe size={11} className="text-[var(--accent-phosphor)]" />
               <select
                 value={lang}
                 onChange={(e) => setLang(e.target.value as "en" | "es")}
-                className="bg-transparent border-none text-[var(--accent-phosphor)] font-mono text-[9px] uppercase tracking-widest focus:outline-none cursor-pointer"
+                className="cursor-pointer border-none bg-transparent font-mono text-[9px] tracking-widest text-[var(--accent-phosphor)] uppercase focus:outline-none"
               >
                 <option value="es">ESP</option>
                 <option value="en">ENG</option>
@@ -197,11 +240,11 @@ export function ClientOnlyEditor() {
             </div>
 
             {/* Visual theme toggler */}
-            <ThemeToggle className="p-1.5 border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--bg-canvas)] rounded-sm text-[var(--accent-phosphor)] hover:text-white transition-all hover:shadow-[0_0_8px_var(--glow-color)] cursor-pointer" />
+            <ThemeToggle className="cursor-pointer rounded-sm border border-[var(--accent-phosphor)]/30 bg-[var(--bg-canvas)] p-1.5 text-[var(--accent-phosphor)] transition-all hover:border-[var(--accent-phosphor)] hover:text-white hover:shadow-[0_0_8px_var(--glow-color)]" />
 
             <Link
               href="/settings"
-              className="p-1.5 border border-[var(--accent-phosphor)]/30 hover:border-[var(--accent-phosphor)] bg-[var(--bg-canvas)] rounded-sm text-[var(--accent-phosphor)] hover:text-white transition-all hover:shadow-[0_0_8px_var(--glow-color)]"
+              className="rounded-sm border border-[var(--accent-phosphor)]/30 bg-[var(--bg-canvas)] p-1.5 text-[var(--accent-phosphor)] transition-all hover:border-[var(--accent-phosphor)] hover:text-white hover:shadow-[0_0_8px_var(--glow-color)]"
               title="Configurations"
             >
               <Settings size={12} />
@@ -215,7 +258,7 @@ export function ClientOnlyEditor() {
               }
               aria-pressed={splitView}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm border px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-all font-bold cursor-pointer",
+                "flex cursor-pointer items-center gap-1.5 rounded-sm border px-3 py-1.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all",
                 splitView
                   ? "border-[var(--accent-phosphor)] bg-[var(--accent-phosphor)]/20 text-[var(--accent-phosphor)] shadow-[0_0_10px_var(--glow-color)]"
                   : "border-[var(--accent-phosphor)]/30 text-[var(--accent-phosphor)] hover:border-[var(--accent-phosphor)] hover:bg-[var(--accent-phosphor)]/10 hover:shadow-[0_0_8px_var(--glow-color)]",
@@ -232,23 +275,27 @@ export function ClientOnlyEditor() {
         </div>
 
         {user && showImportBanner && (
-          <div className="mx-6 mt-4 p-3 bg-[var(--accent-phosphor)]/10 border border-[var(--accent-phosphor)]/30 rounded-sm flex items-center justify-between font-mono text-[10px] z-20">
+          <div className="z-20 mx-6 mt-4 flex items-center justify-between rounded-sm border border-[var(--accent-phosphor)]/30 bg-[var(--accent-phosphor)]/10 p-3 font-mono text-[10px]">
             <div className="flex items-center gap-2">
-              <span className="animate-pulse text-[var(--accent-phosphor)]">●</span>
-              <span className="text-[var(--text-primary)]">{t.editor.autoImportTitle}</span>
+              <span className="animate-pulse text-[var(--accent-phosphor)]">
+                ●
+              </span>
+              <span className="text-[var(--text-primary)]">
+                {t.editor.autoImportTitle}
+              </span>
             </div>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={handleAutoImport}
-                className="bg-[var(--accent-phosphor)] text-[var(--bg-canvas)] font-bold px-3 py-1 rounded-sm hover:-translate-y-0.5 transition-all uppercase tracking-wider cursor-pointer"
+                className="cursor-pointer rounded-sm bg-[var(--accent-phosphor)] px-3 py-1 font-bold tracking-wider text-[var(--bg-canvas)] uppercase transition-all hover:-translate-y-0.5"
               >
                 {t.editor.autoImportBtn}
               </button>
               <button
                 type="button"
                 onClick={() => setShowImportBanner(false)}
-                className="text-[var(--text-muted)] hover:text-white uppercase tracking-wider px-2 cursor-pointer"
+                className="cursor-pointer px-2 tracking-wider text-[var(--text-muted)] uppercase hover:text-white"
               >
                 {t.editor.dismissBtn}
               </button>
@@ -261,13 +308,13 @@ export function ClientOnlyEditor() {
 
       {/* ── Markdown preview (split view only) ── */}
       {splitView && (
-        <section className="flex w-full md:w-[40%] flex-col overflow-hidden border-t md:border-t-0 md:border-l border-[var(--accent-phosphor)]/20 bg-[var(--bg-canvas)]/90 backdrop-blur-md">
+        <section className="flex w-full flex-col overflow-hidden border-t border-[var(--accent-phosphor)]/20 bg-[var(--bg-canvas)]/90 backdrop-blur-md md:w-[40%] md:border-t-0 md:border-l">
           <MarkdownPreview />
         </section>
       )}
 
       {/* ── Sidebar ── */}
-      <aside className="flex w-full md:w-80 flex-shrink-0 flex-col overflow-y-auto border-t md:border-t-0 md:border-l border-[var(--accent-phosphor)]/20 bg-[var(--bg-surface)]/95 backdrop-blur-md">
+      <aside className="flex w-full flex-shrink-0 flex-col overflow-y-auto border-t border-[var(--accent-phosphor)]/20 bg-[var(--bg-surface)]/95 backdrop-blur-md md:w-80 md:border-t-0 md:border-l">
         <EditorSidebar />
       </aside>
     </main>

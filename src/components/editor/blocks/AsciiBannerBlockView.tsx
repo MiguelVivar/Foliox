@@ -6,7 +6,14 @@ import type { AsciiBannerBlock } from "@/types/ast";
 type Props = { block: AsciiBannerBlock };
 
 export function AsciiBannerBlockView({ block }: Props) {
-  const { text, font, fontSize = 13, fontColor = "#58a6ff", glowEnabled = true, shadowEnabled = false } = block.content;
+  const {
+    text,
+    font,
+    fontSize = 13,
+    fontColor = "#58a6ff",
+    glowEnabled = true,
+    shadowEnabled = false,
+  } = block.content;
   const { art, loading } = useFiglet(text, font);
 
   const bannerStyle = {
@@ -37,7 +44,10 @@ export function AsciiBannerBlockView({ block }: Props) {
             Rendering…
           </span>
         ) : art ? (
-          <pre className="font-mono leading-[1.15] whitespace-pre" style={bannerStyle}>
+          <pre
+            className="font-mono leading-[1.15] whitespace-pre"
+            style={bannerStyle}
+          >
             {art}
           </pre>
         ) : (

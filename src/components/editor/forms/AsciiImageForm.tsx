@@ -57,7 +57,9 @@ export function AsciiImageForm({ block }: Props) {
       }
 
       const enableDithering = block.content.dithering ?? false;
-      patch({ asciiArt: luminanceToAscii(luminances, width, invert, enableDithering) });
+      patch({
+        asciiArt: luminanceToAscii(luminances, width, invert, enableDithering),
+      });
       setLoading(false);
     };
     img.onerror = () => {

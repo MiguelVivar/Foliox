@@ -17,7 +17,9 @@ export function EditorCanvas() {
   const { blocks, selectBlock, updateBlockPositions } = useEditorStore();
   const { user } = useAuthStore();
 
-  const githubHandle = user?.name ? user.name.replace(/\s+/g, "") : "MiguelVivar";
+  const githubHandle = user?.name
+    ? user.name.replace(/\s+/g, "")
+    : "MiguelVivar";
 
   const layout: Layout[] = useMemo(
     () =>
@@ -45,7 +47,7 @@ export function EditorCanvas() {
 
   return (
     <div
-      className="relative flex flex-1 overflow-y-auto p-4 md:p-8 bg-[#0d1117] text-[#c9d1d9] font-sans"
+      className="relative flex flex-1 overflow-y-auto bg-[#0d1117] p-4 font-sans text-[#c9d1d9] md:p-8"
       onClick={() => selectBlock(null)}
     >
       {/* Background Dot Grid */}
@@ -54,8 +56,8 @@ export function EditorCanvas() {
       {/* Centered GitHub README Container Wrapper */}
       <div className="relative z-10 mx-auto w-full max-w-4xl pt-4">
         {/* README Card container box */}
-        <div className="border border-[#30363d] rounded-md bg-[#0d1117] p-6 relative min-h-[500px]">
-          <div className="absolute top-3 right-3 text-xs text-[#8b949e] font-mono select-none">
+        <div className="relative min-h-[500px] rounded-md border border-[#30363d] bg-[#0d1117] p-6">
+          <div className="absolute top-3 right-3 font-mono text-xs text-[#8b949e] select-none">
             {githubHandle} / README.md
           </div>
 
@@ -63,14 +65,17 @@ export function EditorCanvas() {
           <div className="mt-6">
             {blocks.length === 0 ? (
               <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
-                <span className="font-mono text-4xl text-[var(--text-muted)] flex items-center justify-center h-12 w-12 border border-[#30363d] bg-[#161b22] rounded-md">
+                <span className="flex h-12 w-12 items-center justify-center rounded-md border border-[#30363d] bg-[#161b22] font-mono text-4xl text-[var(--text-muted)]">
                   +
                 </span>
-                <p className="text-sm font-medium text-[#f0f6fc] mt-4">
+                <p className="mt-4 text-sm font-medium text-[#f0f6fc]">
                   README_EMPTY
                 </p>
-                <p className="max-w-xs font-mono text-[10px] uppercase tracking-widest text-[#8b949e]">
-                  Add blocks from the sidebar to populate your profile readme <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">█</span>
+                <p className="max-w-xs font-mono text-[10px] tracking-widest text-[#8b949e] uppercase">
+                  Add blocks from the sidebar to populate your profile readme{" "}
+                  <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">
+                    █
+                  </span>
                 </p>
               </div>
             ) : (

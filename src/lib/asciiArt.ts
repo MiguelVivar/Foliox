@@ -9,7 +9,7 @@ const BAYER_MATRIX = [
 ];
 
 function ditherOrderedBayer(luminance: number, x: number, y: number): number {
-  const threshold = (BAYER_MATRIX[y % 4][x % 4] + 1) / 17 * 255;
+  const threshold = ((BAYER_MATRIX[y % 4][x % 4] + 1) / 17) * 255;
   return luminance > threshold ? luminance + 20 : luminance - 20;
 }
 

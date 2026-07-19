@@ -23,7 +23,9 @@ export function TechStackForm({ block }: Props) {
     return TECH_CATALOG.filter(
       (entry) =>
         entry.label.toLowerCase().includes(trimmed) &&
-        !selected.some((tech) => tech.toLowerCase() === entry.label.toLowerCase()),
+        !selected.some(
+          (tech) => tech.toLowerCase() === entry.label.toLowerCase(),
+        ),
     ).slice(0, 8);
   }, [query, selected]);
 
@@ -40,7 +42,8 @@ export function TechStackForm({ block }: Props) {
   function addTech(label: string) {
     const trimmed = label.trim();
     if (!trimmed) return;
-    if (selected.some((tech) => tech.toLowerCase() === trimmed.toLowerCase())) return;
+    if (selected.some((tech) => tech.toLowerCase() === trimmed.toLowerCase()))
+      return;
     setTechnologies([...selected, trimmed]);
     setQuery("");
     setIsOpen(false);
@@ -56,7 +59,7 @@ export function TechStackForm({ block }: Props) {
       <div className="relative flex flex-col gap-1.5">
         <label
           htmlFor="ts-search"
-          className="block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]"
+          className="block font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase"
         >
           Add technology
         </label>

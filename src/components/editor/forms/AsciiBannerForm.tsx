@@ -88,7 +88,7 @@ export function AsciiBannerForm({ block }: Props) {
             type="color"
             value={block.content.fontColor || "#58a6ff"}
             onChange={(e) => patch({ fontColor: e.target.value })}
-            className="h-10 w-16 rounded-sm border border-[var(--border-subtle)] cursor-pointer"
+            className="h-10 w-16 cursor-pointer rounded-sm border border-[var(--border-subtle)]"
           />
           <input
             type="text"

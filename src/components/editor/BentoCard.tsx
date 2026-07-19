@@ -65,7 +65,7 @@ export function BentoCard({ block }: Props) {
         selectBlock(block.id);
       }}
       className={cn(
-        "group relative flex h-full w-full flex-col overflow-hidden rounded-md p-5 outline-none transition-all duration-150",
+        "group relative flex h-full w-full flex-col overflow-hidden rounded-md p-5 transition-all duration-150 outline-none",
         isAnimated && "animate-[pulse_2s_infinite]",
         hasBorder
           ? isSelected
@@ -77,8 +77,8 @@ export function BentoCard({ block }: Props) {
       )}
     >
       {/* Drag handle + header badge */}
-      <div className="block-drag-handle mb-3 flex cursor-grab items-center justify-between border-b border-[#30363d]/60 pb-2 select-none text-xs active:cursor-grabbing">
-        <span className="flex items-center gap-1.5 font-mono text-[10px] text-[#8b949e] uppercase tracking-wider">
+      <div className="block-drag-handle mb-3 flex cursor-grab items-center justify-between border-b border-[#30363d]/60 pb-2 text-xs select-none active:cursor-grabbing">
+        <span className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-[#8b949e] uppercase">
           <GripVertical size={12} className="text-[#8b949e]/60" />
           {KIND_LABELS[block.kind]}
         </span>
@@ -89,7 +89,7 @@ export function BentoCard({ block }: Props) {
             e.stopPropagation();
             removeBlock(block.id);
           }}
-          className="block-drag-handle-cancel text-[#8b949e] hover:text-[#f78166] transition-colors"
+          className="block-drag-handle-cancel text-[#8b949e] transition-colors hover:text-[#f78166]"
           title="Remove block"
         >
           <X size={13} />

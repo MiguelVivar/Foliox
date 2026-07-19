@@ -53,7 +53,7 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-canvas)]/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 bg-transparent">
+      <div className="mx-auto flex max-w-7xl items-center justify-between bg-transparent px-6 py-4">
         {/* Left: Brand Logo */}
         <Link href="/" className="flex items-center gap-3">
           <Image
@@ -69,35 +69,35 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
         </Link>
 
         {/* Center: Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 text-xs font-mono text-[var(--text-muted)]">
+        <nav className="hidden items-center gap-1 font-mono text-xs text-[var(--text-muted)] lg:flex">
           <a
             href="#features"
-            className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+            className="rounded-sm px-3 py-1.5 transition-colors hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)]"
           >
             {t.features}
           </a>
           <span className="text-[var(--border-subtle)]">|</span>
           <a
             href="#philosophy"
-            className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+            className="rounded-sm px-3 py-1.5 transition-colors hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)]"
           >
             {t.philosophy}
           </a>
           <span className="text-[var(--border-subtle)]">|</span>
           <a
             href="#pricing"
-            className="px-3 py-1.5 rounded-sm hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] transition-colors"
+            className="rounded-sm px-3 py-1.5 transition-colors hover:bg-[var(--bg-surface-hover)] hover:text-[var(--text-primary)]"
           >
             {t.pricing}
           </a>
         </nav>
 
         {/* Right: Actions */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden items-center gap-3 md:flex">
           {/* Command Palette Mock Input */}
           <button
             onClick={onOpenPalette}
-            className="flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-1 text-left font-mono text-[10px] text-[var(--text-muted)] hover:border-[var(--border-focus)] hover:text-[var(--text-primary)] transition-all"
+            className="flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-1 text-left font-mono text-[10px] text-[var(--text-muted)] transition-all hover:border-[var(--border-focus)] hover:text-[var(--text-primary)]"
           >
             <Search size={12} />
             <span>{t.searchPlaceholder}</span>
@@ -112,7 +112,7 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
           >
             <Star
               size={12}
-              className={`text-yellow-500 fill-yellow-500 transition-transform duration-300 ${
+              className={`fill-yellow-500 text-yellow-500 transition-transform duration-300 ${
                 isStarring ? "scale-125" : ""
               }`}
             />
@@ -130,16 +130,16 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
           </button>
 
           {/* Flat Auth links */}
-          <div className="flex items-center gap-1.5 font-mono text-[10px] border-l border-[var(--border-subtle)] pl-3">
+          <div className="flex items-center gap-1.5 border-l border-[var(--border-subtle)] pl-3 font-mono text-[10px]">
             {user ? (
               <div className="flex items-center gap-2">
-                <span className="text-[var(--accent-phosphor)] font-bold uppercase tracking-wider">
+                <span className="font-bold tracking-wider text-[var(--accent-phosphor)] uppercase">
                   {user.name.split(" ")[0] || "USER"}
                 </span>
                 <button
                   type="button"
                   onClick={() => logout()}
-                  className="px-1.5 py-0.5 rounded-sm border border-red-500/30 hover:border-red-500 text-red-400 hover:text-red-300 transition-colors uppercase tracking-widest font-mono text-[9px]"
+                  className="rounded-sm border border-red-500/30 px-1.5 py-0.5 font-mono text-[9px] tracking-widest text-red-400 uppercase transition-colors hover:border-red-500 hover:text-red-300"
                 >
                   Logout
                 </button>
@@ -147,21 +147,21 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
             ) : (
               <Link
                 href="/login"
-                className="px-2 py-1 rounded-sm hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)]"
+                className="rounded-sm px-2 py-1 text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]"
               >
                 Login
               </Link>
             )}
             <Link
               href="/profile"
-              className="p-1.5 rounded-sm hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)]"
+              className="rounded-sm p-1.5 text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]"
               title="Profile Manager"
             >
               <User size={12} />
             </Link>
             <Link
               href="/settings"
-              className="p-1.5 rounded-sm hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)]"
+              className="rounded-sm p-1.5 text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]"
               title="System Config"
             >
               <Settings size={12} />
@@ -172,7 +172,7 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
 
           <Link
             href="/editor"
-            className="rounded-sm bg-[var(--bg-brand-cta)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--text-brand-cta)] border border-transparent hover:border-[var(--border-focus)] transition-colors"
+            className="rounded-sm border border-transparent bg-[var(--bg-brand-cta)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--text-brand-cta)] transition-colors hover:border-[var(--border-focus)]"
           >
             {t.launchWorkspace}
           </Link>
@@ -227,7 +227,7 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
               <Link
                 href="/profile"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[var(--text-primary)] flex items-center gap-2"
+                className="flex items-center gap-2 py-2 hover:text-[var(--text-primary)]"
               >
                 <User size={12} />
                 <span>Profile Manager</span>
@@ -235,7 +235,7 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
               <Link
                 href="/settings"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[var(--text-primary)] flex items-center gap-2"
+                className="flex items-center gap-2 py-2 hover:text-[var(--text-primary)]"
               >
                 <Settings size={12} />
                 <span>System Configurations</span>
@@ -245,14 +245,14 @@ export function Navbar({ lang, setLang, onOpenPalette }: NavbarProps) {
                   onOpenPalette();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-left py-2 hover:text-[var(--text-primary)] flex items-center gap-2"
+                className="flex w-full items-center gap-2 py-2 text-left hover:text-[var(--text-primary)]"
               >
                 <Search size={12} />
                 <span>Search Command Palette (Ctrl+K)</span>
               </button>
               <Link
                 href="/editor"
-                className="w-full text-center rounded-sm bg-[var(--bg-brand-cta)] py-2 text-[var(--text-brand-cta)] font-semibold"
+                className="w-full rounded-sm bg-[var(--bg-brand-cta)] py-2 text-center font-semibold text-[var(--text-brand-cta)]"
               >
                 {t.launchWorkspace}
               </Link>

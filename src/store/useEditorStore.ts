@@ -9,11 +9,7 @@ import type { Language } from "@/lib/translations";
 // Style types (exported so serializer + StylePanel can share them)
 // ---------------------------------------------------------------------------
 
-export type BadgeStyle =
-  | "flat-square"
-  | "flat"
-  | "for-the-badge"
-  | "plastic";
+export type BadgeStyle = "flat-square" | "flat" | "for-the-badge" | "plastic";
 
 // ---------------------------------------------------------------------------
 // Store types
@@ -55,7 +51,8 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           // 12-column grid (see EditorCanvas) unless the caller already
           // supplies a position.
           const nextY = state.blocks.reduce(
-            (max, b) => Math.max(max, (b.position?.y ?? 0) + (b.position?.h ?? 0)),
+            (max, b) =>
+              Math.max(max, (b.position?.y ?? 0) + (b.position?.h ?? 0)),
             0,
           );
           const position = block.position || { x: 0, y: nextY, w: 12, h: 10 };
@@ -85,8 +82,7 @@ export const useEditorStore = create<EditorState & EditorActions>()(
           };
         }),
       selectBlock: (id) => set({ selectedBlockId: id }),
-      toggleSplitView: () =>
-        set((state) => ({ splitView: !state.splitView })),
+      toggleSplitView: () => set((state) => ({ splitView: !state.splitView })),
       setBadgeStyle: (style) => set({ badgeStyle: style }),
       toggleSectionSeparator: () =>
         set((state) => ({ sectionSeparator: !state.sectionSeparator })),

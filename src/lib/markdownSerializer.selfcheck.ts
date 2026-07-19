@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { serializeBlocks } from "./markdownSerializer.ts";
 import type { MarkdownCustomBlock, GithubStatsBlock } from "../types/ast.ts";
 
-function makeMarkdownBlock(id: string, y: number, text: string): MarkdownCustomBlock {
+function makeMarkdownBlock(
+  id: string,
+  y: number,
+  text: string,
+): MarkdownCustomBlock {
   return {
     id,
     kind: "markdown-custom",

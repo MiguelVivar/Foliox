@@ -27,19 +27,56 @@ const DEFAULT_OPTIONS: Required<SerializeOptions> = {
   sectionSeparator: false,
 };
 
-const SOCIAL_METADATA: Record<string, { label: string; color: string; logo: string; url: (username: string) => string }> = {
-  github: { label: "GitHub", color: "181717", logo: "github", url: (u) => `https://github.com/${u}` },
-  linkedin: { label: "LinkedIn", color: "0077B5", logo: "linkedin", url: (u) => `https://linkedin.com/in/${u}` },
-  twitter: { label: "Twitter", color: "1DA1F2", logo: "twitter", url: (u) => `https://twitter.com/${u}` },
-  instagram: { label: "Instagram", color: "E4405F", logo: "instagram", url: (u) => `https://instagram.com/${u}` },
-  devto: { label: "Dev.to", color: "0A0A0A", logo: "devdotto", url: (u) => `https://dev.to/${u}` },
-  huggingface: { label: "Hugging Face", color: "FFD21E", logo: "huggingface", url: (u) => `https://huggingface.co/${u}` },
+const SOCIAL_METADATA: Record<
+  string,
+  {
+    label: string;
+    color: string;
+    logo: string;
+    url: (username: string) => string;
+  }
+> = {
+  github: {
+    label: "GitHub",
+    color: "181717",
+    logo: "github",
+    url: (u) => `https://github.com/${u}`,
+  },
+  linkedin: {
+    label: "LinkedIn",
+    color: "0077B5",
+    logo: "linkedin",
+    url: (u) => `https://linkedin.com/in/${u}`,
+  },
+  twitter: {
+    label: "Twitter",
+    color: "1DA1F2",
+    logo: "twitter",
+    url: (u) => `https://twitter.com/${u}`,
+  },
+  instagram: {
+    label: "Instagram",
+    color: "E4405F",
+    logo: "instagram",
+    url: (u) => `https://instagram.com/${u}`,
+  },
+  devto: {
+    label: "Dev.to",
+    color: "0A0A0A",
+    logo: "devdotto",
+    url: (u) => `https://dev.to/${u}`,
+  },
+  huggingface: {
+    label: "Hugging Face",
+    color: "FFD21E",
+    logo: "huggingface",
+    url: (u) => `https://huggingface.co/${u}`,
+  },
 };
 
 // ---------------------------------------------------------------------------
 // Per-kind serializers
 // ---------------------------------------------------------------------------
-
 
 function serializeHeroBio(block: HeroBioBlock): string {
   const { name, tagline, avatarUrl } = block.content;
@@ -83,7 +120,8 @@ function serializeTechStack(
 }
 
 function serializeGithubStats(block: GithubStatsBlock): string {
-  const { username, showLangs, showTrophies, showVisitorCounter, theme } = block.content;
+  const { username, showLangs, showTrophies, showVisitorCounter, theme } =
+    block.content;
   if (!username) return `<!-- github-stats: no username set -->`;
 
   const safeTheme = theme || "dark";
@@ -158,7 +196,10 @@ function serializeAsciiImage(block: AsciiImageBlock): string {
   return "```\n" + asciiArt + "\n```";
 }
 
-function serializeSocialLinks(block: SocialLinksBlock, opts: Required<SerializeOptions>): string {
+function serializeSocialLinks(
+  block: SocialLinksBlock,
+  opts: Required<SerializeOptions>,
+): string {
   const { links } = block.content;
   if (links.length === 0) return `<!-- social-links: empty -->`;
 
