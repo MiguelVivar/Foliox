@@ -63,6 +63,66 @@ export function AsciiBannerForm({ block }: Props) {
         </select>
       </div>
 
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="ab-size" className={labelClass}>
+          Font Size ({block.content.fontSize || 13}px)
+        </label>
+        <input
+          id="ab-size"
+          type="range"
+          min="10"
+          max="20"
+          value={block.content.fontSize || 13}
+          onChange={(e) => patch({ fontSize: parseInt(e.target.value) })}
+          className="w-full"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="ab-color" className={labelClass}>
+          Font Color
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            id="ab-color"
+            type="color"
+            value={block.content.fontColor || "#58a6ff"}
+            onChange={(e) => patch({ fontColor: e.target.value })}
+            className="h-10 w-16 rounded-sm border border-[var(--border-subtle)] cursor-pointer"
+          />
+          <input
+            type="text"
+            value={block.content.fontColor || "#58a6ff"}
+            onChange={(e) => patch({ fontColor: e.target.value })}
+            className={inputClass}
+            placeholder="#58a6ff"
+          />
+        </div>
+      </div>
+
+      <label className="flex cursor-pointer items-center gap-3 select-none">
+        <input
+          type="checkbox"
+          checked={block.content.glowEnabled ?? true}
+          onChange={(e) => patch({ glowEnabled: e.target.checked })}
+          className="h-4 w-4 accent-[var(--accent-phosphor)]"
+        />
+        <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+          Enable Glow Effect
+        </span>
+      </label>
+
+      <label className="flex cursor-pointer items-center gap-3 select-none">
+        <input
+          type="checkbox"
+          checked={block.content.shadowEnabled ?? false}
+          onChange={(e) => patch({ shadowEnabled: e.target.checked })}
+          className="h-4 w-4 accent-[var(--accent-phosphor)]"
+        />
+        <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+          Enable Text Shadow
+        </span>
+      </label>
     </div>
   );
 }

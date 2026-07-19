@@ -78,6 +78,10 @@ export type AsciiBannerBlock = {
   content: {
     text: string;
     font: string;
+    fontSize?: number;
+    fontColor?: string;
+    glowEnabled?: boolean;
+    shadowEnabled?: boolean;
   };
 };
 
