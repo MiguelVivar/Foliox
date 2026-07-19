@@ -30,7 +30,7 @@ export interface ReadmeProjectMetadata {
  * Configuration for README generation
  */
 export interface ReadmeGenerationConfig {
-  template?: 'standard' | 'api-focused' | 'library' | 'webapp';
+  template?: "standard" | "api-focused" | "library" | "webapp";
   includeApiDocs?: boolean;
   includeGithubStats?: boolean;
   aiGenerated?: boolean;
@@ -60,9 +60,9 @@ export interface ReadmeGenerationResult {
  */
 export async function generateReadmeFromTemplate(
   metadata: ReadmeProjectMetadata,
-  config?: ReadmeGenerationConfig
+  config?: ReadmeGenerationConfig,
 ): Promise<ReadmeGenerationResult> {
-  throw new Error('Not yet implemented - Phase 1 roadmap');
+  throw new Error("Not yet implemented - Phase 1 roadmap");
 }
 
 /**
@@ -78,9 +78,9 @@ export async function generateReadmeFromTemplate(
  */
 export async function generateApiDocumentation(
   sourceDir: string,
-  options?: Record<string, unknown>
+  options?: Record<string, unknown>,
 ): Promise<string> {
-  throw new Error('Not yet implemented - Phase 2 roadmap');
+  throw new Error("Not yet implemented - Phase 2 roadmap");
 }
 
 /**
@@ -96,9 +96,9 @@ export async function generateApiDocumentation(
  */
 export async function generateReadmeWithAI(
   repositoryPath: string,
-  llmProvider?: 'claude' | 'openai' | 'gemini' | 'ollama'
+  llmProvider?: "claude" | "openai" | "gemini" | "ollama",
 ): Promise<ReadmeGenerationResult> {
-  throw new Error('Not yet implemented - Phase 4 roadmap');
+  throw new Error("Not yet implemented - Phase 4 roadmap");
 }
 
 /**
@@ -117,10 +117,10 @@ export function generateGithubStatsBadge(
   options?: {
     theme?: string;
     showLanguages?: boolean;
-    layout?: 'default' | 'compact';
-  }
+    layout?: "default" | "compact";
+  },
 ): string {
-  throw new Error('Not yet implemented');
+  throw new Error("Not yet implemented");
 }
 
 /**
@@ -132,14 +132,12 @@ export function generateGithubStatsBadge(
  * @phase Phase 3
  * @todo Implement standard-readme compliance checking
  */
-export async function validateReadmeCompliance(
-  markdown: string
-): Promise<{
+export async function validateReadmeCompliance(markdown: string): Promise<{
   isCompliant: boolean;
   missingRequiredSections: string[];
   suggestions: string[];
 }> {
-  throw new Error('Not yet implemented');
+  throw new Error("Not yet implemented");
 }
 
 /**
@@ -151,7 +149,7 @@ export async function validateReadmeCompliance(
  * @todo Implement markdown to HTML conversion
  */
 export async function renderReadmeToHtml(markdown: string): Promise<string> {
-  throw new Error('Not yet implemented');
+  throw new Error("Not yet implemented");
 }
 
 /**
@@ -168,10 +166,7 @@ export async function renderReadmeToHtml(markdown: string): Promise<string> {
 export async function generateHybridReadme(
   metadata: ReadmeProjectMetadata,
   sourceDir: string,
-  config?: ReadmeGenerationConfig
+  config?: ReadmeGenerationConfig,
 ): Promise<ReadmeGenerationResult> {
-  throw new Error('Not yet implemented - requires Phase 1 & 2 completion');
+  throw new Error("Not yet implemented - requires Phase 1 & 2 completion");
 }
-
-// Type exports for external use
-export type { ReadmeProjectMetadata, ReadmeGenerationConfig, ReadmeGenerationResult };
