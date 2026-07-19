@@ -20,7 +20,7 @@ export function AsciiBannerBlockView({ block }: Props) {
         </span>
       </div>
 
-      <div className="overflow-x-auto rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-3">
+      <div className="flex items-center justify-center overflow-x-auto rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-6">
         {!text ? (
           <span className="font-mono text-xs italic text-[var(--text-muted)]">
             Type text in the sidebar to preview…
@@ -30,7 +30,7 @@ export function AsciiBannerBlockView({ block }: Props) {
             Rendering…
           </span>
         ) : art ? (
-          <pre className="font-mono text-[10px] leading-tight text-[var(--text-primary)]">
+          <pre className="crt-glow whitespace-pre font-mono text-[13px] leading-[1.15] text-[var(--accent-phosphor)]">
             {art}
           </pre>
         ) : (
