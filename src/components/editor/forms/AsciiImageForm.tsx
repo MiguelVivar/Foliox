@@ -21,7 +21,11 @@ export function AsciiImageForm({ block }: Props) {
     );
   }
 
-  function convertImageToAscii(imageSrc: string, width: number, invert: boolean) {
+  function convertImageToAscii(
+    imageSrc: string,
+    width: number,
+    invert: boolean,
+  ) {
     setLoading(true);
     const img = new Image();
     img.src = imageSrc;
@@ -34,7 +38,7 @@ export function AsciiImageForm({ block }: Props) {
       }
 
       // Proportional height for terminal character aspect ratio (approx 2:1 height/width character ratio)
-      const height = Math.round((img.height / img.width) * width * 0.55);
+      const height = Math.round((img.height / img.width) * width * 0.5);
       canvas.width = width;
       canvas.height = height;
 
@@ -68,7 +72,11 @@ export function AsciiImageForm({ block }: Props) {
     reader.onload = (event) => {
       const result = event.target?.result;
       if (typeof result === "string") {
-        convertImageToAscii(result, block.content.width || 60, block.content.colorMode === "invert");
+        convertImageToAscii(
+          result,
+          block.content.width || 60,
+          block.content.colorMode === "invert",
+        );
       }
     };
     reader.readAsDataURL(file);
@@ -86,10 +94,10 @@ export function AsciiImageForm({ block }: Props) {
         <span className={labelClass}>Source Image</span>
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="border border-dashed border-[var(--border-subtle)] hover:border-[var(--accent-phosphor)] bg-[var(--bg-canvas)] rounded-sm p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors"
+          className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-sm border border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-6 transition-colors hover:border-[var(--accent-phosphor)]"
         >
           <Upload size={16} className="text-[var(--text-muted)]" />
-          <span className="text-[10px] uppercase tracking-widest font-mono text-[var(--text-muted)]">
+          <span className="font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
             {loading ? "PROCESSING..." : "UPLOAD_IMAGE_FILE"}
           </span>
           <input
@@ -131,7 +139,7 @@ export function AsciiImageForm({ block }: Props) {
           }}
           className="h-4 w-4 accent-[var(--accent-phosphor)]"
         />
-        <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-primary)]">
+        <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
           Invert ASCII Contrast
         </span>
       </label>
