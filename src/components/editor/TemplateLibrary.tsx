@@ -1,21 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   README_TEMPLATES,
   applyTemplate,
   type ReadmeTemplate,
-} from '@/lib/readmeTemplates';
-import { useEditorStore } from '@/store/useEditorStore';
+} from "@/lib/readmeTemplates";
+import { useEditorStore } from "@/store/useEditorStore";
 
 interface TemplateSelectorProps {
   onClose?: () => void;
 }
 
 export function TemplateLibrary({ onClose }: TemplateSelectorProps) {
-  const [selectedTemplate, setSelectedTemplate] = useState<ReadmeTemplate | null>(
-    null
-  );
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<ReadmeTemplate | null>(null);
   const addBlock = useEditorStore((state) => state.addBlock);
 
   const handleApplyTemplate = (template: ReadmeTemplate) => {
@@ -33,7 +32,8 @@ export function TemplateLibrary({ onClose }: TemplateSelectorProps) {
       <div>
         <h2 className="mb-2 text-2xl font-bold">README Templates</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Choose a template to quickly set up your README with pre-configured blocks.
+          Choose a template to quickly set up your README with pre-configured
+          blocks.
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export function TemplateLibrary({ onClose }: TemplateSelectorProps) {
         {README_TEMPLATES.map((template) => (
           <div
             key={template.id}
-            className="flex flex-col rounded-lg border border-gray-200 bg-white p-4 hover:border-blue-400 hover:shadow-md transition-all dark:border-gray-700 dark:bg-gray-900"
+            className="flex flex-col rounded-lg border border-gray-200 bg-white p-4 transition-all hover:border-blue-400 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
           >
             <h3 className="mb-2 text-lg font-semibold">{template.name}</h3>
             <p className="mb-4 flex-1 text-sm text-gray-600 dark:text-gray-400">
@@ -68,7 +68,7 @@ export function TemplateLibrary({ onClose }: TemplateSelectorProps) {
 
             <button
               onClick={() => handleApplyTemplate(template)}
-              className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-600"
+              className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
             >
               Apply Template
             </button>
@@ -78,8 +78,9 @@ export function TemplateLibrary({ onClose }: TemplateSelectorProps) {
 
       <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950">
         <p className="text-sm text-blue-900 dark:text-blue-200">
-          <strong>Tip:</strong> Templates provide pre-filled blocks that you can customize
-          further. Edit any block properties after applying a template.
+          <strong>Tip:</strong> Templates provide pre-filled blocks that you can
+          customize further. Edit any block properties after applying a
+          template.
         </p>
       </div>
     </div>

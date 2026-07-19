@@ -18,7 +18,7 @@ type Props = {
 export function GithubStatsDisplay({ username, showLanguages }: Props) {
   const [userStats, setUserStats] = useState<GitHubUserStats | null>(null);
   const [languages, setLanguages] = useState<Record<string, number> | null>(
-    null
+    null,
   );
   const [loadState, setLoadState] = useState<LoadState>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -141,7 +141,7 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1">
               <Users size={12} className="text-[#8b949e]" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#8b949e]">
+              <span className="font-mono text-[10px] tracking-widest text-[#8b949e] uppercase">
                 Followers
               </span>
             </div>
@@ -154,7 +154,7 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1">
               <User size={12} className="text-[#8b949e]" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#8b949e]">
+              <span className="font-mono text-[10px] tracking-widest text-[#8b949e] uppercase">
                 Following
               </span>
             </div>
@@ -165,7 +165,7 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
 
           {/* Public Repos */}
           <div className="flex flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#8b949e]">
+            <span className="font-mono text-[10px] tracking-widest text-[#8b949e] uppercase">
               Repos
             </span>
             <p className="font-mono text-sm text-[#f0f6fc]">
@@ -175,7 +175,7 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
 
           {/* Joined */}
           <div className="flex flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#8b949e]">
+            <span className="font-mono text-[10px] tracking-widest text-[#8b949e] uppercase">
               Joined
             </span>
             <p className="font-mono text-sm text-[#f0f6fc]">{formattedDate}</p>
@@ -185,15 +185,13 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
         {/* Bio */}
         {userStats.bio && (
           <div className="border-t border-[#30363d] pt-3">
-            <p className="font-mono text-xs text-[#8b949e]">
-              {userStats.bio}
-            </p>
+            <p className="font-mono text-xs text-[#8b949e]">{userStats.bio}</p>
           </div>
         )}
 
         {/* Location & Company */}
         {(userStats.location || userStats.company) && (
-          <div className="border-t border-[#30363d] pt-3 flex flex-col gap-1">
+          <div className="flex flex-col gap-1 border-t border-[#30363d] pt-3">
             {userStats.location && (
               <p className="font-mono text-xs text-[#8b949e]">
                 📍 {userStats.location}
@@ -211,7 +209,7 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
       {/* Languages */}
       {showLanguages && languages && Object.keys(languages).length > 0 && (
         <div className="flex flex-col gap-2 rounded-md border border-[#30363d]/50 bg-[#161b22] p-4">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[#8b949e] border-b border-[#30363d] pb-2">
+          <p className="border-b border-[#30363d] pb-2 font-mono text-[10px] tracking-widest text-[#8b949e] uppercase">
             Top Languages
           </p>
 
@@ -223,7 +221,7 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
               .map(([lang, bytes]) => {
                 const total = Object.values(languages).reduce(
                   (sum, val) => sum + val,
-                  0
+                  0,
                 );
                 const percentage = total > 0 ? (bytes / total) * 100 : 0;
 
@@ -237,9 +235,9 @@ export function GithubStatsDisplay({ username, showLanguages }: Props) {
                         {percentage.toFixed(1)}%
                       </span>
                     </div>
-                    <div className="h-1 w-full rounded-full bg-[#30363d] overflow-hidden">
+                    <div className="h-1 w-full overflow-hidden rounded-full bg-[#30363d]">
                       <div
-                        className="h-full bg-[#58a6ff] rounded-full"
+                        className="h-full rounded-full bg-[#58a6ff]"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>

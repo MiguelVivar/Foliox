@@ -245,7 +245,13 @@ assert.ok(
 // Test: GitHub Stats with Trophies
 // ============================================================================
 
-const githubWithTrophies = makeGithubStatsBlock("github3", 0, "octocat", false, true);
+const githubWithTrophies = makeGithubStatsBlock(
+  "github3",
+  0,
+  "octocat",
+  false,
+  true,
+);
 const githubWithTrophiesOutput = serializeBlocks([githubWithTrophies]);
 assert.ok(
   githubWithTrophiesOutput.includes("trophy"),
@@ -312,7 +318,9 @@ assert.ok(
 // Test: ASCII Image - Empty
 // ============================================================================
 
-const emptyAsciiOutput = serializeBlocks([makeAsciiImageBlock("ascii2", 0, "")]);
+const emptyAsciiOutput = serializeBlocks([
+  makeAsciiImageBlock("ascii2", 0, ""),
+]);
 assert.ok(
   emptyAsciiOutput.includes("<!-- ascii-image: empty -->"),
   "Empty ASCII image should have empty comment",
@@ -363,7 +371,9 @@ assert.ok(
 // Test: Social Links - Empty
 // ============================================================================
 
-const emptySocialOutput = serializeBlocks([makeSocialLinksBlock("social2", 0, [])]);
+const emptySocialOutput = serializeBlocks([
+  makeSocialLinksBlock("social2", 0, []),
+]);
 assert.ok(
   emptySocialOutput.includes("<!-- social-links: empty -->"),
   "Empty social links should have empty comment",
@@ -441,7 +451,9 @@ const fullDoc: Block[] = [
   makeTechBlock("tech", 5, ["TypeScript", "React", "Node.js"]),
   makeGithubStatsBlock("github", 10, "alexdev", true, false, false),
   makeMarkdownBlock("about", 15, "## About Me\nI love coding!"),
-  makeSocialLinksBlock("social", 20, [{ platform: "github", username: "alexdev" }]),
+  makeSocialLinksBlock("social", 20, [
+    { platform: "github", username: "alexdev" },
+  ]),
 ];
 
 const fullDocOutput = serializeBlocks(fullDoc);
@@ -469,11 +481,13 @@ assert.ok(
 
 // Verify correct order
 assert.ok(
-  fullDocOutput.indexOf("# Alex Developer") < fullDocOutput.indexOf("TypeScript"),
+  fullDocOutput.indexOf("# Alex Developer") <
+    fullDocOutput.indexOf("TypeScript"),
   "Hero should come before tech stack",
 );
 assert.ok(
-  fullDocOutput.indexOf("TypeScript") < fullDocOutput.indexOf("## GitHub Stats"),
+  fullDocOutput.indexOf("TypeScript") <
+    fullDocOutput.indexOf("## GitHub Stats"),
   "Tech stack should come before GitHub stats",
 );
 

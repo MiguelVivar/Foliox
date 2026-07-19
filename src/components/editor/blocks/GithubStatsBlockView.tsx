@@ -10,6 +10,9 @@ export function GithubStatsBlockView({ block }: Props) {
   const safeUser = username || "MiguelVivar";
 
   return (
-    <GithubStatsDisplay username={safeUser} showLanguages={showLangs !== false} />
+    <GithubStatsDisplay
+      username={safeUser}
+      showLanguages={showLangs !== false}
+    />
   );
 }

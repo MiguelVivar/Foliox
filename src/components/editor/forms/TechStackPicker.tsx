@@ -28,7 +28,7 @@ export function TechStackPicker({
   // Handle badge selection (toggle add/remove)
   const handleSelect = (label: string) => {
     const isSelected = selectedTechs.some(
-      (tech) => tech.toLowerCase() === label.toLowerCase()
+      (tech) => tech.toLowerCase() === label.toLowerCase(),
     );
 
     if (isSelected) {

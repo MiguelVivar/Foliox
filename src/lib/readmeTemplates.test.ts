@@ -1,142 +1,142 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from "vitest";
 import {
   README_TEMPLATES,
   applyTemplate,
   type ReadmeTemplate,
-} from './readmeTemplates';
-import type { Block } from '@/types/ast';
+} from "./readmeTemplates";
+import type { Block } from "@/types/ast";
 
-describe('readmeTemplates', () => {
-  describe('README_TEMPLATES', () => {
-    it('should have at least 3 templates', () => {
+describe("readmeTemplates", () => {
+  describe("README_TEMPLATES", () => {
+    it("should have at least 3 templates", () => {
       expect(README_TEMPLATES.length).toBeGreaterThanOrEqual(3);
     });
 
-    it('should have unique template ids', () => {
+    it("should have unique template ids", () => {
       const ids = README_TEMPLATES.map((t) => t.id);
       const uniqueIds = new Set(ids);
       expect(uniqueIds.size).toBe(ids.length);
     });
 
-    it('should have all required properties', () => {
+    it("should have all required properties", () => {
       README_TEMPLATES.forEach((template) => {
-        expect(template).toHaveProperty('id');
-        expect(template).toHaveProperty('name');
-        expect(template).toHaveProperty('description');
-        expect(template).toHaveProperty('blocks');
+        expect(template).toHaveProperty("id");
+        expect(template).toHaveProperty("name");
+        expect(template).toHaveProperty("description");
+        expect(template).toHaveProperty("blocks");
         expect(Array.isArray(template.blocks)).toBe(true);
         expect(template.blocks.length).toBeGreaterThan(0);
       });
     });
   });
 
-  describe('minimal template', () => {
+  describe("minimal template", () => {
     let minimalTemplate: ReadmeTemplate;
 
     beforeEach(() => {
-      minimalTemplate = README_TEMPLATES.find((t) => t.id === 'minimal')!;
+      minimalTemplate = README_TEMPLATES.find((t) => t.id === "minimal")!;
     });
 
-    it('should exist', () => {
+    it("should exist", () => {
       expect(minimalTemplate).toBeDefined();
     });
 
-    it('should have 3-4 blocks', () => {
+    it("should have 3-4 blocks", () => {
       expect(minimalTemplate.blocks.length).toBeGreaterThanOrEqual(3);
       expect(minimalTemplate.blocks.length).toBeLessThanOrEqual(4);
     });
 
-    it('should include hero-bio block', () => {
+    it("should include hero-bio block", () => {
       const hasHeroBio = minimalTemplate.blocks.some(
-        (b) => b.kind === 'hero-bio'
+        (b) => b.kind === "hero-bio",
       );
       expect(hasHeroBio).toBe(true);
     });
 
-    it('should include markdown-custom block', () => {
+    it("should include markdown-custom block", () => {
       const hasMarkdown = minimalTemplate.blocks.some(
-        (b) => b.kind === 'markdown-custom'
+        (b) => b.kind === "markdown-custom",
       );
       expect(hasMarkdown).toBe(true);
     });
   });
 
-  describe('developer template', () => {
+  describe("developer template", () => {
     let developerTemplate: ReadmeTemplate;
 
     beforeEach(() => {
-      developerTemplate = README_TEMPLATES.find((t) => t.id === 'developer')!;
+      developerTemplate = README_TEMPLATES.find((t) => t.id === "developer")!;
     });
 
-    it('should exist', () => {
+    it("should exist", () => {
       expect(developerTemplate).toBeDefined();
     });
 
-    it('should include hero-bio block', () => {
+    it("should include hero-bio block", () => {
       const hasHeroBio = developerTemplate.blocks.some(
-        (b) => b.kind === 'hero-bio'
+        (b) => b.kind === "hero-bio",
       );
       expect(hasHeroBio).toBe(true);
     });
 
-    it('should include tech-stack block', () => {
+    it("should include tech-stack block", () => {
       const hasTechStack = developerTemplate.blocks.some(
-        (b) => b.kind === 'tech-stack'
+        (b) => b.kind === "tech-stack",
       );
       expect(hasTechStack).toBe(true);
     });
 
-    it('should include github-stats block', () => {
+    it("should include github-stats block", () => {
       const hasGithubStats = developerTemplate.blocks.some(
-        (b) => b.kind === 'github-stats'
+        (b) => b.kind === "github-stats",
       );
       expect(hasGithubStats).toBe(true);
     });
   });
 
-  describe('project template', () => {
+  describe("project template", () => {
     let projectTemplate: ReadmeTemplate;
 
     beforeEach(() => {
-      projectTemplate = README_TEMPLATES.find((t) => t.id === 'project')!;
+      projectTemplate = README_TEMPLATES.find((t) => t.id === "project")!;
     });
 
-    it('should exist', () => {
+    it("should exist", () => {
       expect(projectTemplate).toBeDefined();
     });
 
-    it('should include hero-bio block', () => {
+    it("should include hero-bio block", () => {
       const hasHeroBio = projectTemplate.blocks.some(
-        (b) => b.kind === 'hero-bio'
+        (b) => b.kind === "hero-bio",
       );
       expect(hasHeroBio).toBe(true);
     });
 
-    it('should include tech-stack block', () => {
+    it("should include tech-stack block", () => {
       const hasTechStack = projectTemplate.blocks.some(
-        (b) => b.kind === 'tech-stack'
+        (b) => b.kind === "tech-stack",
       );
       expect(hasTechStack).toBe(true);
     });
 
-    it('should include multiple markdown sections', () => {
+    it("should include multiple markdown sections", () => {
       const markdownBlocks = projectTemplate.blocks.filter(
-        (b) => b.kind === 'markdown-custom'
+        (b) => b.kind === "markdown-custom",
       );
       expect(markdownBlocks.length).toBeGreaterThanOrEqual(2);
     });
   });
 
-  describe('applyTemplate', () => {
-    it('should return blocks with unique IDs', () => {
-      const blocks = applyTemplate('minimal');
+  describe("applyTemplate", () => {
+    it("should return blocks with unique IDs", () => {
+      const blocks = applyTemplate("minimal");
       const ids = blocks.map((b) => b.id);
       const uniqueIds = new Set(ids);
       expect(uniqueIds.size).toBe(ids.length);
     });
 
-    it('should assign correct grid positions', () => {
-      const blocks = applyTemplate('minimal');
+    it("should assign correct grid positions", () => {
+      const blocks = applyTemplate("minimal");
       blocks.forEach((block, index) => {
         expect(block.position).toBeDefined();
         expect(block.position!.x).toBe(0);
@@ -145,9 +145,9 @@ describe('readmeTemplates', () => {
       });
     });
 
-    it('should return deep copies of blocks', () => {
-      const blocks1 = applyTemplate('minimal');
-      const blocks2 = applyTemplate('minimal');
+    it("should return deep copies of blocks", () => {
+      const blocks1 = applyTemplate("minimal");
+      const blocks2 = applyTemplate("minimal");
 
       blocks1.forEach((b, i) => {
         expect(b.id).not.toBe(blocks2[i].id);
@@ -155,11 +155,11 @@ describe('readmeTemplates', () => {
       });
     });
 
-    it('should throw for invalid template id', () => {
-      expect(() => applyTemplate('nonexistent')).toThrow();
+    it("should throw for invalid template id", () => {
+      expect(() => applyTemplate("nonexistent")).toThrow();
     });
 
-    it('should work with all template ids', () => {
+    it("should work with all template ids", () => {
       README_TEMPLATES.forEach((template) => {
         const blocks = applyTemplate(template.id);
         expect(Array.isArray(blocks)).toBe(true);
@@ -167,13 +167,13 @@ describe('readmeTemplates', () => {
       });
     });
 
-    it('should preserve block content structure', () => {
-      const blocks = applyTemplate('minimal');
+    it("should preserve block content structure", () => {
+      const blocks = applyTemplate("minimal");
       blocks.forEach((block) => {
-        expect(block).toHaveProperty('kind');
-        expect(block).toHaveProperty('content');
-        expect(block).toHaveProperty('position');
-        expect(block).toHaveProperty('id');
+        expect(block).toHaveProperty("kind");
+        expect(block).toHaveProperty("content");
+        expect(block).toHaveProperty("position");
+        expect(block).toHaveProperty("id");
       });
     });
   });

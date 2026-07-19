@@ -41,7 +41,7 @@ type GitHubAPIRepo = {
  * @returns GitHubUserStats or null if user not found or error occurs
  */
 export async function fetchGithubStats(
-  username: string
+  username: string,
 ): Promise<GitHubUserStats | null> {
   if (!username || username.trim().length === 0) {
     return null;
@@ -55,7 +55,7 @@ export async function fetchGithubStats(
           Accept: "application/vnd.github.v3+json",
         },
         next: { revalidate: 3600 }, // Cache for 1 hour
-      }
+      },
     );
 
     if (!response.ok) {
@@ -64,7 +64,7 @@ export async function fetchGithubStats(
       }
       if (response.status === 403) {
         console.warn(
-          `GitHub API rate limit reached for user ${username}. Try again later.`
+          `GitHub API rate limit reached for user ${username}. Try again later.`,
         );
         return null;
       }
@@ -97,7 +97,7 @@ export async function fetchGithubStats(
  * @returns Record of language names to byte counts, or null if user not found or has no repos
  */
 export async function fetchLanguages(
-  username: string
+  username: string,
 ): Promise<Record<string, number> | null> {
   if (!username || username.trim().length === 0) {
     return null;
@@ -113,7 +113,7 @@ export async function fetchLanguages(
           Accept: "application/vnd.github.v3+json",
         },
         next: { revalidate: 3600 }, // Cache for 1 hour
-      }
+      },
     );
 
     if (!response.ok) {
@@ -152,7 +152,7 @@ export async function fetchLanguages(
   } catch (error) {
     console.error(
       `Error fetching languages for GitHub user ${username}:`,
-      error
+      error,
     );
     return null;
   }

@@ -28,7 +28,8 @@ describe("githubStatsApi", () => {
     });
 
     it("should return null for non-existent user", async () => {
-      const username = "this-user-definitely-does-not-exist-12345678901234567890";
+      const username =
+        "this-user-definitely-does-not-exist-12345678901234567890";
       const result = await fetchGithubStats(username);
 
       expect(result).toBeNull();
@@ -86,7 +87,8 @@ describe("githubStatsApi", () => {
     });
 
     it("should return null for non-existent user", async () => {
-      const username = "this-user-definitely-does-not-exist-12345678901234567890";
+      const username =
+        "this-user-definitely-does-not-exist-12345678901234567890";
       const result = await fetchLanguages(username);
 
       expect(result).toBeNull();

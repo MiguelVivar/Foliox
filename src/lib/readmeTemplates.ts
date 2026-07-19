@@ -1,4 +1,4 @@
-import type { Block } from '@/types/ast';
+import type { Block } from "@/types/ast";
 
 /**
  * Generate a unique ID using timestamp and random string
@@ -19,33 +19,33 @@ export interface ReadmeTemplate {
  * Ideal for quick portfolio setup
  */
 const MINIMAL_TEMPLATE: ReadmeTemplate = {
-  id: 'minimal',
-  name: 'Minimal',
-  description: 'Simple profile with name, tagline, and description',
+  id: "minimal",
+  name: "Minimal",
+  description: "Simple profile with name, tagline, and description",
   blocks: [
     {
-      id: 'block-minimal-hero',
-      kind: 'hero-bio',
+      id: "block-minimal-hero",
+      kind: "hero-bio",
       content: {
-        name: 'Your Name',
-        tagline: 'Your professional tagline',
-        avatarUrl: '',
+        name: "Your Name",
+        tagline: "Your professional tagline",
+        avatarUrl: "",
       },
     },
     {
-      id: 'block-minimal-links',
-      kind: 'social-links',
+      id: "block-minimal-links",
+      kind: "social-links",
       content: {
         links: [
-          { platform: 'github', username: 'yourname' },
-          { platform: 'linkedin', username: 'yourname' },
-          { platform: 'twitter', username: 'yourname' },
+          { platform: "github", username: "yourname" },
+          { platform: "linkedin", username: "yourname" },
+          { platform: "twitter", username: "yourname" },
         ],
       },
     },
     {
-      id: 'block-minimal-about',
-      kind: 'markdown-custom',
+      id: "block-minimal-about",
+      kind: "markdown-custom",
       content: {
         markdown: `## About Me
 
@@ -66,49 +66,49 @@ Add your personal story here. Tell visitors what you do, what you're passionate 
  * Perfect for developer portfolios
  */
 const DEVELOPER_TEMPLATE: ReadmeTemplate = {
-  id: 'developer',
-  name: 'Developer',
-  description: 'Portfolio for developers with tech stack and GitHub stats',
+  id: "developer",
+  name: "Developer",
+  description: "Portfolio for developers with tech stack and GitHub stats",
   blocks: [
     {
-      id: 'block-dev-hero',
-      kind: 'hero-bio',
+      id: "block-dev-hero",
+      kind: "hero-bio",
       content: {
-        name: 'Your Name',
-        tagline: 'Full Stack Developer | Open Source Enthusiast',
-        avatarUrl: '',
+        name: "Your Name",
+        tagline: "Full Stack Developer | Open Source Enthusiast",
+        avatarUrl: "",
       },
     },
     {
-      id: 'block-dev-tech',
-      kind: 'tech-stack',
+      id: "block-dev-tech",
+      kind: "tech-stack",
       content: {
         technologies: [
-          'TypeScript',
-          'React',
-          'Node.js',
-          'Python',
-          'PostgreSQL',
-          'Docker',
+          "TypeScript",
+          "React",
+          "Node.js",
+          "Python",
+          "PostgreSQL",
+          "Docker",
         ],
       },
     },
     {
-      id: 'block-dev-stats',
-      kind: 'github-stats',
+      id: "block-dev-stats",
+      kind: "github-stats",
       content: {
-        username: 'your-github-username',
+        username: "your-github-username",
         showPrivate: false,
         showLangs: true,
         showTrophies: false,
         showVisitorCounter: false,
-        theme: 'dark',
+        theme: "dark",
         useMetrics: false,
       },
     },
     {
-      id: 'block-dev-about',
-      kind: 'markdown-custom',
+      id: "block-dev-about",
+      kind: "markdown-custom",
       content: {
         markdown: `## About Me
 
@@ -122,8 +122,8 @@ I'm a passionate developer building elegant solutions to complex problems.
       },
     },
     {
-      id: 'block-dev-projects',
-      kind: 'markdown-custom',
+      id: "block-dev-projects",
+      kind: "markdown-custom",
       content: {
         markdown: `## Featured Projects
 
@@ -142,29 +142,29 @@ Another project showcase with key features and technologies.`,
  * Great for project documentation
  */
 const PROJECT_TEMPLATE: ReadmeTemplate = {
-  id: 'project',
-  name: 'Project',
-  description: 'Complete project README with features, setup, and contribution',
+  id: "project",
+  name: "Project",
+  description: "Complete project README with features, setup, and contribution",
   blocks: [
     {
-      id: 'block-proj-hero',
-      kind: 'hero-bio',
+      id: "block-proj-hero",
+      kind: "hero-bio",
       content: {
-        name: 'Project Name',
-        tagline: 'Brief description of what your project does',
-        avatarUrl: '',
+        name: "Project Name",
+        tagline: "Brief description of what your project does",
+        avatarUrl: "",
       },
     },
     {
-      id: 'block-proj-tech',
-      kind: 'tech-stack',
+      id: "block-proj-tech",
+      kind: "tech-stack",
       content: {
-        technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
+        technologies: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
       },
     },
     {
-      id: 'block-proj-overview',
-      kind: 'markdown-custom',
+      id: "block-proj-overview",
+      kind: "markdown-custom",
       content: {
         markdown: `## Overview
 
@@ -178,8 +178,8 @@ Provide a comprehensive overview of your project. Explain its purpose, core feat
       },
     },
     {
-      id: 'block-proj-install',
-      kind: 'markdown-custom',
+      id: "block-proj-install",
+      kind: "markdown-custom",
       content: {
         markdown: `## Installation
 
@@ -204,8 +204,8 @@ npm run dev
       },
     },
     {
-      id: 'block-proj-usage',
-      kind: 'markdown-custom',
+      id: "block-proj-usage",
+      kind: "markdown-custom",
       content: {
         markdown: `## Usage
 
@@ -224,8 +224,8 @@ Document key configuration options and how to customize the project.`,
       },
     },
     {
-      id: 'block-proj-contrib',
-      kind: 'markdown-custom',
+      id: "block-proj-contrib",
+      kind: "markdown-custom",
       content: {
         markdown: `## Contributing
 
@@ -249,8 +249,8 @@ npm run build
       },
     },
     {
-      id: 'block-proj-license',
-      kind: 'markdown-custom',
+      id: "block-proj-license",
+      kind: "markdown-custom",
       content: {
         markdown: `## License
 
