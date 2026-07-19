@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { X } from "lucide-react";
+import { GripVertical, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useEditorStore } from "@/store/useEditorStore";
 import type { Block } from "@/types/ast";
@@ -28,8 +28,6 @@ const KIND_LABELS: Record<Block["kind"], string> = {
 
 type Props = {
   block: Block;
-  index: number;
-  totalBlocks: number;
 };
 
 export function BentoCard({ block }: Props) {
@@ -67,7 +65,7 @@ export function BentoCard({ block }: Props) {
         selectBlock(block.id);
       }}
       className={cn(
-        "group relative rounded-md p-5 outline-none transition-all duration-150 overflow-hidden flex flex-col w-full h-auto",
+        "group relative flex h-full w-full flex-col overflow-hidden rounded-md p-5 outline-none transition-all duration-150",
         isAnimated && "animate-[pulse_2s_infinite]",
         hasBorder
           ? isSelected
@@ -78,9 +76,10 @@ export function BentoCard({ block }: Props) {
             : "border border-dashed border-[#30363d]/40 bg-[#0d1117]/40 hover:border-[#8b949e]/40",
       )}
     >
-      {/* Block header badge (shows on hover or selection to manage blocks easily) */}
-      <div className="mb-3 flex items-center justify-between border-b border-[#30363d]/60 pb-2 select-none text-xs">
-        <span className="font-mono text-[10px] text-[#8b949e] uppercase tracking-wider">
+      {/* Drag handle + header badge */}
+      <div className="block-drag-handle mb-3 flex cursor-grab items-center justify-between border-b border-[#30363d]/60 pb-2 select-none text-xs active:cursor-grabbing">
+        <span className="flex items-center gap-1.5 font-mono text-[10px] text-[#8b949e] uppercase tracking-wider">
+          <GripVertical size={12} className="text-[#8b949e]/60" />
           {KIND_LABELS[block.kind]}
         </span>
 
@@ -90,15 +89,15 @@ export function BentoCard({ block }: Props) {
             e.stopPropagation();
             removeBlock(block.id);
           }}
-          className="text-[#8b949e] hover:text-[#f78166] transition-colors"
+          className="block-drag-handle-cancel text-[#8b949e] hover:text-[#f78166] transition-colors"
           title="Remove block"
         >
           <X size={13} />
         </button>
       </div>
 
-      {/* Content wrapper - fluid container with no fixed size limits */}
-      <div className="w-full text-left">
+      {/* Content wrapper - scrolls internally if it overflows the resized block */}
+      <div className="w-full flex-1 overflow-auto text-left">
         {renderBlockContent()}
       </div>
     </div>

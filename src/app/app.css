@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "react-grid-layout/css/styles.css";
+@import "react-resizable/css/styles.css";
 
 @theme {
   /* --- NEUTRAL SCALE (Pure Structural Grayscale) --- */
@@ -347,5 +349,20 @@
   border-left: 0.25em solid var(--accent-phosphor) !important;
   color: var(--text-muted) !important;
   background-color: var(--bg-surface) !important;
+}
+
+/* ─── react-grid-layout: free canvas theming ──────────────────────── */
+.react-grid-item.react-grid-placeholder {
+  background: var(--accent-phosphor) !important;
+  opacity: 0.15 !important;
+  border-radius: 6px;
+}
+
+.react-resizable-handle {
+  filter: invert(1) opacity(0.5);
+}
+
+.react-resizable-handle:hover {
+  filter: invert(1) opacity(1);
 }
 
