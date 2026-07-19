@@ -56,7 +56,8 @@ export function AsciiImageForm({ block }: Props) {
         luminances[p] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
       }
 
-      patch({ asciiArt: luminanceToAscii(luminances, width, invert) });
+      const enableDithering = block.content.dithering ?? false;
+      patch({ asciiArt: luminanceToAscii(luminances, width, invert, enableDithering) });
       setLoading(false);
     };
     img.onerror = () => {
@@ -141,6 +142,21 @@ export function AsciiImageForm({ block }: Props) {
         />
         <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
           Invert ASCII Contrast
+        </span>
+      </label>
+
+      {/* Dithering */}
+      <label className="flex cursor-pointer items-center gap-3 select-none">
+        <input
+          type="checkbox"
+          checked={block.content.dithering ?? false}
+          onChange={(e) => {
+            patch({ dithering: e.target.checked });
+          }}
+          className="h-4 w-4 accent-[var(--accent-phosphor)]"
+        />
+        <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+          Enable Dithering (Better Quality)
         </span>
       </label>
     </div>

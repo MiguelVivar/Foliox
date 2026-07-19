@@ -94,6 +94,7 @@ export type AsciiImageBlock = {
     asciiArt: string;
     width: number;
     colorMode: "mono" | "invert";
+    dithering?: boolean;
   };
 };
 

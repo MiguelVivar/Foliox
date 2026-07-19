@@ -1,20 +1,23 @@
-// Perceptually-ordered density ramp (darkest to lightest) — the classic
-// 70-character ramp popularized by Paul Bourke, giving far more brightness
-// granularity than a short hand-picked charset.
 const DENSITY_RAMP =
   "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 
-/**
- * Converts a flat array of per-pixel luminance values (0-255, row-major,
- * `width` columns per row) into an ASCII-art string. Applies a contrast
- * stretch (normalizing the sampled luminance range to span the full 0-255
- * range) so low-contrast source images don't collapse onto a handful of
- * repeated characters.
- */
+const BAYER_MATRIX = [
+  [0, 8, 2, 10],
+  [12, 4, 14, 6],
+  [3, 11, 1, 9],
+  [15, 7, 13, 5],
+];
+
+function ditherOrderedBayer(luminance: number, x: number, y: number): number {
+  const threshold = (BAYER_MATRIX[y % 4][x % 4] + 1) / 17 * 255;
+  return luminance > threshold ? luminance + 20 : luminance - 20;
+}
+
 export function luminanceToAscii(
   luminances: number[],
   width: number,
   invert: boolean,
+  enableDithering = false,
 ): string {
   if (luminances.length === 0 || width <= 0) return "";
 
@@ -29,9 +32,16 @@ export function luminanceToAscii(
 
   let out = "";
   for (let i = 0; i < luminances.length; i++) {
-    // Falls back to the raw value when the image is a flat single color
-    // (range === 0), since stretching would divide by zero.
+    const x = i % width;
+    const y = Math.floor(i / width);
+
     let l = range > 0 ? ((luminances[i] - min) / range) * 255 : luminances[i];
+
+    if (enableDithering) {
+      l = ditherOrderedBayer(l, x, y);
+    }
+
+    l = Math.max(0, Math.min(255, l));
     if (invert) l = 255 - l;
 
     const charIndex = Math.round((l / 255) * rampLastIndex);
