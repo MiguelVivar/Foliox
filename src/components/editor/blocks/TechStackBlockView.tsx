@@ -8,7 +8,7 @@ export function TechStackBlockView({ block }: Props) {
 
   if (technologies.length === 0) {
     return (
-      <p className="font-mono text-xs italic text-[var(--text-muted)]">
+      <p className="font-mono text-xs text-[var(--text-muted)] italic">
         No technologies added yet
       </p>
     );
@@ -27,7 +27,7 @@ export function TechStackBlockView({ block }: Props) {
             href={`https://img.shields.io/badge/${encodeURIComponent(tech)}-${bgColor}?style=for-the-badge&logo=${badge?.logo || ""}&logoColor=${logoColor}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block hover:opacity-80 transition-opacity"
+            className="inline-block transition-opacity hover:opacity-80"
           >
             <img
               src={`https://img.shields.io/badge/${encodeURIComponent(tech)}-${bgColor}?style=for-the-badge&logo=${badge?.logo || ""}&logoColor=${logoColor}`}

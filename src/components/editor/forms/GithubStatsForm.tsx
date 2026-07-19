@@ -90,7 +90,7 @@ export function GithubStatsForm({ block }: Props) {
         </label>
 
         {block.content.useMetrics && (
-          <div className="flex flex-col gap-1.5 ml-6">
+          <div className="ml-6 flex flex-col gap-1.5">
             <label htmlFor="gs-metrics-template" className={labelClass}>
               Metrics Template
             </label>
