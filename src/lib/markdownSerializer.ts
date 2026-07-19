@@ -255,7 +255,7 @@ export function serializeBlocks(
   if (blocks.length === 0) return "";
 
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const separator = opts.sectionSeparator ? "\n\n---\n\n" : "\n\n";
+  const separator = opts.sectionSeparator ? "\n\n---\n\n" : "\n\n\n";
 
   const orderedBlocks = [...blocks].sort((a, b) => {
     const ay = a.position?.y ?? 0;
