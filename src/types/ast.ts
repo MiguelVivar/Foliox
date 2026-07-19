@@ -67,6 +67,8 @@ export type GithubStatsBlock = {
     showTrophies?: boolean;
     showVisitorCounter?: boolean;
     theme?: GithubStatsTheme;
+    useMetrics?: boolean;
+    metricsTemplate?: "default" | "compact" | "minimalist";
   };
 };
 

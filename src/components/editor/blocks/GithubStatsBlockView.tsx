@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { GitBranch, RefreshCw } from "lucide-react";
 import type { GithubStatsBlock } from "@/types/ast";
+import { buildMetricsUrl } from "@/lib/metricsBuilder";
 
 type ImageLoadState = "loading" | "loaded" | "error";
 
@@ -57,7 +58,7 @@ function StatsImage({ src, alt }: { src: string; alt: string }) {
         key={resolvedSrc}
         src={resolvedSrc}
         alt={alt}
-        className="max-w-full rounded-md shadow-sm border border-[#30363d]/50 object-contain self-start"
+        className="max-w-full self-start rounded-md border border-[#30363d]/50 object-contain shadow-sm"
         style={{ opacity: state === "loaded" ? 1 : 0 }}
         onLoad={() => setState("loaded")}
         onError={() => setState("error")}
@@ -69,9 +70,34 @@ function StatsImage({ src, alt }: { src: string; alt: string }) {
 type Props = { block: GithubStatsBlock };
 
 export function GithubStatsBlockView({ block }: Props) {
-  const { username, showLangs, showTrophies, showVisitorCounter, theme } = block.content;
+  const { username, showLangs, showTrophies, showVisitorCounter, theme, useMetrics, metricsTemplate } =
+    block.content;
   const safeUser = username || "MiguelVivar";
   const safeTheme = theme || "dark";
+
+  if (useMetrics) {
+    const metricsUrl = buildMetricsUrl(safeUser, {
+      template: (metricsTemplate || "default") as "default" | "compact" | "minimalist",
+      showStats: true,
+      showLanguages: showLangs !== false,
+      showTrophies: showTrophies !== false,
+      showContributions: true,
+    });
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between border-b border-[#30363d] pb-2 select-none">
+          <div className="flex items-center gap-2">
+            <GitBranch size={15} className="text-[#8b949e]" />
+            <span className="font-mono text-xs text-[#8b949e]">
+              GitHub Profile Metrics ({safeUser})
+            </span>
+          </div>
+        </div>
+        <img src={metricsUrl} alt="GitHub Metrics" className="max-w-full rounded-md border border-[#30363d]/50 object-contain" />
+      </div>
+    );
+  }
 
   const statsUrl = `https://github-readme-stats.vercel.app/api?username=${safeUser}&show_icons=true&theme=${safeTheme}&count_private=${block.content.showPrivate ? "true" : "false"}`;
   const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${safeUser}&layout=compact&theme=${safeTheme}`;
@@ -83,7 +109,9 @@ export function GithubStatsBlockView({ block }: Props) {
       <div className="flex items-center justify-between border-b border-[#30363d] pb-2 select-none">
         <div className="flex items-center gap-2">
           <GitBranch size={15} className="text-[#8b949e]" />
-          <span className="font-mono text-xs text-[#8b949e]">GitHub Infographics ({safeUser})</span>
+          <span className="font-mono text-xs text-[#8b949e]">
+            GitHub Infographics ({safeUser})
+          </span>
         </div>
       </div>
 
@@ -104,8 +132,12 @@ export function GithubStatsBlockView({ block }: Props) {
       {/* Real GitHub Stats image cards, each with its own loading/error state */}
       <div className="flex flex-col gap-4">
         <StatsImage src={statsUrl} alt={`${safeUser}'s GitHub Stats`} />
-        {showLangs && <StatsImage src={langsUrl} alt={`${safeUser}'s Top Languages`} />}
-        {showTrophies && <StatsImage src={trophiesUrl} alt={`${safeUser}'s Trophies`} />}
+        {showLangs && (
+          <StatsImage src={langsUrl} alt={`${safeUser}'s Top Languages`} />
+        )}
+        {showTrophies && (
+          <StatsImage src={trophiesUrl} alt={`${safeUser}'s Trophies`} />
+        )}
       </div>
     </div>
   );
