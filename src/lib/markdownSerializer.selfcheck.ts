@@ -8,6 +8,7 @@ import type {
   AsciiBannerBlock,
   AsciiImageBlock,
   SocialLinksBlock,
+  TypingHeaderBlock,
   Block,
 } from "../types/ast.ts";
 
@@ -544,6 +545,30 @@ const defaultStreakOutput = serializeBlocks([githubDefaultStreak]);
 assert.ok(
   defaultStreakOutput.includes("streak-stats"),
   "GitHub stats should include the streak card by default (showStreak undefined)",
+);
+
+// ============================================================================
+// Test: Typing Header
+// ============================================================================
+
+const typingBlock: TypingHeaderBlock = {
+  id: "typing1",
+  kind: "typing-header",
+  position: { x: 0, y: 0, w: 12, h: 4 },
+  content: { lines: ["Hello there"] },
+};
+const typingOutput = serializeBlocks([typingBlock]);
+assert.ok(
+  typingOutput.includes("readme-typing-svg.demolab.com"),
+  "Typing header should embed a readme-typing-svg image",
+);
+
+const emptyTypingOutput = serializeBlocks([
+  { ...typingBlock, id: "typing2", content: { lines: [] } },
+]);
+assert.ok(
+  emptyTypingOutput.includes("<!-- typing-header: empty -->"),
+  "Empty typing header should have empty comment",
 );
 
 // ============================================================================

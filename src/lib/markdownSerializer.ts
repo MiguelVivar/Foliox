@@ -9,6 +9,7 @@ import type {
   SocialLinksBlock,
   RichMediaBlock,
   MarkdownCustomBlock,
+  TypingHeaderBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
 import { buildShieldsUrl, buildSkillIconsUrl } from "./techCatalog";
@@ -19,6 +20,7 @@ import {
   buildTrophyUrl,
   buildVisitorCounterUrl,
 } from "./githubStatsUrls";
+import { buildTypingSvgUrl } from "./typingHeaderUrl";
 
 // ---------------------------------------------------------------------------
 // Serialization options
@@ -240,6 +242,14 @@ function serializeMarkdownCustom(block: MarkdownCustomBlock): string {
   return block.content.markdown.trimEnd();
 }
 
+function serializeTypingHeader(block: TypingHeaderBlock): string {
+  const { lines } = block.content;
+  if (lines.length === 0 || lines.every((line) => !line.trim())) {
+    return `<!-- typing-header: empty -->`;
+  }
+  return `<div align="center">\n  <img src="${buildTypingSvgUrl(block.content)}" alt="Typing SVG" />\n</div>`;
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -293,6 +303,9 @@ export function serializeBlocks(
           break;
         case "markdown-custom":
           serialized = serializeMarkdownCustom(block);
+          break;
+        case "typing-header":
+          serialized = serializeTypingHeader(block);
           break;
       }
       if (block.style?.hasBorder && serialized.trim()) {
