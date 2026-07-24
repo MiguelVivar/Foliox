@@ -1,116 +1,140 @@
+import catalogData from "./techCatalogData.json";
+
 export type TechCatalogEntry = {
   label: string;
-  color: string;
-  logo: string;
+  slug: string;
+  hex: string;
+  skillIconsSlug?: string;
 };
 
-// Brand metadata using the same simple-icons slugs shields.io badges already
-// consume (https://simpleicons.org). Both markdownSerializer.ts and
-// TechStackForm.tsx read from this one catalog so they can never drift.
-export const TECH_CATALOG: TechCatalogEntry[] = [
-  // Languages
-  { label: "TypeScript", color: "3178C6", logo: "typescript" },
-  { label: "JavaScript", color: "F7DF1E", logo: "javascript" },
-  { label: "Python", color: "3776AB", logo: "python" },
-  { label: "Java", color: "ED8B00", logo: "openjdk" },
-  { label: "Kotlin", color: "7F52FF", logo: "kotlin" },
-  { label: "Swift", color: "F05138", logo: "swift" },
-  { label: "C", color: "A8B9CC", logo: "c" },
-  { label: "C++", color: "00599C", logo: "cplusplus" },
-  { label: "C#", color: "239120", logo: "csharp" },
-  { label: "PHP", color: "777BB4", logo: "php" },
-  { label: "Ruby", color: "CC342D", logo: "ruby" },
-  { label: "Rust", color: "000000", logo: "rust" },
-  { label: "Go", color: "00ADD8", logo: "go" },
-  { label: "Dart", color: "0175C2", logo: "dart" },
-  { label: "Scala", color: "DC322F", logo: "scala" },
-  { label: "Haskell", color: "5D4F85", logo: "haskell" },
-  { label: "Elixir", color: "4B275F", logo: "elixir" },
-  { label: "Lua", color: "2C2D72", logo: "lua" },
-  { label: "R", color: "276DC3", logo: "r" },
-  { label: "Solidity", color: "363636", logo: "solidity" },
+// Brands simple-icons has dropped (AWS, Azure — removed after trademark
+// takedown requests) or that use a different slug/title than our legacy
+// labels (Java -> the OpenJDK mark, VS Code -> "Visual Studio Code", GitLab
+// CI -> the GitLab mark). Preserves pre-unification behavior exactly for
+// labels users may already have saved in stored/exported blocks.
+const LEGACY_OVERRIDES: Record<string, TechCatalogEntry> = {
+  java: { label: "Java", slug: "openjdk", hex: "ED8B00" },
+  "c#": { label: "C#", slug: "csharp", hex: "239120", skillIconsSlug: "cs" },
+  aws: { label: "AWS", slug: "amazonaws", hex: "232F3E", skillIconsSlug: "aws" },
+  azure: { label: "Azure", slug: "microsoftazure", hex: "0078D4", skillIconsSlug: "azure" },
+  heroku: { label: "Heroku", slug: "heroku", hex: "430098", skillIconsSlug: "heroku" },
+  "vs code": { label: "VS Code", slug: "visualstudiocode", hex: "007ACC", skillIconsSlug: "vscode" },
+  "gitlab ci": { label: "GitLab CI", slug: "gitlab", hex: "FC6D26", skillIconsSlug: "gitlab" },
+};
 
-  // Frontend
-  { label: "HTML5", color: "E34F26", logo: "html5" },
-  { label: "CSS3", color: "1572B6", logo: "css3" },
-  { label: "React", color: "20232A", logo: "react" },
-  { label: "Next.js", color: "000000", logo: "nextdotjs" },
-  { label: "Vue.js", color: "4FC08D", logo: "vuedotjs" },
-  { label: "Nuxt", color: "00DC82", logo: "nuxtdotjs" },
-  { label: "Angular", color: "DD0031", logo: "angular" },
-  { label: "Svelte", color: "FF3E00", logo: "svelte" },
-  { label: "Astro", color: "BC52EE", logo: "astro" },
-  { label: "Tailwind CSS", color: "06B6D4", logo: "tailwindcss" },
-  { label: "Bootstrap", color: "7952B3", logo: "bootstrap" },
-  { label: "Sass", color: "CC6699", logo: "sass" },
-  { label: "Redux", color: "764ABC", logo: "redux" },
-  { label: "Vite", color: "646CFF", logo: "vite" },
-  { label: "Webpack", color: "8DD6F9", logo: "webpack" },
+// skillicons.dev ships its own curated ~400-file icon set
+// (github.com/tandpfun/skill-icons/tree/main/icons) with slugs that
+// sometimes diverge from simple-icons. Only entries with a confirmed
+// skillicons.dev file get a mapping; anything else silently falls back to
+// the shields.io render for that one badge in `buildSkillIconsUrl`.
+const SKILL_ICONS_SLUGS: Record<string, string> = {
+  javascript: "js", typescript: "ts", python: "python", go: "golang",
+  rust: "rust", cplusplus: "cpp", php: "php", swift: "swift", kotlin: "kotlin",
+  react: "react", vuedotjs: "vuejs", angular: "angular", svelte: "svelte",
+  nextdotjs: "nextjs", nuxtdotjs: "nuxtjs", nodedotjs: "nodejs",
+  express: "expressjs", nestjs: "nestjs", django: "django", flask: "flask",
+  fastapi: "fastapi", springboot: "spring", postgresql: "postgresql",
+  mysql: "mysql", mongodb: "mongodb", firebase: "firebase",
+  supabase: "supabase", redis: "redis", elasticsearch: "elasticsearch",
+  graphql: "graphql", docker: "docker", kubernetes: "kubernetes",
+  jenkins: "jenkins", githubactions: "githubactions", googlecloud: "gcp",
+  github: "github", vercel: "vercel", netlify: "netlify", git: "git",
+  linux: "linux", figma: "figma", webpack: "webpack", vite: "vite",
+  jest: "jest", cypress: "cypress", html5: "html", css3: "css",
+  tailwindcss: "tailwindcss", bootstrap: "bootstrap", sass: "sass",
+  redux: "redux", c: "c", ruby: "ruby", dart: "dart", scala: "scala",
+  haskell: "haskell", lua: "lua", r: "r", solidity: "solidity",
+  laravel: "laravel", terraform: "terraform", tensorflow: "tensorflow",
+  pytorch: "pytorch", unity: "unity", unrealengine: "unrealengine",
+  postman: "postman", notion: "notion",
+};
 
-  // Backend
-  { label: "Node.js", color: "339933", logo: "nodedotjs" },
-  { label: "Express", color: "000000", logo: "express" },
-  { label: "NestJS", color: "E0234E", logo: "nestjs" },
-  { label: "Django", color: "092E20", logo: "django" },
-  { label: "Flask", color: "000000", logo: "flask" },
-  { label: "FastAPI", color: "009688", logo: "fastapi" },
-  { label: "Spring", color: "6DB33F", logo: "spring" },
-  { label: "Laravel", color: "FF2D20", logo: "laravel" },
-  { label: "GraphQL", color: "E10098", logo: "graphql" },
-  { label: "Prisma", color: "2D3748", logo: "prisma" },
-
-  // Databases
-  { label: "PostgreSQL", color: "4169E1", logo: "postgresql" },
-  { label: "MySQL", color: "4479A1", logo: "mysql" },
-  { label: "MongoDB", color: "47A248", logo: "mongodb" },
-  { label: "Redis", color: "DC382D", logo: "redis" },
-  { label: "SQLite", color: "003B57", logo: "sqlite" },
-  { label: "Supabase", color: "3ECF8E", logo: "supabase" },
-  { label: "Firebase", color: "FFCA28", logo: "firebase" },
-  { label: "Elasticsearch", color: "005571", logo: "elasticsearch" },
-
-  // Cloud & DevOps
-  { label: "Docker", color: "2496ED", logo: "docker" },
-  { label: "Kubernetes", color: "326CE5", logo: "kubernetes" },
-  { label: "AWS", color: "232F3E", logo: "amazonaws" },
-  { label: "Google Cloud", color: "4285F4", logo: "googlecloud" },
-  { label: "Azure", color: "0078D4", logo: "microsoftazure" },
-  { label: "Vercel", color: "000000", logo: "vercel" },
-  { label: "Netlify", color: "00C7B7", logo: "netlify" },
-  { label: "Terraform", color: "7B42BC", logo: "terraform" },
-  { label: "Ansible", color: "EE0000", logo: "ansible" },
-  { label: "Jenkins", color: "D24939", logo: "jenkins" },
-  { label: "GitHub Actions", color: "2088FF", logo: "githubactions" },
-  { label: "Nginx", color: "009639", logo: "nginx" },
-  { label: "Git", color: "F05032", logo: "git" },
-  { label: "Linux", color: "FCC624", logo: "linux" },
-
-  // Tools & misc
-  { label: "Figma", color: "F24E1E", logo: "figma" },
-  { label: "Postman", color: "FF6C37", logo: "postman" },
-  { label: "Jest", color: "C21325", logo: "jest" },
-  { label: "Cypress", color: "17202C", logo: "cypress" },
-  { label: "ESLint", color: "4B32C3", logo: "eslint" },
-  { label: "Jira", color: "0052CC", logo: "jira" },
-  { label: "Notion", color: "000000", logo: "notion" },
-
-  // Data / ML
-  { label: "TensorFlow", color: "FF6F00", logo: "tensorflow" },
-  { label: "PyTorch", color: "EE4C2C", logo: "pytorch" },
-  { label: "Pandas", color: "150458", logo: "pandas" },
-  { label: "NumPy", color: "013243", logo: "numpy" },
-  { label: "Jupyter", color: "F37626", logo: "jupyter" },
-
-  // Game dev
-  { label: "Unity", color: "FFFFFF", logo: "unity" },
-  { label: "Unreal Engine", color: "0E1128", logo: "unrealengine" },
-];
+const BASE_CATALOG: TechCatalogEntry[] = (catalogData as TechCatalogEntry[]).map(
+  (entry) => {
+    const skillIconsSlug = SKILL_ICONS_SLUGS[entry.slug];
+    return skillIconsSlug ? { ...entry, skillIconsSlug } : entry;
+  },
+);
 
 const CATALOG_BY_LABEL: Map<string, TechCatalogEntry> = new Map(
-  TECH_CATALOG.map((entry) => [entry.label.toLowerCase(), entry]),
+  BASE_CATALOG.map((entry) => [entry.label.toLowerCase(), entry]),
 );
+
+for (const [key, entry] of Object.entries(LEGACY_OVERRIDES)) {
+  CATALOG_BY_LABEL.set(key, entry);
+}
+
+/** The curated subset shown by default before the user searches. */
+export const POPULAR_TECH: string[] = [
+  "TypeScript", "JavaScript", "Python", "Java", "Go", "Rust", "C++", "C#",
+  "PHP", "Swift", "Kotlin", "React", "Vue.js", "Angular", "Svelte",
+  "Next.js", "Nuxt", "Node.js", "Express", "NestJS", "Django", "Flask",
+  "FastAPI", "Spring Boot", "PostgreSQL", "MySQL", "MongoDB", "Firebase",
+  "Supabase", "Redis", "Elasticsearch", "GraphQL", "Docker", "Kubernetes",
+  "Jenkins", "GitHub Actions", "GitLab CI", "AWS", "Google Cloud", "Azure",
+  "GitHub", "Vercel", "Netlify", "Heroku", "Git", "Linux", "VS Code",
+  "Figma", "Webpack", "Vite", "Jest", "Cypress",
+];
 
 /** Case-insensitive catalog lookup by display label. */
 export function findTechMeta(label: string): TechCatalogEntry | undefined {
   return CATALOG_BY_LABEL.get(label.toLowerCase());
+}
+
+/**
+ * Searches the full ~3,200-entry catalog by label substring, capped at
+ * `limit` results so the picker never renders thousands of badges at once.
+ */
+export function searchTech(query: string, limit = 60): TechCatalogEntry[] {
+  const lowerQuery = query.toLowerCase();
+  const results: TechCatalogEntry[] = [];
+  for (const entry of BASE_CATALOG) {
+    if (entry.label.toLowerCase().includes(lowerQuery)) {
+      results.push(entry);
+      if (results.length >= limit) break;
+    }
+  }
+  return results;
+}
+
+/** The curated default view: full metadata for each POPULAR_TECH label. */
+export function getPopularTech(): TechCatalogEntry[] {
+  return POPULAR_TECH.map((label) => findTechMeta(label)).filter(
+    (entry): entry is TechCatalogEntry => entry !== undefined,
+  );
+}
+
+/**
+ * Picks readable logo text color for a shields.io badge background using
+ * relative luminance (WCAG formula), so light brand colors (JS yellow,
+ * white logos) get black text instead of unreadable white-on-white.
+ */
+export function contrastColorFor(hex: string): "black" | "white" {
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.6 ? "black" : "white";
+}
+
+/** Builds a shields.io badge URL for one technology label. */
+export function buildShieldsUrl(label: string, style = "flat-square"): string {
+  const meta = findTechMeta(label);
+  const color = meta?.hex ?? "555555";
+  const logo = meta?.slug ?? "";
+  const logoColor = contrastColorFor(color);
+  const encodedLabel = encodeURIComponent(label);
+  return `https://img.shields.io/badge/${encodedLabel}-${color}?style=${style}&logo=${logo}&logoColor=${logoColor}`;
+}
+
+/**
+ * Builds a single combined skillicons.dev image URL for a list of tech
+ * labels. Labels without a known Skill Icons slug are silently dropped from
+ * this URL (they still render individually via `buildShieldsUrl` elsewhere).
+ */
+export function buildSkillIconsUrl(labels: string[]): string {
+  const slugs = labels
+    .map((label) => findTechMeta(label)?.skillIconsSlug)
+    .filter((slug): slug is string => Boolean(slug));
+  return `https://skillicons.dev/icons?i=${slugs.join(",")}`;
 }
