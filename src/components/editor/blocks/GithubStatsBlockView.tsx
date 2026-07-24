@@ -6,13 +6,17 @@ import { GithubStatsDisplay } from "./GithubStatsDisplay";
 type Props = { block: GithubStatsBlock };
 
 export function GithubStatsBlockView({ block }: Props) {
-  const { username, showLangs } = block.content;
-  const safeUser = username || "MiguelVivar";
+  const { username, theme, showLangs, showStreak, showTrophies, showVisitorCounter } =
+    block.content;
 
   return (
     <GithubStatsDisplay
-      username={safeUser}
-      showLanguages={showLangs !== false}
+      username={username || "MiguelVivar"}
+      theme={theme}
+      showLanguages={showLangs}
+      showStreak={showStreak !== false}
+      showTrophies={showTrophies}
+      showVisitorCounter={showVisitorCounter}
     />
   );
 }
