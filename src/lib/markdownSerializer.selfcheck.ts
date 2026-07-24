@@ -9,6 +9,7 @@ import type {
   AsciiImageBlock,
   SocialLinksBlock,
   TypingHeaderBlock,
+  CapsuleBannerBlock,
   Block,
 } from "../types/ast.ts";
 
@@ -569,6 +570,22 @@ const emptyTypingOutput = serializeBlocks([
 assert.ok(
   emptyTypingOutput.includes("<!-- typing-header: empty -->"),
   "Empty typing header should have empty comment",
+);
+
+// ============================================================================
+// Test: Capsule Banner
+// ============================================================================
+
+const capsuleBlock: CapsuleBannerBlock = {
+  id: "capsule1",
+  kind: "capsule-banner",
+  position: { x: 0, y: 0, w: 12, h: 4 },
+  content: { type: "waving", color: "0d1117" },
+};
+const capsuleOutput = serializeBlocks([capsuleBlock]);
+assert.ok(
+  capsuleOutput.includes("capsule-render.vercel.app"),
+  "Capsule banner should embed a capsule-render image",
 );
 
 // ============================================================================

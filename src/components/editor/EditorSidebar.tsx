@@ -19,6 +19,7 @@ import { SocialLinksForm } from "./forms/SocialLinksForm";
 import { RichMediaForm } from "./forms/RichMediaForm";
 import { MarkdownCustomForm } from "./forms/MarkdownCustomForm";
 import { TypingHeaderForm } from "./forms/TypingHeaderForm";
+import { CapsuleBannerForm } from "./forms/CapsuleBannerForm";
 
 import { useAuthStore } from "@/store/useAuthStore";
 
@@ -117,6 +118,22 @@ const BLOCK_CATALOG: { label: string; description: string; factory: (username: s
       },
     }),
   },
+  {
+    label: "Capsule Banner",
+    description: "Wave/gradient header or footer banner",
+    factory: () => ({
+      id: makeId(),
+      kind: "capsule-banner",
+      content: {
+        type: "waving",
+        color: "0d1117",
+        text: "",
+        height: 200,
+        fontColor: "ffffff",
+        section: "header",
+      },
+    }),
+  },
 ];
 
 // ------------------------------------------------------------------
@@ -132,6 +149,7 @@ const KIND_LABELS: Record<Block["kind"], string> = {
   "rich-media": "Rich Media",
   "markdown-custom": "Custom Markdown",
   "typing-header": "Typing Header",
+  "capsule-banner": "Capsule Banner",
 };
 
 import { BlockStyleForm } from "./forms/BlockStyleForm";
@@ -153,6 +171,7 @@ function BlockForm({ block }: { block: Block }) {
       case "rich-media":   return <RichMediaForm block={block} />;
       case "markdown-custom": return <MarkdownCustomForm block={block} />;
       case "typing-header": return <TypingHeaderForm block={block} />;
+      case "capsule-banner": return <CapsuleBannerForm block={block} />;
     }
   })();
 

@@ -15,6 +15,7 @@ import { SocialLinksBlockView } from "./blocks/SocialLinksBlockView";
 import { RichMediaBlockView } from "./blocks/RichMediaBlockView";
 import { MarkdownCustomBlockView } from "./blocks/MarkdownCustomBlockView";
 import { TypingHeaderBlockView } from "./blocks/TypingHeaderBlockView";
+import { CapsuleBannerBlockView } from "./blocks/CapsuleBannerBlockView";
 
 const KIND_LABELS: Record<Block["kind"], string> = {
   "hero-bio": "Hero / Bio",
@@ -26,6 +27,7 @@ const KIND_LABELS: Record<Block["kind"], string> = {
   "rich-media": "Rich Media",
   "markdown-custom": "Custom Markdown",
   "typing-header": "Typing Header",
+  "capsule-banner": "Capsule Banner",
 };
 
 type Props = {
@@ -59,6 +61,8 @@ export function BentoCard({ block }: Props) {
         return <MarkdownCustomBlockView block={block} />;
       case "typing-header":
         return <TypingHeaderBlockView block={block} />;
+      case "capsule-banner":
+        return <CapsuleBannerBlockView block={block} />;
     }
   }
 

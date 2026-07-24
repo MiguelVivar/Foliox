@@ -10,6 +10,7 @@ import type {
   RichMediaBlock,
   MarkdownCustomBlock,
   TypingHeaderBlock,
+  CapsuleBannerBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
 import { buildShieldsUrl, buildSkillIconsUrl } from "./techCatalog";
@@ -21,6 +22,7 @@ import {
   buildVisitorCounterUrl,
 } from "./githubStatsUrls";
 import { buildTypingSvgUrl } from "./typingHeaderUrl";
+import { buildCapsuleUrl } from "./capsuleBannerUrl";
 
 // ---------------------------------------------------------------------------
 // Serialization options
@@ -250,6 +252,10 @@ function serializeTypingHeader(block: TypingHeaderBlock): string {
   return `<div align="center">\n  <img src="${buildTypingSvgUrl(block.content)}" alt="Typing SVG" />\n</div>`;
 }
 
+function serializeCapsuleBanner(block: CapsuleBannerBlock): string {
+  return `<div align="center">\n  <img src="${buildCapsuleUrl(block.content)}" alt="Banner" />\n</div>`;
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -306,6 +312,9 @@ export function serializeBlocks(
           break;
         case "typing-header":
           serialized = serializeTypingHeader(block);
+          break;
+        case "capsule-banner":
+          serialized = serializeCapsuleBanner(block);
           break;
       }
       if (block.style?.hasBorder && serialized.trim()) {
