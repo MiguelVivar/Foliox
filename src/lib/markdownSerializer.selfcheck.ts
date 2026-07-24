@@ -519,6 +519,34 @@ assert.ok(
 );
 
 // ============================================================================
+// Test: GitHub Stats - Streak can be disabled
+// ============================================================================
+
+const githubNoStreak: GithubStatsBlock = {
+  id: "github-no-streak",
+  kind: "github-stats",
+  position: { x: 0, y: 0, w: 12, h: 10 },
+  content: { username: "octocat", showPrivate: false, showStreak: false },
+};
+const noStreakOutput = serializeBlocks([githubNoStreak]);
+assert.ok(
+  !noStreakOutput.includes("streak-stats"),
+  "GitHub stats should omit the streak card when showStreak is false",
+);
+
+const githubDefaultStreak: GithubStatsBlock = {
+  id: "github-default-streak",
+  kind: "github-stats",
+  position: { x: 0, y: 0, w: 12, h: 10 },
+  content: { username: "octocat", showPrivate: false },
+};
+const defaultStreakOutput = serializeBlocks([githubDefaultStreak]);
+assert.ok(
+  defaultStreakOutput.includes("streak-stats"),
+  "GitHub stats should include the streak card by default (showStreak undefined)",
+);
+
+// ============================================================================
 // Test Summary
 // ============================================================================
 

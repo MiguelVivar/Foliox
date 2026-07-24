@@ -65,6 +65,7 @@ export type GithubStatsBlock = {
     username: string;
     showPrivate: boolean;
     showLangs?: boolean;
+    showStreak?: boolean;
     showTrophies?: boolean;
     showVisitorCounter?: boolean;
     theme?: GithubStatsTheme;
