@@ -265,12 +265,80 @@ Have questions? Open an issue or reach out via our community channels.`,
 };
 
 /**
+ * Visual template: typing header, wave banner, skill-icons tech stack, and
+ * full GitHub stats (trophies + streak + languages). Showcases every block
+ * added in this plan.
+ */
+const VISUAL_TEMPLATE: ReadmeTemplate = {
+  id: "visual",
+  name: "Visual",
+  description: "Animated header, wave banner, and full GitHub stats showcase",
+  blocks: [
+    {
+      id: "block-visual-typing",
+      kind: "typing-header",
+      content: {
+        lines: ["Hi, I'm your name 👋", "Welcome to my GitHub profile"],
+        speed: 50,
+        pauseMs: 1000,
+        color: "#36BCF7",
+        fontSize: 24,
+      },
+    },
+    {
+      id: "block-visual-capsule",
+      kind: "capsule-banner",
+      content: {
+        type: "waving",
+        color: "0d1117",
+        text: "",
+        height: 180,
+        fontColor: "ffffff",
+        section: "header",
+      },
+    },
+    {
+      id: "block-visual-tech",
+      kind: "tech-stack",
+      content: {
+        technologies: ["TypeScript", "React", "Node.js", "Docker", "PostgreSQL"],
+        iconStyle: "skill-icons",
+      },
+    },
+    {
+      id: "block-visual-stats",
+      kind: "github-stats",
+      content: {
+        username: "your-github-username",
+        showPrivate: false,
+        showLangs: true,
+        showStreak: true,
+        showTrophies: true,
+        showVisitorCounter: true,
+        theme: "dark",
+      },
+    },
+    {
+      id: "block-visual-links",
+      kind: "social-links",
+      content: {
+        links: [
+          { platform: "github", username: "yourname" },
+          { platform: "linkedin", username: "yourname" },
+        ],
+      },
+    },
+  ],
+};
+
+/**
  * All available README templates
  */
 export const README_TEMPLATES: ReadmeTemplate[] = [
   MINIMAL_TEMPLATE,
   DEVELOPER_TEMPLATE,
   PROJECT_TEMPLATE,
+  VISUAL_TEMPLATE,
 ];
 
 /**
