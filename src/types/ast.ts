@@ -7,7 +7,8 @@ export type BlockKind =
   | "social-links"
   | "rich-media"
   | "markdown-custom"
-  | "typing-header";
+  | "typing-header"
+  | "capsule-banner";
 
 export type BlockStyleConfig = {
   hasBorder?: boolean;
@@ -56,6 +57,9 @@ export const GITHUB_STATS_THEMES = [
 ] as const;
 
 export type GithubStatsTheme = (typeof GITHUB_STATS_THEMES)[number];
+
+export const CAPSULE_TYPES = ["waving", "rect", "cylinder", "egg"] as const;
+export type CapsuleType = (typeof CAPSULE_TYPES)[number];
 
 export type GithubStatsBlock = {
   id: string;
@@ -117,6 +121,21 @@ export type TypingHeaderBlock = {
   };
 };
 
+export type CapsuleBannerBlock = {
+  id: string;
+  kind: "capsule-banner";
+  style?: BlockStyleConfig;
+  position?: Position;
+  content: {
+    text?: string;
+    type: CapsuleType;
+    color: string;
+    height?: number;
+    fontColor?: string;
+    section?: "header" | "footer";
+  };
+};
+
 export type SocialLinksBlock = {
   id: string;
   kind: "social-links";
@@ -160,4 +179,5 @@ export type Block =
   | SocialLinksBlock
   | RichMediaBlock
   | MarkdownCustomBlock
-  | TypingHeaderBlock;
+  | TypingHeaderBlock
+  | CapsuleBannerBlock;
