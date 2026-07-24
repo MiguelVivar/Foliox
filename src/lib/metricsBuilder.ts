@@ -14,7 +14,10 @@ const TEMPLATE_CONFIG: Record<MetricsTemplate, string> = {
   minimalist: "classic&config.padding=0",
 };
 
-export function buildMetricsUrl(username: string, options: MetricsOptions): string {
+export function buildMetricsUrl(
+  username: string,
+  options: MetricsOptions,
+): string {
   const baseUrl = "https://metrics.lecoq.io";
   const params = new URLSearchParams();
 

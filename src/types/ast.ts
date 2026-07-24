@@ -6,7 +6,9 @@ export type BlockKind =
   | "ascii-image"
   | "social-links"
   | "rich-media"
-  | "markdown-custom";
+  | "markdown-custom"
+  | "typing-header"
+  | "capsule-banner";
 
 export type BlockStyleConfig = {
   hasBorder?: boolean;
@@ -39,6 +41,7 @@ export type TechStackBlock = {
   position?: Position;
   content: {
     technologies: string[];
+    iconStyle?: "shields" | "skill-icons";
   };
 };
 
@@ -55,6 +58,9 @@ export const GITHUB_STATS_THEMES = [
 
 export type GithubStatsTheme = (typeof GITHUB_STATS_THEMES)[number];
 
+export const CAPSULE_TYPES = ["waving", "rect", "cylinder", "egg"] as const;
+export type CapsuleType = (typeof CAPSULE_TYPES)[number];
+
 export type GithubStatsBlock = {
   id: string;
   kind: "github-stats";
@@ -64,6 +70,7 @@ export type GithubStatsBlock = {
     username: string;
     showPrivate: boolean;
     showLangs?: boolean;
+    showStreak?: boolean;
     showTrophies?: boolean;
     showVisitorCounter?: boolean;
     theme?: GithubStatsTheme;
@@ -97,6 +104,35 @@ export type AsciiImageBlock = {
     width: number;
     colorMode: "mono" | "invert";
     dithering?: boolean;
+  };
+};
+
+export type TypingHeaderBlock = {
+  id: string;
+  kind: "typing-header";
+  style?: BlockStyleConfig;
+  position?: Position;
+  content: {
+    lines: string[];
+    speed?: number;
+    pauseMs?: number;
+    color?: string;
+    fontSize?: number;
+  };
+};
+
+export type CapsuleBannerBlock = {
+  id: string;
+  kind: "capsule-banner";
+  style?: BlockStyleConfig;
+  position?: Position;
+  content: {
+    text?: string;
+    type: CapsuleType;
+    color: string;
+    height?: number;
+    fontColor?: string;
+    section?: "header" | "footer";
   };
 };
 
@@ -142,4 +178,6 @@ export type Block =
   | AsciiImageBlock
   | SocialLinksBlock
   | RichMediaBlock
-  | MarkdownCustomBlock;
+  | MarkdownCustomBlock
+  | TypingHeaderBlock
+  | CapsuleBannerBlock;

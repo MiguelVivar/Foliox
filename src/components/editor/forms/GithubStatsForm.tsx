@@ -73,41 +73,9 @@ export function GithubStatsForm({ block }: Props) {
         </span>
       </label>
 
-      {/* Toggles for Extra Widgets */}
+      {/* Display Options */}
       <div className="flex flex-col gap-2.5 border-t border-[var(--border-subtle)] pt-3">
-        <span className={labelClass}>Infographics & Metrics</span>
-
-        <label className="flex cursor-pointer items-center gap-3">
-          <input
-            type="checkbox"
-            checked={!!block.content.useMetrics}
-            onChange={(e) => patch({ useMetrics: e.target.checked })}
-            className="h-4 w-4 accent-[var(--accent-phosphor)]"
-          />
-          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
-            🚀 Use Metrics API (no rate-limit)
-          </span>
-        </label>
-
-        {block.content.useMetrics && (
-          <div className="ml-6 flex flex-col gap-1.5">
-            <label htmlFor="gs-metrics-template" className={labelClass}>
-              Metrics Template
-            </label>
-            <select
-              id="gs-metrics-template"
-              value={block.content.metricsTemplate || "default"}
-              onChange={(e) =>
-                patch({ metricsTemplate: e.target.value as any })
-              }
-              className={inputClass}
-            >
-              <option value="default">Default</option>
-              <option value="compact">Compact</option>
-              <option value="minimalist">Minimalist</option>
-            </select>
-          </div>
-        )}
+        <span className={labelClass}>Display Options</span>
 
         <label className="flex cursor-pointer items-center gap-3">
           <input
@@ -117,7 +85,19 @@ export function GithubStatsForm({ block }: Props) {
             className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
           <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
-            [+] Language Pie Chart
+            Show Top Languages
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={block.content.showStreak !== false}
+            onChange={(e) => patch({ showStreak: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+            Show Streak Stats
           </span>
         </label>
 
@@ -129,7 +109,7 @@ export function GithubStatsForm({ block }: Props) {
             className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
           <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
-            [+] Trophy Case (trophies)
+            Show Trophies
           </span>
         </label>
 
@@ -141,7 +121,7 @@ export function GithubStatsForm({ block }: Props) {
             className="h-4 w-4 accent-[var(--accent-phosphor)]"
           />
           <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
-            [+] Visitor Counter
+            Show Visitor Counter
           </span>
         </label>
       </div>

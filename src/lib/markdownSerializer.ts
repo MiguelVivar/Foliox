@@ -9,9 +9,20 @@ import type {
   SocialLinksBlock,
   RichMediaBlock,
   MarkdownCustomBlock,
+  TypingHeaderBlock,
+  CapsuleBannerBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
-import { findTechMeta } from "./techCatalog";
+import { buildShieldsUrl, buildSkillIconsUrl } from "./techCatalog";
+import {
+  buildStatsUrl,
+  buildStreakUrl,
+  buildLangsUrl,
+  buildTrophyUrl,
+  buildVisitorCounterUrl,
+} from "./githubStatsUrls";
+import { buildTypingSvgUrl } from "./typingHeaderUrl";
+import { buildCapsuleUrl } from "./capsuleBannerUrl";
 
 // ---------------------------------------------------------------------------
 // Serialization options
@@ -101,26 +112,22 @@ function serializeTechStack(
   block: TechStackBlock,
   opts: Required<SerializeOptions>,
 ): string {
-  const { technologies } = block.content;
+  const { technologies, iconStyle = "shields" } = block.content;
   if (technologies.length === 0) return `<!-- tech-stack: empty -->`;
 
+  if (iconStyle === "skill-icons") {
+    return `## Tech Stack\n\n![Skills](${buildSkillIconsUrl(technologies)})`;
+  }
+
   const badges = technologies
-    .map((tech) => {
-      const meta = findTechMeta(tech);
-      if (meta) {
-        const logoColor = meta.color === "F7DF1E" ? "black" : "white";
-        return `![${tech}](https://img.shields.io/badge/${tech}-${meta.color}?style=${opts.badgeStyle}&logo=${meta.logo}&logoColor=${logoColor})`;
-      }
-      const encoded = encodeURIComponent(tech);
-      return `![${tech}](https://img.shields.io/badge/${encoded}-555555?style=${opts.badgeStyle})`;
-    })
+    .map((tech) => `![${tech}](${buildShieldsUrl(tech, opts.badgeStyle)})`)
     .join(" ");
 
   return `## Tech Stack\n\n${badges}`;
 }
 
 function serializeGithubStats(block: GithubStatsBlock): string {
-  const { username, showLangs, showTrophies, showVisitorCounter, theme } =
+  const { username, showLangs, showTrophies, showVisitorCounter, showStreak, theme } =
     block.content;
   if (!username) return `<!-- github-stats: no username set -->`;
 
@@ -130,38 +137,35 @@ function serializeGithubStats(block: GithubStatsBlock): string {
   if (showVisitorCounter) {
     lines.push(
       `<div align="center">`,
-      `  <img src="https://profile-counter.glitch.me/${username}/count.svg" alt="Visitor Count" />`,
+      `  <img src="${buildVisitorCounterUrl(username)}" alt="Visitor Count" />`,
       `</div>`,
       ``,
     );
   }
 
-  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${safeTheme}&hide_border=true`;
-  const streakUrl = `https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${safeTheme}&hide_border=true`;
-
-  lines.push(
-    `<div align="center">`,
-    `  <img src="${statsUrl}" alt="${username} GitHub stats" />`,
-    `  <img src="${streakUrl}" alt="${username} streak" />`,
-    `</div>`,
-    ``,
-  );
+  const statsRow = [
+    `  <img src="${buildStatsUrl(username, safeTheme)}" alt="${username} GitHub stats" />`,
+  ];
+  if (showStreak !== false) {
+    statsRow.push(
+      `  <img src="${buildStreakUrl(username, safeTheme)}" alt="${username} streak" />`,
+    );
+  }
+  lines.push(`<div align="center">`, ...statsRow, `</div>`, ``);
 
   if (showLangs) {
-    const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${safeTheme}&hide_border=true`;
     lines.push(
       `<div align="center">`,
-      `  <img src="${langsUrl}" alt="Top Languages" />`,
+      `  <img src="${buildLangsUrl(username, safeTheme)}" alt="Top Languages" />`,
       `</div>`,
       ``,
     );
   }
 
   if (showTrophies) {
-    const trophiesUrl = `https://github-profile-trophy.vercel.app/?username=${username}&theme=onedark&column=5&no-background=true&no-border=true`;
     lines.push(
       `<div align="center">`,
-      `  <img src="${trophiesUrl}" alt="GitHub Trophies" />`,
+      `  <img src="${buildTrophyUrl(username)}" alt="GitHub Trophies" />`,
       `</div>`,
       ``,
     );
@@ -240,6 +244,18 @@ function serializeMarkdownCustom(block: MarkdownCustomBlock): string {
   return block.content.markdown.trimEnd();
 }
 
+function serializeTypingHeader(block: TypingHeaderBlock): string {
+  const { lines } = block.content;
+  if (lines.length === 0 || lines.every((line) => !line.trim())) {
+    return `<!-- typing-header: empty -->`;
+  }
+  return `<div align="center">\n  <img src="${buildTypingSvgUrl(block.content)}" alt="Typing SVG" />\n</div>`;
+}
+
+function serializeCapsuleBanner(block: CapsuleBannerBlock): string {
+  return `<div align="center">\n  <img src="${buildCapsuleUrl(block.content)}" alt="Banner" />\n</div>`;
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -255,7 +271,7 @@ export function serializeBlocks(
   if (blocks.length === 0) return "";
 
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const separator = opts.sectionSeparator ? "\n\n---\n\n" : "\n\n";
+  const separator = opts.sectionSeparator ? "\n\n---\n\n" : "\n\n\n";
 
   const orderedBlocks = [...blocks].sort((a, b) => {
     const ay = a.position?.y ?? 0;
@@ -293,6 +309,12 @@ export function serializeBlocks(
           break;
         case "markdown-custom":
           serialized = serializeMarkdownCustom(block);
+          break;
+        case "typing-header":
+          serialized = serializeTypingHeader(block);
+          break;
+        case "capsule-banner":
+          serialized = serializeCapsuleBanner(block);
           break;
       }
       if (block.style?.hasBorder && serialized.trim()) {
