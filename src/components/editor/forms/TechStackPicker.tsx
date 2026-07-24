@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MARKDOWN_BADGES, searchBadges } from "@/lib/markdownBadges";
+import { getPopularTech, searchTech } from "@/lib/techCatalog";
 import { TechStackGrid } from "./TechStackGrid";
 
 interface TechStackPickerProps {
@@ -10,32 +10,20 @@ interface TechStackPickerProps {
   onRemove: (tech: string) => void;
 }
 
-export function TechStackPicker({
-  selectedTechs,
-  onAdd,
-  onRemove,
-}: TechStackPickerProps) {
+export function TechStackPicker({ selectedTechs, onAdd, onRemove }: TechStackPickerProps) {
   const [query, setQuery] = useState("");
 
-  // Filter badges based on search query
-  const filteredBadges = useMemo(() => {
-    if (!query.trim()) {
-      return MARKDOWN_BADGES;
-    }
-    return searchBadges(query);
+  const filteredEntries = useMemo(() => {
+    if (!query.trim()) return getPopularTech();
+    return searchTech(query);
   }, [query]);
 
-  // Handle badge selection (toggle add/remove)
   const handleSelect = (label: string) => {
     const isSelected = selectedTechs.some(
       (tech) => tech.toLowerCase() === label.toLowerCase(),
     );
-
-    if (isSelected) {
-      onRemove(label);
-    } else {
-      onAdd(label);
-    }
+    if (isSelected) onRemove(label);
+    else onAdd(label);
   };
 
   return (
@@ -45,7 +33,7 @@ export function TechStackPicker({
           htmlFor="tech-search"
           className="block font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase"
         >
-          Search technologies
+          Search technologies (3,000+)
         </label>
         <input
           id="tech-search"
@@ -58,16 +46,18 @@ export function TechStackPicker({
       </div>
 
       <div className="max-h-96 overflow-y-auto rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-        <TechStackGrid
-          badges={filteredBadges}
-          selectedTechs={selectedTechs}
-          onSelect={handleSelect}
-        />
+        <TechStackGrid entries={filteredEntries} selectedTechs={selectedTechs} onSelect={handleSelect} />
       </div>
 
-      {filteredBadges.length === 0 && query.trim() && (
+      {filteredEntries.length === 0 && query.trim() && (
         <p className="text-center font-mono text-xs text-[var(--text-muted)]">
           No technologies found matching &quot;{query}&quot;
+        </p>
+      )}
+
+      {filteredEntries.length === 60 && query.trim() && (
+        <p className="text-center font-mono text-[10px] text-[var(--text-muted)]">
+          Showing first 60 results — refine your search for more.
         </p>
       )}
     </div>
