@@ -10,18 +10,24 @@ type Props = { block: TechStackBlock };
 export function TechStackForm({ block }: Props) {
   const { updateBlock } = useEditorStore();
   const selected = block.content.technologies;
+  const iconStyle = block.content.iconStyle ?? "shields";
 
   function setTechnologies(technologies: string[]) {
     updateBlock(block.id, (b) =>
-      b.kind === "tech-stack" ? { ...b, content: { technologies } } : b,
+      b.kind === "tech-stack" ? { ...b, content: { ...b.content, technologies } } : b,
+    );
+  }
+
+  function setIconStyle(style: "shields" | "skill-icons") {
+    updateBlock(block.id, (b) =>
+      b.kind === "tech-stack" ? { ...b, content: { ...b.content, iconStyle: style } } : b,
     );
   }
 
   function addTech(label: string) {
     const trimmed = label.trim();
     if (!trimmed) return;
-    if (selected.some((tech) => tech.toLowerCase() === trimmed.toLowerCase()))
-      return;
+    if (selected.some((tech) => tech.toLowerCase() === trimmed.toLowerCase())) return;
     setTechnologies([...selected, trimmed]);
   }
 
@@ -31,11 +37,39 @@ export function TechStackForm({ block }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      <TechStackPicker
-        selectedTechs={selected}
-        onAdd={addTech}
-        onRemove={removeTech}
-      />
+      <div className="flex flex-col gap-1.5">
+        <span className="block font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
+          Icon Style
+        </span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setIconStyle("shields")}
+            aria-pressed={iconStyle === "shields"}
+            className={`flex-1 rounded-sm border px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
+              iconStyle === "shields"
+                ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
+                : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+            }`}
+          >
+            Shields.io
+          </button>
+          <button
+            type="button"
+            onClick={() => setIconStyle("skill-icons")}
+            aria-pressed={iconStyle === "skill-icons"}
+            className={`flex-1 rounded-sm border px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
+              iconStyle === "skill-icons"
+                ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
+                : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+            }`}
+          >
+            Skill Icons
+          </button>
+        </div>
+      </div>
+
+      <TechStackPicker selectedTechs={selected} onAdd={addTech} onRemove={removeTech} />
 
       {selected.length > 0 && (
         <div className="flex flex-col gap-2">

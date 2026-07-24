@@ -39,6 +39,7 @@ export type TechStackBlock = {
   position?: Position;
   content: {
     technologies: string[];
+    iconStyle?: "shields" | "skill-icons";
   };
 };
 
