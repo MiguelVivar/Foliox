@@ -6,7 +6,8 @@ export type BlockKind =
   | "ascii-image"
   | "social-links"
   | "rich-media"
-  | "markdown-custom";
+  | "markdown-custom"
+  | "typing-header";
 
 export type BlockStyleConfig = {
   hasBorder?: boolean;
@@ -102,6 +103,20 @@ export type AsciiImageBlock = {
   };
 };
 
+export type TypingHeaderBlock = {
+  id: string;
+  kind: "typing-header";
+  style?: BlockStyleConfig;
+  position?: Position;
+  content: {
+    lines: string[];
+    speed?: number;
+    pauseMs?: number;
+    color?: string;
+    fontSize?: number;
+  };
+};
+
 export type SocialLinksBlock = {
   id: string;
   kind: "social-links";
@@ -144,4 +159,5 @@ export type Block =
   | AsciiImageBlock
   | SocialLinksBlock
   | RichMediaBlock
-  | MarkdownCustomBlock;
+  | MarkdownCustomBlock
+  | TypingHeaderBlock;
