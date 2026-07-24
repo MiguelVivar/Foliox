@@ -88,6 +88,42 @@ export function GithubStatsForm({ block }: Props) {
             Show Top Languages
           </span>
         </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={block.content.showStreak !== false}
+            onChange={(e) => patch({ showStreak: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+            Show Streak Stats
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!!block.content.showTrophies}
+            onChange={(e) => patch({ showTrophies: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+            Show Trophies
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!!block.content.showVisitorCounter}
+            onChange={(e) => patch({ showVisitorCounter: e.target.checked })}
+            className="h-4 w-4 accent-[var(--accent-phosphor)]"
+          />
+          <span className="font-mono text-xs tracking-wider text-[var(--text-primary)] uppercase">
+            Show Visitor Counter
+          </span>
+        </label>
       </div>
 
       {block.content.username && (
