@@ -8,7 +8,11 @@ interface TechStackGridProps {
   onSelect: (label: string) => void;
 }
 
-export function TechStackGrid({ entries, selectedTechs, onSelect }: TechStackGridProps) {
+export function TechStackGrid({
+  entries,
+  selectedTechs,
+  onSelect,
+}: TechStackGridProps) {
   const isSelected = (label: string): boolean =>
     selectedTechs.some((tech) => tech.toLowerCase() === label.toLowerCase());
 

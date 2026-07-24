@@ -22,7 +22,12 @@ describe("buildTypingSvgUrl", () => {
   });
 
   it("respects custom speed, pause, and font size", () => {
-    const url = buildTypingSvgUrl({ lines: ["Hi"], speed: 80, pauseMs: 2000, fontSize: 32 });
+    const url = buildTypingSvgUrl({
+      lines: ["Hi"],
+      speed: 80,
+      pauseMs: 2000,
+      fontSize: 32,
+    });
     expect(url).toContain("speed=80");
     expect(url).toContain("pause=2000");
     expect(url).toContain("size=32");

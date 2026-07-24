@@ -8,18 +8,27 @@ type Props = { block: CapsuleBannerBlock };
 
 export function CapsuleBannerForm({ block }: Props) {
   const { updateBlock } = useEditorStore();
-  const { text = "", type, color, height = 200, fontColor = "#ffffff", section = "header" } =
-    block.content;
+  const {
+    text = "",
+    type,
+    color,
+    height = 200,
+    fontColor = "#ffffff",
+    section = "header",
+  } = block.content;
 
   function patch(partial: Partial<CapsuleBannerBlock["content"]>) {
     updateBlock(block.id, (b) =>
-      b.kind === "capsule-banner" ? { ...b, content: { ...b.content, ...partial } } : b,
+      b.kind === "capsule-banner"
+        ? { ...b, content: { ...b.content, ...partial } }
+        : b,
     );
   }
 
   const inputClass =
     "w-full rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--border-focus)]";
-  const labelClass = "block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]";
+  const labelClass =
+    "block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]";
 
   return (
     <div className="flex flex-col gap-4">
@@ -44,7 +53,11 @@ export function CapsuleBannerForm({ block }: Props) {
         <select
           id="cb-type"
           value={type}
-          onChange={(e) => patch({ type: e.target.value as CapsuleBannerBlock["content"]["type"] })}
+          onChange={(e) =>
+            patch({
+              type: e.target.value as CapsuleBannerBlock["content"]["type"],
+            })
+          }
           className={inputClass}
         >
           {CAPSULE_TYPES.map((t) => (
@@ -62,7 +75,9 @@ export function CapsuleBannerForm({ block }: Props) {
         <select
           id="cb-section"
           value={section}
-          onChange={(e) => patch({ section: e.target.value as "header" | "footer" })}
+          onChange={(e) =>
+            patch({ section: e.target.value as "header" | "footer" })
+          }
           className={inputClass}
         >
           <option value="header">Header</option>

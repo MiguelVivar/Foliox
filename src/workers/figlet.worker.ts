@@ -9,9 +9,15 @@
 
 import figlet from "figlet";
 
+// figlet's ambient types declare `Fonts` on a UMD namespace, but the
+// published package only ships a default ESM export — a bare namespace or
+// named type import of "figlet" doesn't resolve under Turbopack. Extracting
+// the type from a real member's signature works with either module system.
+type FigletFonts = Parameters<typeof figlet.loadFontSync>[0];
+
 // Pre-load the fonts we expose in AsciiBannerForm so they're ready
 // synchronously when a message arrives.
-const FONTS: figlet.Fonts[] = ["Banner", "Block", "Doom", "Slant", "Big"];
+const FONTS: FigletFonts[] = ["Banner", "Block", "Doom", "Slant", "Big"];
 
 // figlet ships font files as separate requires; in a Worker context we call
 // loadFontSync which reads the bundled font data that Webpack/Turbopack
@@ -29,7 +35,7 @@ self.addEventListener("message", (event: MessageEvent<{ text: string; font: stri
 
   try {
     const art = figlet.textSync(text, {
-      font: (font.charAt(0).toUpperCase() + font.slice(1)) as figlet.Fonts,
+      font: (font.charAt(0).toUpperCase() + font.slice(1)) as FigletFonts,
       horizontalLayout: "default",
     });
     self.postMessage({ art });

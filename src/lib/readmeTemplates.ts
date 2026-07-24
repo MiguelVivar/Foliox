@@ -301,7 +301,13 @@ const VISUAL_TEMPLATE: ReadmeTemplate = {
       id: "block-visual-tech",
       kind: "tech-stack",
       content: {
-        technologies: ["TypeScript", "React", "Node.js", "Docker", "PostgreSQL"],
+        technologies: [
+          "TypeScript",
+          "React",
+          "Node.js",
+          "Docker",
+          "PostgreSQL",
+        ],
         iconStyle: "skill-icons",
       },
     },

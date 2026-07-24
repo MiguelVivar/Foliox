@@ -449,7 +449,9 @@ assert.ok(
 // markdownBadges.ts vs techCatalog.ts drift bug)
 // ============================================================================
 
-const reactTechOutput = serializeBlocks([makeTechBlock("tech-react", 0, ["React"])]);
+const reactTechOutput = serializeBlocks([
+  makeTechBlock("tech-react", 0, ["React"]),
+]);
 assert.ok(
   reactTechOutput.includes("61DAFB"),
   "Tech stack should use the unified catalog's simple-icons hex for React (61DAFB), matching the picker/preview exactly",
