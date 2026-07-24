@@ -32,25 +32,47 @@ export function GithubStatsDisplay({
       <div className="flex items-center justify-between border-b border-[#30363d] pb-2 select-none">
         <div className="flex items-center gap-2">
           <GitBranch size={15} className="text-[#8b949e]" />
-          <span className="font-mono text-xs text-[#8b949e]">GitHub Stats ({username})</span>
+          <span className="font-mono text-xs text-[#8b949e]">
+            GitHub Stats ({username})
+          </span>
         </div>
       </div>
 
       {showVisitorCounter && (
-        <img src={buildVisitorCounterUrl(username)} alt="Visitor Count" className="mx-auto" />
+        <img
+          src={buildVisitorCounterUrl(username)}
+          alt="Visitor Count"
+          className="mx-auto"
+        />
       )}
 
       <div className="flex flex-wrap items-start justify-center gap-3">
-        <img src={buildStatsUrl(username, theme)} alt={`${username} GitHub stats`} />
-        {showStreak && <img src={buildStreakUrl(username, theme)} alt={`${username} streak`} />}
+        <img
+          src={buildStatsUrl(username, theme)}
+          alt={`${username} GitHub stats`}
+        />
+        {showStreak && (
+          <img
+            src={buildStreakUrl(username, theme)}
+            alt={`${username} streak`}
+          />
+        )}
       </div>
 
       {showLanguages && (
-        <img src={buildLangsUrl(username, theme)} alt="Top Languages" className="mx-auto" />
+        <img
+          src={buildLangsUrl(username, theme)}
+          alt="Top Languages"
+          className="mx-auto"
+        />
       )}
 
       {showTrophies && (
-        <img src={buildTrophyUrl(username)} alt="GitHub Trophies" className="mx-auto" />
+        <img
+          src={buildTrophyUrl(username)}
+          alt="GitHub Trophies"
+          className="mx-auto"
+        />
       )}
 
       <p className="font-mono text-[10px] text-[#6e7681]">

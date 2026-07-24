@@ -20,7 +20,10 @@ describe("TechStackBlockView", () => {
     const block: TechStackBlock = {
       id: "t2",
       kind: "tech-stack",
-      content: { technologies: ["React", "TypeScript"], iconStyle: "skill-icons" },
+      content: {
+        technologies: ["React", "TypeScript"],
+        iconStyle: "skill-icons",
+      },
     };
     render(<TechStackBlockView block={block} />);
     const images = screen.getAllByRole("img") as HTMLImageElement[];
@@ -29,7 +32,11 @@ describe("TechStackBlockView", () => {
   });
 
   it("shows an empty-state message when no technologies are selected", () => {
-    const block: TechStackBlock = { id: "t3", kind: "tech-stack", content: { technologies: [] } };
+    const block: TechStackBlock = {
+      id: "t3",
+      kind: "tech-stack",
+      content: { technologies: [] },
+    };
     render(<TechStackBlockView block={block} />);
     expect(screen.getByText(/no technologies added yet/i)).toBeInTheDocument();
   });

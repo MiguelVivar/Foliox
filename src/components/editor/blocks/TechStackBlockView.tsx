@@ -34,7 +34,11 @@ export function TechStackBlockView({ block }: Props) {
           rel="noopener noreferrer"
           className="inline-block transition-opacity hover:opacity-80"
         >
-          <img src={buildShieldsUrl(tech, "for-the-badge")} alt={tech} className="h-8" />
+          <img
+            src={buildShieldsUrl(tech, "for-the-badge")}
+            alt={tech}
+            className="h-8"
+          />
         </a>
       ))}
     </div>

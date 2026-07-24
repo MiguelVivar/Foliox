@@ -5,7 +5,9 @@ import { GithubStatsForm } from "../GithubStatsForm";
 import { useEditorStore } from "@/store/useEditorStore";
 import type { GithubStatsBlock } from "@/types/ast";
 
-function makeBlock(overrides: Partial<GithubStatsBlock["content"]> = {}): GithubStatsBlock {
+function makeBlock(
+  overrides: Partial<GithubStatsBlock["content"]> = {},
+): GithubStatsBlock {
   return {
     id: "gh-1",
     kind: "github-stats",
@@ -24,11 +26,15 @@ describe("GithubStatsForm", () => {
     useEditorStore.getState().addBlock(block);
     render(<GithubStatsForm block={block} />);
 
-    const trophiesCheckbox = screen.getByRole("checkbox", { name: /show trophies/i });
+    const trophiesCheckbox = screen.getByRole("checkbox", {
+      name: /show trophies/i,
+    });
     expect(trophiesCheckbox).not.toBeChecked();
     await user.click(trophiesCheckbox);
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "gh-1") as GithubStatsBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "gh-1") as GithubStatsBlock;
     expect(stored.content.showTrophies).toBe(true);
   });
 
@@ -38,9 +44,13 @@ describe("GithubStatsForm", () => {
     useEditorStore.getState().addBlock(block);
     render(<GithubStatsForm block={block} />);
 
-    await user.click(screen.getByRole("checkbox", { name: /show visitor counter/i }));
+    await user.click(
+      screen.getByRole("checkbox", { name: /show visitor counter/i }),
+    );
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "gh-1") as GithubStatsBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "gh-1") as GithubStatsBlock;
     expect(stored.content.showVisitorCounter).toBe(true);
   });
 
@@ -50,11 +60,15 @@ describe("GithubStatsForm", () => {
     useEditorStore.getState().addBlock(block);
     render(<GithubStatsForm block={block} />);
 
-    const streakCheckbox = screen.getByRole("checkbox", { name: /show streak stats/i });
+    const streakCheckbox = screen.getByRole("checkbox", {
+      name: /show streak stats/i,
+    });
     expect(streakCheckbox).toBeChecked();
     await user.click(streakCheckbox);
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "gh-1") as GithubStatsBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "gh-1") as GithubStatsBlock;
     expect(stored.content.showStreak).toBe(false);
   });
 });

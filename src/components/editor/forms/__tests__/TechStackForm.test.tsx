@@ -5,7 +5,9 @@ import { TechStackForm } from "../TechStackForm";
 import { useEditorStore } from "@/store/useEditorStore";
 import type { TechStackBlock } from "@/types/ast";
 
-function makeBlock(overrides: Partial<TechStackBlock["content"]> = {}): TechStackBlock {
+function makeBlock(
+  overrides: Partial<TechStackBlock["content"]> = {},
+): TechStackBlock {
   return {
     id: "tech-1",
     kind: "tech-stack",

@@ -1,7 +1,16 @@
 import type { CapsuleBannerBlock } from "@/types/ast";
 
-export function buildCapsuleUrl(content: CapsuleBannerBlock["content"]): string {
-  const { text = "", type, color, height = 200, fontColor = "ffffff", section = "header" } = content;
+export function buildCapsuleUrl(
+  content: CapsuleBannerBlock["content"],
+): string {
+  const {
+    text = "",
+    type,
+    color,
+    height = 200,
+    fontColor = "ffffff",
+    section = "header",
+  } = content;
 
   const params = new URLSearchParams({
     type,

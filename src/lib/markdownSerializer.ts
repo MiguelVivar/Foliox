@@ -1,4 +1,10 @@
 import figlet from "figlet";
+
+// figlet's ambient types declare `Fonts` on a UMD namespace, but the
+// published package only ships a default ESM export — a bare namespace or
+// named type import of "figlet" doesn't resolve under Turbopack. Extracting
+// the type from a real member's signature works with either module system.
+type FigletFonts = Parameters<typeof figlet.loadFontSync>[0];
 import type {
   Block,
   HeroBioBlock,
@@ -127,8 +133,14 @@ function serializeTechStack(
 }
 
 function serializeGithubStats(block: GithubStatsBlock): string {
-  const { username, showLangs, showTrophies, showVisitorCounter, showStreak, theme } =
-    block.content;
+  const {
+    username,
+    showLangs,
+    showTrophies,
+    showVisitorCounter,
+    showStreak,
+    theme,
+  } = block.content;
   if (!username) return `<!-- github-stats: no username set -->`;
 
   const safeTheme = theme || "dark";
@@ -182,7 +194,7 @@ function serializeAsciiBanner(block: AsciiBannerBlock): string {
     // figlet.textSync is synchronous and safe to call in the serializer
     // (runs only when user clicks Copy/Download, not on every keystroke).
     const art = figlet.textSync(text, {
-      font: font as figlet.Fonts,
+      font: font as FigletFonts,
       horizontalLayout: "default",
     });
     return "```\n" + art + "\n```";

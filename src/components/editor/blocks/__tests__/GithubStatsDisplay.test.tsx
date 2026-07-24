@@ -6,7 +6,9 @@ describe("GithubStatsDisplay", () => {
   it("always renders the stats card and streak card by default", () => {
     render(<GithubStatsDisplay username="octocat" />);
     const images = screen.getAllByRole("img") as HTMLImageElement[];
-    expect(images.some((img) => img.src.includes("github-readme-stats"))).toBe(true);
+    expect(images.some((img) => img.src.includes("github-readme-stats"))).toBe(
+      true,
+    );
     expect(images.some((img) => img.src.includes("streak-stats"))).toBe(true);
   });
 
@@ -25,7 +27,9 @@ describe("GithubStatsDisplay", () => {
   it("renders the visitor counter only when showVisitorCounter is true", () => {
     render(<GithubStatsDisplay username="octocat" showVisitorCounter />);
     const images = screen.getAllByRole("img") as HTMLImageElement[];
-    expect(images.some((img) => img.src.includes("profile-counter"))).toBe(true);
+    expect(images.some((img) => img.src.includes("profile-counter"))).toBe(
+      true,
+    );
   });
 
   it("renders nothing when username is empty", () => {

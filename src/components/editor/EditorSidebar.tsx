@@ -30,7 +30,11 @@ function makeId() {
   return `block-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-const BLOCK_CATALOG: { label: string; description: string; factory: (username: string) => Block }[] = [
+const BLOCK_CATALOG: {
+  label: string;
+  description: string;
+  factory: (username: string) => Block;
+}[] = [
   {
     label: "Hero / Bio",
     description: "Name, tagline & avatar",
@@ -55,7 +59,13 @@ const BLOCK_CATALOG: { label: string; description: string; factory: (username: s
     factory: (username: string) => ({
       id: makeId(),
       kind: "github-stats",
-      content: { username: username || "MiguelVivar", showPrivate: false, showLangs: false, showTrophies: false, showVisitorCounter: false },
+      content: {
+        username: username || "MiguelVivar",
+        showPrivate: false,
+        showLangs: false,
+        showTrophies: false,
+        showVisitorCounter: false,
+      },
     }),
   },
   {
@@ -100,7 +110,10 @@ const BLOCK_CATALOG: { label: string; description: string; factory: (username: s
     factory: () => ({
       id: makeId(),
       kind: "markdown-custom",
-      content: { markdown: "<!-- Write your custom Markdown here -->\n\n## Section Title\n\nYour content..." },
+      content: {
+        markdown:
+          "<!-- Write your custom Markdown here -->\n\n## Section Title\n\nYour content...",
+      },
     }),
   },
   {
@@ -162,16 +175,26 @@ import { translations } from "@/lib/translations";
 function BlockForm({ block }: { block: Block }) {
   const formElement = (() => {
     switch (block.kind) {
-      case "hero-bio":      return <HeroBioForm block={block} />;
-      case "tech-stack":   return <TechStackForm block={block} />;
-      case "github-stats": return <GithubStatsForm block={block} />;
-      case "ascii-banner": return <AsciiBannerForm block={block} />;
-      case "ascii-image":  return <AsciiImageForm block={block} />;
-      case "social-links": return <SocialLinksForm block={block} />;
-      case "rich-media":   return <RichMediaForm block={block} />;
-      case "markdown-custom": return <MarkdownCustomForm block={block} />;
-      case "typing-header": return <TypingHeaderForm block={block} />;
-      case "capsule-banner": return <CapsuleBannerForm block={block} />;
+      case "hero-bio":
+        return <HeroBioForm block={block} />;
+      case "tech-stack":
+        return <TechStackForm block={block} />;
+      case "github-stats":
+        return <GithubStatsForm block={block} />;
+      case "ascii-banner":
+        return <AsciiBannerForm block={block} />;
+      case "ascii-image":
+        return <AsciiImageForm block={block} />;
+      case "social-links":
+        return <SocialLinksForm block={block} />;
+      case "rich-media":
+        return <RichMediaForm block={block} />;
+      case "markdown-custom":
+        return <MarkdownCustomForm block={block} />;
+      case "typing-header":
+        return <TypingHeaderForm block={block} />;
+      case "capsule-banner":
+        return <CapsuleBannerForm block={block} />;
     }
   })();
 
@@ -197,7 +220,9 @@ export function EditorSidebar() {
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<Tab>("blocks");
 
-  const defaultUsername = user?.name ? user.name.replace(/\s+/g, "") : "MiguelVivar";
+  const defaultUsername = user?.name
+    ? user.name.replace(/\s+/g, "")
+    : "MiguelVivar";
 
   useEffect(() => {
     if (selectedBlockId) {
@@ -228,7 +253,7 @@ export function EditorSidebar() {
               "flex-1 px-3 py-3 font-mono text-xs transition-colors",
               activeTab === tab.id
                 ? "border-b-2 border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
-                : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-b-2 hover:border-[var(--border-subtle)]",
+                : "text-[var(--text-muted)] hover:border-b-2 hover:border-[var(--border-subtle)] hover:text-[var(--text-primary)]",
             )}
           >
             {tab.label}
@@ -238,7 +263,6 @@ export function EditorSidebar() {
 
       {/* ── Tab content ── */}
       <div className="flex flex-1 flex-col overflow-y-auto p-4">
-
         {/* ── BLOCKS tab ── */}
         {activeTab === "blocks" && (
           <>
@@ -255,8 +279,11 @@ export function EditorSidebar() {
                   >
                     <ArrowLeft size={14} />
                   </button>
-                  <span className="font-mono text-xs text-[var(--text-primary)] flex items-center gap-1.5">
-                    {KIND_LABELS[selectedBlock.kind]} <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">█</span>
+                  <span className="flex items-center gap-1.5 font-mono text-xs text-[var(--text-primary)]">
+                    {KIND_LABELS[selectedBlock.kind]}{" "}
+                    <span className="animate-[blink_1s_step-end_infinite] text-[var(--accent-phosphor)]">
+                      █
+                    </span>
                   </span>
                 </div>
 
@@ -282,7 +309,7 @@ export function EditorSidebar() {
             ) : (
               /* No block selected: show add catalog */
               <div className="flex flex-col gap-2">
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
+                <p className="mb-2 font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase">
                   Add a block
                 </p>
                 {BLOCK_CATALOG.map((item) => (
@@ -290,12 +317,12 @@ export function EditorSidebar() {
                     key={item.label}
                     type="button"
                     onClick={() => addBlock(item.factory(defaultUsername))}
-                    className="flex flex-col items-start rounded-sm border border-[var(--border-subtle)] bg-transparent px-3 py-2.5 text-left hover:border-[var(--accent-phosphor)] hover:bg-[var(--bg-canvas)] focus-visible:border-[var(--accent-phosphor)] focus-visible:outline-none transition-colors group"
+                    className="group flex flex-col items-start rounded-sm border border-[var(--border-subtle)] bg-transparent px-3 py-2.5 text-left transition-colors hover:border-[var(--accent-phosphor)] hover:bg-[var(--bg-canvas)] focus-visible:border-[var(--accent-phosphor)] focus-visible:outline-none"
                   >
-                    <span className="text-sm font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-phosphor)] transition-colors">
+                    <span className="text-sm font-medium text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-phosphor)]">
                       {item.label}
                     </span>
-                    <span className="mt-0.5 font-mono text-[10px] text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors uppercase tracking-widest">
+                    <span className="mt-0.5 font-mono text-[10px] tracking-widest text-[var(--text-muted)] uppercase transition-colors group-hover:text-[var(--text-primary)]">
                       {item.description}
                     </span>
                   </button>
@@ -314,7 +341,9 @@ export function EditorSidebar() {
 
       {/* ── Security badge ── */}
       <div className="border-t border-[var(--border-subtle)] px-4 py-3">
-        <MonospaceLabel>[LOCAL STORAGE ONLY - ZERO DATA LOGGING]</MonospaceLabel>
+        <MonospaceLabel>
+          [LOCAL STORAGE ONLY - ZERO DATA LOGGING]
+        </MonospaceLabel>
       </div>
     </div>
   );
