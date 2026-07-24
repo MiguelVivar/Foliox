@@ -126,10 +126,10 @@ const BLOCK_CATALOG: { label: string; description: string; factory: (username: s
       kind: "capsule-banner",
       content: {
         type: "waving",
-        color: "0d1117",
+        color: "#0d1117",
         text: "",
         height: 200,
-        fontColor: "ffffff",
+        fontColor: "#ffffff",
         section: "header",
       },
     }),

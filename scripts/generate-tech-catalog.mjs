@@ -2,7 +2,7 @@
 // One-off generator: reads the simple-icons npm package (a devDependency,
 // never imported by app code) and emits a slim static JSON catalog of
 // { label, slug, hex } for every brand. Re-run manually after
-// `npm update simple-icons` to pick up new/renamed brands.
+// `pnpm update simple-icons` to pick up new/renamed brands.
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";

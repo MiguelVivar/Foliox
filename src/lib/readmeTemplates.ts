@@ -290,10 +290,10 @@ const VISUAL_TEMPLATE: ReadmeTemplate = {
       kind: "capsule-banner",
       content: {
         type: "waving",
-        color: "0d1117",
+        color: "#0d1117",
         text: "",
         height: 180,
-        fontColor: "ffffff",
+        fontColor: "#ffffff",
         section: "header",
       },
     },

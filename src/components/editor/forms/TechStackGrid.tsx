@@ -21,7 +21,7 @@ export function TechStackGrid({ entries, selectedTechs, onSelect }: TechStackGri
         const selected = isSelected(entry.label);
         return (
           <button
-            key={entry.label}
+            key={entry.slug}
             type="button"
             onClick={() => onSelect(entry.label)}
             className={`flex flex-col items-center gap-2 rounded-md p-3 transition-all duration-150 ${
