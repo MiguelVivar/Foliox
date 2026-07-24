@@ -14,20 +14,25 @@ export function TechStackForm({ block }: Props) {
 
   function setTechnologies(technologies: string[]) {
     updateBlock(block.id, (b) =>
-      b.kind === "tech-stack" ? { ...b, content: { ...b.content, technologies } } : b,
+      b.kind === "tech-stack"
+        ? { ...b, content: { ...b.content, technologies } }
+        : b,
     );
   }
 
   function setIconStyle(style: "shields" | "skill-icons") {
     updateBlock(block.id, (b) =>
-      b.kind === "tech-stack" ? { ...b, content: { ...b.content, iconStyle: style } } : b,
+      b.kind === "tech-stack"
+        ? { ...b, content: { ...b.content, iconStyle: style } }
+        : b,
     );
   }
 
   function addTech(label: string) {
     const trimmed = label.trim();
     if (!trimmed) return;
-    if (selected.some((tech) => tech.toLowerCase() === trimmed.toLowerCase())) return;
+    if (selected.some((tech) => tech.toLowerCase() === trimmed.toLowerCase()))
+      return;
     setTechnologies([...selected, trimmed]);
   }
 
@@ -46,7 +51,7 @@ export function TechStackForm({ block }: Props) {
             type="button"
             onClick={() => setIconStyle("shields")}
             aria-pressed={iconStyle === "shields"}
-            className={`flex-1 rounded-sm border px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
+            className={`flex-1 rounded-sm border px-3 py-2 font-mono text-xs tracking-wider uppercase transition-colors ${
               iconStyle === "shields"
                 ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
                 : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
@@ -58,7 +63,7 @@ export function TechStackForm({ block }: Props) {
             type="button"
             onClick={() => setIconStyle("skill-icons")}
             aria-pressed={iconStyle === "skill-icons"}
-            className={`flex-1 rounded-sm border px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
+            className={`flex-1 rounded-sm border px-3 py-2 font-mono text-xs tracking-wider uppercase transition-colors ${
               iconStyle === "skill-icons"
                 ? "border-[var(--accent-phosphor)] text-[var(--accent-phosphor)]"
                 : "border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
@@ -69,7 +74,11 @@ export function TechStackForm({ block }: Props) {
         </div>
       </div>
 
-      <TechStackPicker selectedTechs={selected} onAdd={addTech} onRemove={removeTech} />
+      <TechStackPicker
+        selectedTechs={selected}
+        onAdd={addTech}
+        onRemove={removeTech}
+      />
 
       {selected.length > 0 && (
         <div className="flex flex-col gap-2">

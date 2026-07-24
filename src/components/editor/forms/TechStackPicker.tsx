@@ -10,7 +10,11 @@ interface TechStackPickerProps {
   onRemove: (tech: string) => void;
 }
 
-export function TechStackPicker({ selectedTechs, onAdd, onRemove }: TechStackPickerProps) {
+export function TechStackPicker({
+  selectedTechs,
+  onAdd,
+  onRemove,
+}: TechStackPickerProps) {
   const [query, setQuery] = useState("");
 
   const filteredEntries = useMemo(() => {
@@ -46,7 +50,11 @@ export function TechStackPicker({ selectedTechs, onAdd, onRemove }: TechStackPic
       </div>
 
       <div className="max-h-96 overflow-y-auto rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-        <TechStackGrid entries={filteredEntries} selectedTechs={selectedTechs} onSelect={handleSelect} />
+        <TechStackGrid
+          entries={filteredEntries}
+          selectedTechs={selectedTechs}
+          onSelect={handleSelect}
+        />
       </div>
 
       {filteredEntries.length === 0 && query.trim() && (

@@ -22,7 +22,9 @@ describe("TypingHeaderForm", () => {
 
     await user.click(screen.getByRole("button", { name: /add line/i }));
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "th-1") as TypingHeaderBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "th-1") as TypingHeaderBlock;
     expect(stored.content.lines).toEqual(["Hello", ""]);
   });
 
@@ -34,7 +36,9 @@ describe("TypingHeaderForm", () => {
 
     await user.click(screen.getByRole("button", { name: /remove line 1/i }));
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "th-1") as TypingHeaderBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "th-1") as TypingHeaderBlock;
     expect(stored.content.lines).toEqual([]);
   });
 });

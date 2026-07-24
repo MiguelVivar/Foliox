@@ -17,7 +17,11 @@ describe("TypingHeaderBlockView", () => {
   });
 
   it("shows an empty-state message when there are no lines", () => {
-    const block: TypingHeaderBlock = { id: "th2", kind: "typing-header", content: { lines: [] } };
+    const block: TypingHeaderBlock = {
+      id: "th2",
+      kind: "typing-header",
+      content: { lines: [] },
+    };
     render(<TypingHeaderBlockView block={block} />);
     expect(screen.getByText(/add at least one line/i)).toBeInTheDocument();
   });

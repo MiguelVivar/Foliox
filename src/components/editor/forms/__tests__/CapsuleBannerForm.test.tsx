@@ -6,7 +6,11 @@ import { useEditorStore } from "@/store/useEditorStore";
 import type { CapsuleBannerBlock } from "@/types/ast";
 
 function makeBlock(): CapsuleBannerBlock {
-  return { id: "cb-1", kind: "capsule-banner", content: { type: "waving", color: "#0d1117" } };
+  return {
+    id: "cb-1",
+    kind: "capsule-banner",
+    content: { type: "waving", color: "#0d1117" },
+  };
 }
 
 // EditorSidebar re-derives `block` from the store on every render (it subscribes to the
@@ -34,7 +38,9 @@ describe("CapsuleBannerForm", () => {
 
     await user.selectOptions(screen.getByLabelText(/shape/i), "rect");
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "cb-1") as CapsuleBannerBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "cb-1") as CapsuleBannerBlock;
     expect(stored.content.type).toBe("rect");
   });
 
@@ -46,7 +52,9 @@ describe("CapsuleBannerForm", () => {
 
     await user.type(screen.getByLabelText(/banner text/i), "Hi");
 
-    const stored = useEditorStore.getState().blocks.find((b) => b.id === "cb-1") as CapsuleBannerBlock;
+    const stored = useEditorStore
+      .getState()
+      .blocks.find((b) => b.id === "cb-1") as CapsuleBannerBlock;
     expect(stored.content.text).toBe("Hi");
   });
 });

@@ -6,7 +6,11 @@ type Props = { block: CapsuleBannerBlock };
 export function CapsuleBannerBlockView({ block }: Props) {
   return (
     <div className="flex justify-center">
-      <img src={buildCapsuleUrl(block.content)} alt={block.content.text || "Banner"} className="w-full" />
+      <img
+        src={buildCapsuleUrl(block.content)}
+        alt={block.content.text || "Banner"}
+        className="w-full"
+      />
     </div>
   );
 }

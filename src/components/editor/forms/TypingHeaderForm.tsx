@@ -8,11 +8,19 @@ type Props = { block: TypingHeaderBlock };
 
 export function TypingHeaderForm({ block }: Props) {
   const { updateBlock } = useEditorStore();
-  const { lines, speed = 50, pauseMs = 1000, color = "#36BCF7", fontSize = 24 } = block.content;
+  const {
+    lines,
+    speed = 50,
+    pauseMs = 1000,
+    color = "#36BCF7",
+    fontSize = 24,
+  } = block.content;
 
   function patch(partial: Partial<TypingHeaderBlock["content"]>) {
     updateBlock(block.id, (b) =>
-      b.kind === "typing-header" ? { ...b, content: { ...b.content, ...partial } } : b,
+      b.kind === "typing-header"
+        ? { ...b, content: { ...b.content, ...partial } }
+        : b,
     );
   }
 
@@ -30,7 +38,8 @@ export function TypingHeaderForm({ block }: Props) {
 
   const inputClass =
     "w-full rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--border-focus)]";
-  const labelClass = "block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]";
+  const labelClass =
+    "block font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)]";
 
   return (
     <div className="flex flex-col gap-4">

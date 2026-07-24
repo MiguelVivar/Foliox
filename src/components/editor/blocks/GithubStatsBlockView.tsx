@@ -6,8 +6,14 @@ import { GithubStatsDisplay } from "./GithubStatsDisplay";
 type Props = { block: GithubStatsBlock };
 
 export function GithubStatsBlockView({ block }: Props) {
-  const { username, theme, showLangs, showStreak, showTrophies, showVisitorCounter } =
-    block.content;
+  const {
+    username,
+    theme,
+    showLangs,
+    showStreak,
+    showTrophies,
+    showVisitorCounter,
+  } = block.content;
 
   return (
     <GithubStatsDisplay
