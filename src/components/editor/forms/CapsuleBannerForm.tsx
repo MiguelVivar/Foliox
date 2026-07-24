@@ -7,11 +7,9 @@ import type { CapsuleBannerBlock } from "@/types/ast";
 type Props = { block: CapsuleBannerBlock };
 
 export function CapsuleBannerForm({ block }: Props) {
-  const { updateBlock, blocks } = useEditorStore();
-  const liveBlock =
-    (blocks.find((b) => b.id === block.id) as CapsuleBannerBlock | undefined) ?? block;
+  const { updateBlock } = useEditorStore();
   const { text = "", type, color, height = 200, fontColor = "#ffffff", section = "header" } =
-    liveBlock.content;
+    block.content;
 
   function patch(partial: Partial<CapsuleBannerBlock["content"]>) {
     updateBlock(block.id, (b) =>
