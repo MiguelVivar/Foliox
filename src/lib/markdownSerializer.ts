@@ -11,7 +11,7 @@ import type {
   MarkdownCustomBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
-import { buildShieldsUrl } from "./techCatalog";
+import { buildShieldsUrl, buildSkillIconsUrl } from "./techCatalog";
 
 // ---------------------------------------------------------------------------
 // Serialization options
@@ -101,8 +101,12 @@ function serializeTechStack(
   block: TechStackBlock,
   opts: Required<SerializeOptions>,
 ): string {
-  const { technologies } = block.content;
+  const { technologies, iconStyle = "shields" } = block.content;
   if (technologies.length === 0) return `<!-- tech-stack: empty -->`;
+
+  if (iconStyle === "skill-icons") {
+    return `## Tech Stack\n\n![Skills](${buildSkillIconsUrl(technologies)})`;
+  }
 
   const badges = technologies
     .map((tech) => `![${tech}](${buildShieldsUrl(tech, opts.badgeStyle)})`)

@@ -503,6 +503,22 @@ assert.ok(
 );
 
 // ============================================================================
+// Test: Tech Stack - Skill Icons style
+// ============================================================================
+
+const skillIconsBlock: TechStackBlock = {
+  id: "tech-skill",
+  kind: "tech-stack",
+  position: { x: 0, y: 0, w: 12, h: 4 },
+  content: { technologies: ["React", "TypeScript"], iconStyle: "skill-icons" },
+};
+const skillIconsTechOutput = serializeBlocks([skillIconsBlock]);
+assert.ok(
+  skillIconsTechOutput.includes("skillicons.dev/icons?i=react,ts"),
+  "Tech stack should render a single combined skillicons.dev image when iconStyle is skill-icons",
+);
+
+// ============================================================================
 // Test Summary
 // ============================================================================
 

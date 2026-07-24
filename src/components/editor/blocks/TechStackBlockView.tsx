@@ -1,16 +1,26 @@
 import type { TechStackBlock } from "@/types/ast";
-import { buildShieldsUrl } from "@/lib/techCatalog";
+import { buildShieldsUrl, buildSkillIconsUrl } from "@/lib/techCatalog";
 
 type Props = { block: TechStackBlock };
 
 export function TechStackBlockView({ block }: Props) {
-  const { technologies } = block.content;
+  const { technologies, iconStyle = "shields" } = block.content;
 
   if (technologies.length === 0) {
     return (
       <p className="font-mono text-xs text-[var(--text-muted)] italic">
         No technologies added yet
       </p>
+    );
+  }
+
+  if (iconStyle === "skill-icons") {
+    return (
+      <img
+        src={buildSkillIconsUrl(technologies)}
+        alt={technologies.join(", ")}
+        className="max-w-full"
+      />
     );
   }
 
