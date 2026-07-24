@@ -11,7 +11,7 @@ import type {
   MarkdownCustomBlock,
 } from "@/types/ast";
 import type { BadgeStyle } from "@/store/useEditorStore";
-import { findTechMeta } from "./techCatalog";
+import { buildShieldsUrl } from "./techCatalog";
 
 // ---------------------------------------------------------------------------
 // Serialization options
@@ -105,15 +105,7 @@ function serializeTechStack(
   if (technologies.length === 0) return `<!-- tech-stack: empty -->`;
 
   const badges = technologies
-    .map((tech) => {
-      const meta = findTechMeta(tech);
-      if (meta) {
-        const logoColor = meta.color === "F7DF1E" ? "black" : "white";
-        return `![${tech}](https://img.shields.io/badge/${tech}-${meta.color}?style=${opts.badgeStyle}&logo=${meta.logo}&logoColor=${logoColor})`;
-      }
-      const encoded = encodeURIComponent(tech);
-      return `![${tech}](https://img.shields.io/badge/${encoded}-555555?style=${opts.badgeStyle})`;
-    })
+    .map((tech) => `![${tech}](${buildShieldsUrl(tech, opts.badgeStyle)})`)
     .join(" ");
 
   return `## Tech Stack\n\n${badges}`;

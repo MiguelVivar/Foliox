@@ -443,6 +443,17 @@ assert.ok(
 );
 
 // ============================================================================
+// Test: Tech Stack - unified catalog color (regression guard for the old
+// markdownBadges.ts vs techCatalog.ts drift bug)
+// ============================================================================
+
+const reactTechOutput = serializeBlocks([makeTechBlock("tech-react", 0, ["React"])]);
+assert.ok(
+  reactTechOutput.includes("61DAFB"),
+  "Tech stack should use the unified catalog's simple-icons hex for React (61DAFB), matching the picker/preview exactly",
+);
+
+// ============================================================================
 // Test: Complex multi-block document
 // ============================================================================
 
